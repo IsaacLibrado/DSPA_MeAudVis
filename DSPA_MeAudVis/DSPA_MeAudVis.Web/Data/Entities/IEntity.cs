@@ -7,6 +7,6 @@ namespace DSPA_MeAudVis.Web.Controllers.Data.Entities
 {
     public interface IEntity
     {
-        int id { get; set; }
+        int Id { get; set; }
     }
 }
