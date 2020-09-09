@@ -1,11 +1,7 @@
-﻿using DSPA_MeAudVis.Web.Controllers.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DSPA_MeAudVis.Web.Data.Entities
+﻿namespace DSPA_MeAudVis.Web.Data.Entities
 {
+    using DSPA_MeAudVis.Web.Controllers.Data.Entities;
+
     public class CManual : IEntity
     {
         public int Id { set; get; }

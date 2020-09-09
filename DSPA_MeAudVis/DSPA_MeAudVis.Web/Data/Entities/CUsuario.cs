@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DSPA_MeAudVis.Web.Data.Entities
+﻿namespace DSPA_MeAudVis.Web.Data.Entities
 {
+    using Microsoft.AspNetCore.Identity;
+    using System.Collections.Generic;
+
     public class CUsuario : IdentityUser
     {
         public string Contrasena { set; get; }
