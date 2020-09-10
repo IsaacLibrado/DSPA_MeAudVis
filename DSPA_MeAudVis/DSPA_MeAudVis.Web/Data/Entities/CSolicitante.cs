@@ -19,8 +19,6 @@
 
         public bool Deudor { set; get; }
 
-        public ICollection<CPrestamo> Prestamos { set; get; }
-
         //Metodos
         public void ConsultarInventario()
         {

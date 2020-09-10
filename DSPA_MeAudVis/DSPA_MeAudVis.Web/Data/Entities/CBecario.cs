@@ -2,6 +2,7 @@
 {
     using DSPA_MeAudVis.Web.Controllers.Data.Entities;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// Define a los becarios que usan el sistema
@@ -13,11 +14,11 @@
     /// Modificador Isaac Librado
     public class CBecario : IEntity
     {
+        [Required(ErrorMessage = "{0} is required")]
         public int Id { set; get; }
 
+        [Required(ErrorMessage = "{0} is required")]
         public CUsuario Usuario { set; get; }
-
-        public ICollection<CPrestamo> Prestamos { set; get; }
 
         //Metodos
         public void PrestamoDeMateria()
