@@ -40,7 +40,6 @@
         [Display(Name = "Fecha y hora de recibido")]
         public DateTime FechaHoraEntrega { set; get; }
 
-        [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Estado del prestamo")]
         public bool Estado { set; get; }
 
