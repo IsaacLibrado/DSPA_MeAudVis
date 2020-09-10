@@ -27,6 +27,7 @@ namespace DSPA_MeAudVis.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Añade el DBContext para la conexión a la base de datos
             services.AddDbContext<DataContext>(
                 cfg =>
                 {
