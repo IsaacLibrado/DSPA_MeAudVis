@@ -19,8 +19,8 @@
         public int Id { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
-        [Display(Name = "Materiales prestado")]
-        public ICollection<CMaterial> Materiales { set; get; }
+        [Display(Name = "Material prestado")]
+        public CMaterial Material { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Becario que presta")]

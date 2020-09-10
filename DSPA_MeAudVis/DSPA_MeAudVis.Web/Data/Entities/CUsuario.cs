@@ -42,9 +42,6 @@
         [Display(Name = "Tipo de Usuario")]
         public string TipoDeUsuario { set; get; }
 
-        [Display(Name = "Manuales")]
-        public ICollection<CManual> Manuales { set; get; }
-
         //Metodos
         public void InicioSesion()
         {

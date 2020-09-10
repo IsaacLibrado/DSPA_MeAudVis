@@ -1,6 +1,7 @@
 ﻿namespace DSPA_MeAudVis.Web.Data.Entities
 {
     using DSPA_MeAudVis.Web.Controllers.Data.Entities;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
@@ -35,5 +36,9 @@
         [MaxLength(15, ErrorMessage = "{0} must have maximun {1} charactes")]
         [Display(Name = "Numero de serie")]
         public string NumSerie { set; get; }
+
+        [Required(ErrorMessage = "{0} is required")]
+        [Display(Name = "Materiales prestado")]
+        public ICollection<CPrestamo> Prestamos { set; get; }
     }
 }

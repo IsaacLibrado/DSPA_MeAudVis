@@ -9,6 +9,37 @@ namespace DSPA_MeAudVis.Web.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Manuales",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Nombre = table.Column<string>(maxLength: 100, nullable: false),
+                    Contenido = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Manuales", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Materiales",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Nombre = table.Column<string>(maxLength: 30, nullable: false),
+                    Etiqueta = table.Column<string>(maxLength: 6, nullable: false),
+                    Marca = table.Column<string>(maxLength: 15, nullable: true),
+                    Modelo = table.Column<string>(maxLength: 15, nullable: true),
+                    NumSerie = table.Column<string>(maxLength: 15, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Materiales", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Usuarios",
                 columns: table => new
                 {
@@ -31,11 +62,18 @@ namespace DSPA_MeAudVis.Web.Migrations
                     Matricula = table.Column<int>(maxLength: 8, nullable: false),
                     Nombre = table.Column<string>(maxLength: 15, nullable: false),
                     Apellido = table.Column<string>(nullable: false),
-                    TipoDeUsuario = table.Column<string>(nullable: false)
+                    TipoDeUsuario = table.Column<string>(nullable: false),
+                    CManualId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Usuarios_Manuales_CManualId",
+                        column: x => x.CManualId,
+                        principalTable: "Manuales",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -77,27 +115,6 @@ namespace DSPA_MeAudVis.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Manuales",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Nombre = table.Column<string>(maxLength: 100, nullable: false),
-                    Contenido = table.Column<string>(nullable: false),
-                    CUsuarioId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Manuales", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Manuales_Usuarios_CUsuarioId",
-                        column: x => x.CUsuarioId,
-                        principalTable: "Usuarios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Solicitantes",
                 columns: table => new
                 {
@@ -123,6 +140,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MaterialId = table.Column<int>(nullable: false),
                     becarioSalidaId = table.Column<int>(nullable: false),
                     becarioEntregaId = table.Column<int>(nullable: true),
                     solicitanteId = table.Column<int>(nullable: false),
@@ -133,6 +151,12 @@ namespace DSPA_MeAudVis.Web.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Prestamos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Prestamos_Materiales_MaterialId",
+                        column: x => x.MaterialId,
+                        principalTable: "Materiales",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Prestamos_Becarios_becarioEntregaId",
                         column: x => x.becarioEntregaId,
@@ -153,30 +177,6 @@ namespace DSPA_MeAudVis.Web.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Materiales",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Nombre = table.Column<string>(maxLength: 30, nullable: false),
-                    Etiqueta = table.Column<string>(maxLength: 6, nullable: false),
-                    Marca = table.Column<string>(maxLength: 15, nullable: true),
-                    Modelo = table.Column<string>(maxLength: 15, nullable: true),
-                    NumSerie = table.Column<string>(maxLength: 15, nullable: true),
-                    CPrestamoId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Materiales", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Materiales_Prestamos_CPrestamoId",
-                        column: x => x.CPrestamoId,
-                        principalTable: "Prestamos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Administradores_UsuarioId",
                 table: "Administradores",
@@ -188,14 +188,9 @@ namespace DSPA_MeAudVis.Web.Migrations
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Manuales_CUsuarioId",
-                table: "Manuales",
-                column: "CUsuarioId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Materiales_CPrestamoId",
-                table: "Materiales",
-                column: "CPrestamoId");
+                name: "IX_Prestamos_MaterialId",
+                table: "Prestamos",
+                column: "MaterialId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Prestamos_becarioEntregaId",
@@ -216,6 +211,11 @@ namespace DSPA_MeAudVis.Web.Migrations
                 name: "IX_Solicitantes_UsuarioId",
                 table: "Solicitantes",
                 column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_CManualId",
+                table: "Usuarios",
+                column: "CManualId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -224,13 +224,10 @@ namespace DSPA_MeAudVis.Web.Migrations
                 name: "Administradores");
 
             migrationBuilder.DropTable(
-                name: "Manuales");
+                name: "Prestamos");
 
             migrationBuilder.DropTable(
                 name: "Materiales");
-
-            migrationBuilder.DropTable(
-                name: "Prestamos");
 
             migrationBuilder.DropTable(
                 name: "Becarios");
@@ -240,6 +237,9 @@ namespace DSPA_MeAudVis.Web.Migrations
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
+
+            migrationBuilder.DropTable(
+                name: "Manuales");
         }
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSPA_MeAudVis.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200910163855_Initial")]
+    [Migration("20200910165708_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,8 +59,6 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CUsuarioId");
-
                     b.Property<string>("Contenido")
                         .IsRequired();
 
@@ -70,8 +68,6 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CUsuarioId");
-
                     b.ToTable("Manuales");
                 });
 
@@ -80,8 +76,6 @@ namespace DSPA_MeAudVis.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CPrestamoId");
 
                     b.Property<string>("Etiqueta")
                         .IsRequired()
@@ -102,8 +96,6 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CPrestamoId");
-
                     b.ToTable("Materiales");
                 });
 
@@ -119,6 +111,8 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.Property<DateTime>("FechaHoraSalida");
 
+                    b.Property<int>("MaterialId");
+
                     b.Property<int?>("becarioEntregaId");
 
                     b.Property<int>("becarioSalidaId");
@@ -126,6 +120,8 @@ namespace DSPA_MeAudVis.Web.Migrations
                     b.Property<int>("solicitanteId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MaterialId");
 
                     b.HasIndex("becarioEntregaId");
 
@@ -162,6 +158,8 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.Property<string>("Apellido")
                         .IsRequired();
+
+                    b.Property<int?>("CManualId");
 
                     b.Property<string>("ConcurrencyStamp");
 
@@ -205,6 +203,8 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CManualId");
+
                     b.ToTable("Usuarios");
                 });
 
@@ -224,22 +224,13 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CManual", b =>
-                {
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CUsuario")
-                        .WithMany("Manuales")
-                        .HasForeignKey("CUsuarioId");
-                });
-
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CMaterial", b =>
-                {
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CPrestamo")
-                        .WithMany("Materiales")
-                        .HasForeignKey("CPrestamoId");
-                });
-
             modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CPrestamo", b =>
                 {
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CMaterial", "Material")
+                        .WithMany("Prestamos")
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CBecario", "becarioEntrega")
                         .WithMany()
                         .HasForeignKey("becarioEntregaId");
@@ -260,6 +251,13 @@ namespace DSPA_MeAudVis.Web.Migrations
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CUsuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId");
+                });
+
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CUsuario", b =>
+                {
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CManual")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("CManualId");
                 });
 #pragma warning restore 612, 618
         }

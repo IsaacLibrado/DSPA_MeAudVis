@@ -1,6 +1,7 @@
 ﻿namespace DSPA_MeAudVis.Web.Data.Entities
 {
     using DSPA_MeAudVis.Web.Controllers.Data.Entities;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
@@ -24,5 +25,8 @@
         [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Contenido del manual")]
         public string Contenido { set; get; }
+
+        [Display(Name = "Manuales")]
+        public ICollection<CUsuario> Usuarios { set; get; }
     }
 }
