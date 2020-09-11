@@ -1,6 +1,7 @@
 ﻿namespace DSPA_MeAudVis.Web.Data
 {
     using DSPA_MeAudVis.Web.Data.Entities;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>
@@ -9,7 +10,7 @@
     /// Version 1.0
     /// Fecha de creacion 09/09/20
     /// Creador Arturo Villegas
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<CUsuario>
     {
         //Las entidades del sistema
         public DbSet<CAdministrador> Administradores { get; set; }
@@ -24,8 +25,6 @@
         
         public DbSet<CSolicitante> Solicitantes { set; get; }
         
-        public DbSet<CUsuario> Usuarios { set; get; }
-
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
