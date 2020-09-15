@@ -6,23 +6,17 @@
     /// <summary>
     /// Define a los solicitantes (maestros y alumnos) de material
     /// </summary>
-    /// Version 1.1
+    /// Version 2.1
     /// Fecha de creacion 08/09/20
     /// Creador Arturo Villegas
-    /// Fecha de Modificacion 10/09/20
+    /// Fecha de Modificacion 14/09/20
     /// Modificador Isaac Librado
-    public class CSolicitante : IEntity
+    public class Applicant : IEntity
     {
         public int Id { set; get; }
 
-        public CUsuario Usuario { set; get; }
+        public User User { set; get; }
 
-        public bool Deudor { set; get; }
-
-        //Metodos
-        public void ConsultarInventario()
-        {
-
-        }
+        public bool Debtor { set; get; }
     }
 }
