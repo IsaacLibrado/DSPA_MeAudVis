@@ -2,6 +2,7 @@
 {
     using DSPA_MeAudVis.Web.Controllers.Data.Entities;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// Define a los solicitantes (maestros y alumnos) de material
@@ -13,10 +14,15 @@
     /// Modificador Isaac Librado
     public class Petitioner : IEntity
     {
+        [Required(ErrorMessage = "{0} is required")]
         public int Id { set; get; }
 
+        [Required(ErrorMessage = "{0} is required")]
+        public bool Debtor { set; get; }
+
+        [Required(ErrorMessage = "{0} is required")]
         public User User { set; get; }
 
-        public bool Debtor { set; get; }
+        
     }
 }

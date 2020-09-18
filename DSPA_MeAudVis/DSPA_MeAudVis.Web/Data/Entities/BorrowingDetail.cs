@@ -9,10 +9,8 @@ namespace DSPA_MeAudVis.Web.Data.Entities
 {
     public class BorrowingDetail:IEntity
     {
-        public int Id { set; get; }
-
         [Required(ErrorMessage = "{0} is required")]
-        public Material Material { set; get; }
+        public int Id { set; get; }
 
         [Display(Name = "Borrowing status")]
         public bool Returned { set; get; }
@@ -26,5 +24,8 @@ namespace DSPA_MeAudVis.Web.Data.Entities
 
         [Display(Name = "Date and time received")]
         public DateTime DateTimeIn { set; get; }
+
+        [Required(ErrorMessage = "{0} is required")]
+        public Material Material { set; get; }
     }
 }
