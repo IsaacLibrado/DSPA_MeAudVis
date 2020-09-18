@@ -2,23 +2,21 @@
 {
     using DSPA_MeAudVis.Web.Controllers.Data.Entities;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
-    /// Define a los becarios que usan el sistema
+    /// Define a los solicitantes (maestros y alumnos) de material
     /// </summary>
-    /// Version 2.0
+    /// Version 2.1
     /// Fecha de creacion 08/09/20
     /// Creador Arturo Villegas
     /// Fecha de Modificacion 14/09/20
     /// Modificador Isaac Librado
-    public class Scholar : IEntity
+    public class Petitioner : IEntity
     {
-        [Required(ErrorMessage = "{0} is required")]
         public int Id { set; get; }
 
-        [Required(ErrorMessage = "{0} is required")]
         public User User { set; get; }
 
+        public bool Debtor { set; get; }
     }
 }

@@ -39,7 +39,6 @@
         public string SerialNum { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
-        [Display(Name = "Loan")]
-        public ICollection<Loan> Loans { set; get; }
+        public ICollection<BorrowingDetail> BorrowingDetails { set; get; }
     }
 }

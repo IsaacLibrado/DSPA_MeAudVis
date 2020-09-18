@@ -24,23 +24,19 @@
         [Required(ErrorMessage = "{0} is required")]
         [MinLength(4, ErrorMessage = "{0} must have minimun {1} charactes")]
         [MaxLength(8, ErrorMessage = "{0} must have maximun {1} charactes")]
-        [Display(Name = "Registration")]
-        public int Registration { set; get; }
+        [Display(Name = "Registration Number")]
+        public int RegistrationNumber { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
         [MaxLength(15, ErrorMessage = "{0} must have maximun {1} charactes")]
         [Display(Name = "Name")]
-        public string Name { set; get; }
+        public string FirstName { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Last name")]
-        public string Last_Name { set; get; }
+        public string LastName { set; get; }
 
         [Display(Name = "Complete name")]
-        public string Complete_Name { get { return $"{Name} {Last_Name}"; } }
-
-        [Required(ErrorMessage = "{0} is required")]
-        [Display(Name = "User Type")]
-        public string User_Type { set; get; }
+        public string FullName { get { return $"{FirstName} {LastName}"; } }
     }
 }

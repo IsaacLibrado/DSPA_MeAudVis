@@ -19,168 +19,180 @@ namespace DSPA_MeAudVis.Web.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CAdministrador", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Administrator", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("UsuarioId")
+                    b.Property<string>("UserId")
                         .IsRequired();
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("Administradores");
+                    b.ToTable("Administrators");
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CBecario", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Borrowing", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("UsuarioId")
-                        .IsRequired();
+                    b.Property<int>("BorrowingDetailId");
+
+                    b.Property<int>("PetitionerId");
+
+                    b.Property<int?>("SizerInId");
+
+                    b.Property<int>("SizerOutId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("BorrowingDetailId");
 
-                    b.ToTable("Becarios");
+                    b.HasIndex("PetitionerId");
+
+                    b.HasIndex("SizerInId");
+
+                    b.HasIndex("SizerOutId");
+
+                    b.ToTable("Borrowings");
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CManual", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.BorrowingDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Contenido")
-                        .IsRequired();
+                    b.Property<DateTime>("DateTimeIn");
 
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100);
+                    b.Property<DateTime>("DateTimeOut");
 
-                    b.HasKey("Id");
+                    b.Property<int?>("MaterialId");
 
-                    b.ToTable("Manuales");
-                });
+                    b.Property<string>("Observations");
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CMaterial", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Etiqueta")
-                        .IsRequired()
-                        .HasMaxLength(6);
-
-                    b.Property<string>("Marca")
-                        .HasMaxLength(15);
-
-                    b.Property<string>("Modelo")
-                        .HasMaxLength(15);
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(30);
-
-                    b.Property<string>("NumSerie")
-                        .HasMaxLength(15);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Materiales");
-                });
-
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CPrestamo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Estado");
-
-                    b.Property<DateTime>("FechaHoraEntrega");
-
-                    b.Property<DateTime>("FechaHoraSalida");
-
-                    b.Property<int>("MaterialId");
-
-                    b.Property<int?>("becarioEntregaId");
-
-                    b.Property<int>("becarioSalidaId");
-
-                    b.Property<int>("solicitanteId");
+                    b.Property<bool>("Returned");
 
                     b.HasKey("Id");
 
                     b.HasIndex("MaterialId");
 
-                    b.HasIndex("becarioEntregaId");
-
-                    b.HasIndex("becarioSalidaId");
-
-                    b.HasIndex("solicitanteId");
-
-                    b.ToTable("Prestamos");
+                    b.ToTable("BorrowingDetails");
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CSolicitante", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Handbook", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Deudor");
+                    b.Property<int?>("AdministratorId");
 
-                    b.Property<string>("UsuarioId");
+                    b.Property<string>("Content")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("AdministratorId");
 
-                    b.ToTable("Solicitantes");
+                    b.ToTable("Handbooks");
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CUsuario", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Material", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Brand")
+                        .HasMaxLength(15);
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(6);
+
+                    b.Property<string>("Model")
+                        .HasMaxLength(15);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30);
+
+                    b.Property<string>("SerialNum")
+                        .HasMaxLength(15);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Materials");
+                });
+
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Petitioner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Debtor");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Petitioners");
+                });
+
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Sizar", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Sizars");
+                });
+
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<string>("Apellido")
-                        .IsRequired();
-
-                    b.Property<int?>("CManualId");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
-
-                    b.Property<string>("Contrasena")
-                        .IsRequired()
-                        .HasMaxLength(30);
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(15);
+
+                    b.Property<string>("LastName")
+                        .IsRequired();
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<int>("Matricula")
-                        .HasMaxLength(8);
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(15);
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -188,16 +200,20 @@ namespace DSPA_MeAudVis.Web.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(30);
+
                     b.Property<string>("PasswordHash");
 
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<string>("SecurityStamp");
+                    b.Property<int>("RegistrationNumber")
+                        .HasMaxLength(8);
 
-                    b.Property<string>("TipoDeUsuario")
-                        .IsRequired();
+                    b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -205,8 +221,6 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CManualId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -329,56 +343,63 @@ namespace DSPA_MeAudVis.Web.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CAdministrador", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Administrator", b =>
                 {
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CUsuario", "Usuario")
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CBecario", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Borrowing", b =>
                 {
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CUsuario", "Usuario")
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.BorrowingDetail", "BorrowingDetail")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
+                        .HasForeignKey("BorrowingDetailId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Petitioner", "Petitioner")
+                        .WithMany()
+                        .HasForeignKey("PetitionerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Sizar", "SizerIn")
+                        .WithMany()
+                        .HasForeignKey("SizerInId");
+
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Sizar", "SizerOut")
+                        .WithMany()
+                        .HasForeignKey("SizerOutId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CPrestamo", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.BorrowingDetail", b =>
                 {
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CMaterial", "Material")
-                        .WithMany("Prestamos")
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CBecario", "becarioEntrega")
-                        .WithMany()
-                        .HasForeignKey("becarioEntregaId");
-
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CBecario", "becarioSalida")
-                        .WithMany()
-                        .HasForeignKey("becarioSalidaId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CSolicitante", "solicitante")
-                        .WithMany()
-                        .HasForeignKey("solicitanteId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Material", "Material")
+                        .WithMany("BorrowingDetails")
+                        .HasForeignKey("MaterialId");
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CSolicitante", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Handbook", b =>
                 {
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CUsuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Administrator", "Administrator")
+                        .WithMany("Handbooks")
+                        .HasForeignKey("AdministratorId");
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.CUsuario", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Petitioner", b =>
                 {
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CManual")
-                        .WithMany("Usuarios")
-                        .HasForeignKey("CManualId");
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Sizar", b =>
+                {
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -391,7 +412,7 @@ namespace DSPA_MeAudVis.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CUsuario")
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -399,7 +420,7 @@ namespace DSPA_MeAudVis.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CUsuario")
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -412,7 +433,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CUsuario")
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -420,7 +441,7 @@ namespace DSPA_MeAudVis.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.CUsuario")
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

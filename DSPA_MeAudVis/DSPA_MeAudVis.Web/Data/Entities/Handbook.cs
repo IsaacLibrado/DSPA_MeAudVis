@@ -28,6 +28,6 @@
         public string Content { set; get; }
 
         [Display(Name = "Handbooks")]
-        public ICollection<User> Users { set; get; }
+        public Administrator Administrator { set; get; }
     }
 }

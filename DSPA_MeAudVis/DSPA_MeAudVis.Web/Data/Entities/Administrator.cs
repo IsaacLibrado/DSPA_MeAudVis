@@ -1,6 +1,7 @@
 ﻿namespace DSPA_MeAudVis.Web.Data.Entities
 {
     using DSPA_MeAudVis.Web.Controllers.Data.Entities;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
@@ -17,5 +18,7 @@
 
         [Required(ErrorMessage = "{0} is required")]
         public User User { set; get; }
+
+        public ICollection<Handbook> Handbooks { set; get; }
     }
 }
