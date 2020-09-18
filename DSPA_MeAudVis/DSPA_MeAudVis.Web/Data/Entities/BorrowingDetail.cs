@@ -11,6 +11,7 @@ namespace DSPA_MeAudVis.Web.Data.Entities
     {
         public int Id { set; get; }
 
+        [Required(ErrorMessage = "{0} is required")]
         public Material Material { set; get; }
 
         [Display(Name = "Borrowing status")]
