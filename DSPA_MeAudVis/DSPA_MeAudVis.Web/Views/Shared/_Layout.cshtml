@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - DSPA_MeAudVis.Web</title>
+    <title>@ViewData["Title"] - Medios Audiovisuales</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -26,14 +26,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">DSPA_MeAudVis.Web</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">PP</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
                 </ul>
+
             </div>
         </div>
     </nav>
@@ -44,7 +47,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2020 - DSPA_MeAudVis.Web</p>
+            <p>&copy; 2020 - Miguel Ochoa</p>
         </footer>
     </div>
 
