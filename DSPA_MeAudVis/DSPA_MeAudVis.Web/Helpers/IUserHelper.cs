@@ -6,7 +6,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    interface IUserHelper
+    public interface IUserHelper
     {
         Task<User> GetUserByEmailAsync(string email);
 

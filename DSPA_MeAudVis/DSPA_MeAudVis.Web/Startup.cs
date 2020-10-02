@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using DSPA_MeAudVis.Web.Data;
+using DSPA_MeAudVis.Web.Data.Entities;
+using DSPA_MeAudVis.Web.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +31,18 @@ namespace DSPA_MeAudVis.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<User, IdentityRole>(
+                cfg =>
+                {
+                    cfg.User.RequireUniqueEmail = true;
+                    cfg.Password.RequireDigit = false;
+                    cfg.Password.RequiredUniqueChars = 0;
+                    cfg.Password.RequireLowercase = false;
+                    cfg.Password.RequireNonAlphanumeric = false;
+                    cfg.Password.RequireUppercase = false;
+                }
+                ).AddEntityFrameworkStores<DataContext>();
+
             //Añade el DBContext para la conexión a la base de datos
             services.AddDbContext<DataContext>(
                 cfg =>
@@ -41,6 +57,7 @@ namespace DSPA_MeAudVis.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddScoped<IUserHelper, UserHelper>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -60,6 +77,7 @@ namespace DSPA_MeAudVis.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>

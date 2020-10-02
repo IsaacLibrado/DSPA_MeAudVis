@@ -26,7 +26,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">PP</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Medios Audiovisuales</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -34,7 +34,20 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@this.User.Identity.Name<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
+                    }
                 </ul>
 
             </div>

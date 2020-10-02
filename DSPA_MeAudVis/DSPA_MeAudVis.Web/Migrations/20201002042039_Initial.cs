@@ -29,22 +29,20 @@ namespace DSPA_MeAudVis.Web.Migrations
                     Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Password = table.Column<string>(maxLength: 30, nullable: false),
-                    RegistrationNumber = table.Column<int>(maxLength: 8, nullable: false),
                     FirstName = table.Column<string>(maxLength: 15, nullable: false),
-                    LastName = table.Column<string>(nullable: false)
+                    LastName = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(maxLength: 256, nullable: false),
+                    PhoneNumber = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -199,8 +197,8 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: true),
-                    Debtor = table.Column<bool>(nullable: false)
+                    Debtor = table.Column<bool>(nullable: false),
+                    UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -210,7 +208,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -238,11 +236,11 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    MaterialId = table.Column<int>(nullable: true),
                     Returned = table.Column<bool>(nullable: false),
                     Observations = table.Column<string>(nullable: true),
                     DateTimeOut = table.Column<DateTime>(nullable: false),
-                    DateTimeIn = table.Column<DateTime>(nullable: false)
+                    DateTimeIn = table.Column<DateTime>(nullable: false),
+                    MaterialId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -252,7 +250,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.MaterialId,
                         principalTable: "Materials",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -283,7 +281,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     BorrowingDetailId = table.Column<int>(nullable: false),
-                    SizerOutId = table.Column<int>(nullable: false),
+                    SizerOutId = table.Column<int>(nullable: true),
                     SizerInId = table.Column<int>(nullable: true),
                     PetitionerId = table.Column<int>(nullable: false)
                 },
@@ -313,7 +311,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.SizerOutId,
                         principalTable: "Sizars",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

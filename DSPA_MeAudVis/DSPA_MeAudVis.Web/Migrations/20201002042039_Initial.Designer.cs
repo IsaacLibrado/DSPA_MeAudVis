@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSPA_MeAudVis.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200918142439_Initial")]
+    [Migration("20201002042039_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,7 +49,7 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.Property<int?>("SizerInId");
 
-                    b.Property<int>("SizerOutId");
+                    b.Property<int?>("SizerOutId");
 
                     b.HasKey("Id");
 
@@ -74,7 +74,7 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.Property<DateTime>("DateTimeOut");
 
-                    b.Property<int?>("MaterialId");
+                    b.Property<int>("MaterialId");
 
                     b.Property<string>("Observations");
 
@@ -145,7 +145,8 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.Property<bool>("Debtor");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -181,6 +182,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .IsConcurrencyToken();
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
@@ -202,18 +204,12 @@ namespace DSPA_MeAudVis.Web.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(30);
-
                     b.Property<string>("PasswordHash");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired();
 
                     b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<int>("RegistrationNumber")
-                        .HasMaxLength(8);
 
                     b.Property<string>("SecurityStamp");
 
@@ -371,15 +367,15 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Sizar", "SizerOut")
                         .WithMany()
-                        .HasForeignKey("SizerOutId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SizerOutId");
                 });
 
             modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.BorrowingDetail", b =>
                 {
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Material", "Material")
                         .WithMany("BorrowingDetails")
-                        .HasForeignKey("MaterialId");
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Handbook", b =>
@@ -393,7 +389,8 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Sizar", b =>

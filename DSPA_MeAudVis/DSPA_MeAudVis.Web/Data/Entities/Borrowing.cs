@@ -22,7 +22,6 @@
         [Display(Name = "Borrowing Detail")]
         public BorrowingDetail BorrowingDetail { set; get; }
 
-        [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Borrower")]
         public Sizar SizerOut { set; get; }
 

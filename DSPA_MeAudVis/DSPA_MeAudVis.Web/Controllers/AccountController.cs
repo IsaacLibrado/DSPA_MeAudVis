@@ -1,14 +1,23 @@
 ﻿namespace DSPA_MeAudVis.Web.Controllers
 {
+    using DSPA_MeAudVis.Web.Data.Entities;
+    using DSPA_MeAudVis.Web.Helpers;
     using DSPA_MeAudVis.Web.Models;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore.Metadata.Internal;
     using System.Linq;
     using System.Threading.Tasks;
 
     //controlador para el inicio de sesion
     public class AccountController : Controller
     {
+        private readonly IUserHelper userHelper;
+
+        public AccountController(IUserHelper userHelper)
+        {
+            this.userHelper = userHelper;
+        }
+
         public IActionResult Login()
         {
             if (User.Identity.IsAuthenticated)
@@ -23,7 +32,7 @@
         {
             if (ModelState.IsValid)
             {
-                var result = await _userHelper.LoginAsync(model.Username, model.Password, model.RememberMe);
+                var result = await userHelper.LoginAsync(model.UserName, model.Password, model.RememberMe);
                 if (result.Succeeded)
                 {
                     if (Request.Query.Keys.Contains("ReturnUrl"))
@@ -35,9 +44,66 @@
                 }
             }
 
-            ModelState.AddModelError(string.Empty, "Usuario o contraseña no válida.");
+            ModelState.AddModelError(string.Empty, "User or password invalid.");
             model.Password = string.Empty;
             return View(model);
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await userHelper.LogoutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult Register()
+        {
+            var model = new RegisterViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userHelper.GetUserByEmailAsync(model.Email);
+                
+                if(user==null)
+                {
+                    user = new User
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        PhoneNumber = model.PhoneNumber,
+                        Email = model.Email,
+                        UserName = model.Email
+                    };
+
+                    var result = await userHelper.AddUserAsync(user, model.Password);
+                    
+                    if(result!=IdentityResult.Success)
+                    {
+                        ModelState.AddModelError(string.Empty, "User could not have been created");
+                        return View(model);
+                    }
+
+                    if (ModelState.IsValid)
+                    {
+                        var loginResult = await userHelper.LoginAsync(model.Email, model.Password, true);
+                        if (loginResult.Succeeded)
+                        { 
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                }
+
+                ModelState.AddModelError(string.Empty, "User already exists");
+            }
+
+            return View(model);
+        }
+
+
     }
 }
