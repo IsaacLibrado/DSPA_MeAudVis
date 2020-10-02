@@ -84,7 +84,7 @@
                     
                     if(result!=IdentityResult.Success)
                     {
-                        ModelState.AddModelError(string.Empty, "User could not have been created");
+                        ModelState.AddModelError(string.Empty, "User could not be created");
                         return View(model);
                     }
 

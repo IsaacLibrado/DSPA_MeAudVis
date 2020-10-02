@@ -44,4 +44,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\FotosEstudiantes\" />
+    <Folder Include="wwwroot\images\DocumentosEstudiantes\" />
+  </ItemGroup>
+
 </Project>
