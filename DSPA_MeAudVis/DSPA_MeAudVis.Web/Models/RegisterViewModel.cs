@@ -7,7 +7,7 @@
     {
 
         [Required(ErrorMessage = "{0} is required")]
-        [MinLength(6, ErrorMessage = "{0} must have minimun {1} charactes")]
+        [MinLength(6, ErrorMessage = "{0} must have minimun {1} characters")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

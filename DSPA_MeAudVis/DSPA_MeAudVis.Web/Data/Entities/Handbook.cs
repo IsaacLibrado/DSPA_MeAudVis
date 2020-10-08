@@ -17,7 +17,7 @@
         public int Id { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
-        [MaxLength(100, ErrorMessage = "{0} must have maximun {1} charactes")]
+        [MaxLength(100, ErrorMessage = "{0} must have maximun {1} characters")]
         [Display(Name = "Handbook name")]
         public string Name { set; get; }
 

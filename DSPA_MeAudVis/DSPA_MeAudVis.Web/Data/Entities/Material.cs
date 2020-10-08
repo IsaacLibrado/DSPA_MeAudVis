@@ -17,24 +17,24 @@
         public int Id { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
-        [MaxLength(30, ErrorMessage = "{0} must have maximun {1} charactes")]
+        [MaxLength(30, ErrorMessage = "{0} must have maximun {1} characters")]
         [Display(Name = "Name")]
         public string Name { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
-        [MaxLength(6, ErrorMessage = "{0} must have maximun {1} charactes")]
+        [MaxLength(6, ErrorMessage = "{0} must have maximun {1} characters")]
         [Display(Name = "Label")]
         public string Label { set; get; }
 
-        [MaxLength(15, ErrorMessage = "{0} must have maximun {1} charactes")]
+        [MaxLength(15, ErrorMessage = "{0} must have maximun {1} characters")]
         [Display(Name = "Brand")]
         public string Brand { set; get; }
 
-        [MaxLength(15, ErrorMessage = "{0} must have maximun {1} charactes")]
+        [MaxLength(15, ErrorMessage = "{0} must have maximun {1} characters")]
         [Display(Name = "Model")]
         public string Model { set; get; }
 
-        [MaxLength(15, ErrorMessage = "{0} must have maximun {1} charactes")]
+        [MaxLength(15, ErrorMessage = "{0} must have maximun {1} characters")]
         [Display(Name = "Serial Number")]
         public string SerialNum { set; get; }
 

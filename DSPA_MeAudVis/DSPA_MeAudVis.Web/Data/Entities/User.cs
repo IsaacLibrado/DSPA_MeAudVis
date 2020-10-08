@@ -22,7 +22,7 @@
         //public int RegistrationNumber { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
-        [MaxLength(15, ErrorMessage = "{0} must have maximun {1} charactes")]
+        [MaxLength(15, ErrorMessage = "{0} must have maximun {1} characters")]
         [Display(Name = "Name")]
         public string FirstName { set; get; }
 
