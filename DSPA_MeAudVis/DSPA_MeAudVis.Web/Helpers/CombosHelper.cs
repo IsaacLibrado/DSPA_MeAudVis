@@ -1,6 +1,4 @@
-﻿
-
-namespace DSPA_MeAudVis.Web.Helpers
+﻿namespace DSPA_MeAudVis.Web.Helpers
 {
     using System.Linq;
     using Data;
@@ -17,36 +15,52 @@ namespace DSPA_MeAudVis.Web.Helpers
             this.dataContext = dataContext;
         }
 
-        //public IEnumerable<SelectListItem> GetComboGenders()
-        //{
-        //    var list = dataContext.Genders.Select(
-        //        c => new SelectListItem
-        //        {
-        //            Text = c.Name,
-        //            Value = $"{c.Id}"
-        //        }).ToList();
-        //    list.Insert(0, new SelectListItem
-        //    {
-        //        Text = "[You have to choose a gender...]",
-        //        Value = "0"
-        //    });
-        //    return list;
-        //}
+        public IEnumerable<SelectListItem> GetComboStatuses()
+        {
+            var list = dataContext.Statuses.Select(
+                c => new SelectListItem
+                {
+                    Text = c.StatusName,
+                    Value = $"{c.Id}"
+                }).ToList();
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[You have to choose a status...]",
+                Value = "0"
+            });
+            return list;
+        }
 
-        //public IEnumerable<SelectListItem> GetComboStages()
-        //{
-        //    var list = dataContext.Stages.Select(
-        //        c => new SelectListItem
-        //        {
-        //            Text = c.Name,
-        //            Value = $"{c.Id}"
-        //        }).ToList();
-        //    list.Insert(0, new SelectListItem
-        //    {
-        //        Text = "[You have to choose a stage...]",
-        //        Value = "0"
-        //    });
-        //    return list;
-        //}
+        public IEnumerable<SelectListItem> GetComboApplicantTypes()
+        {
+            var list = dataContext.ApplicantTypes.Select(
+                c => new SelectListItem
+                {
+                    Text = c.Type,
+                    Value = $"{c.Id}"
+                }).ToList();
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[You have to choose a type...]",
+                Value = "0"
+            });
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetComboMaterials()
+        {
+            var list = dataContext.Materials.Select(
+                c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = $"{c.Id}"
+                }).ToList();
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[You have to choose a material...]",
+                Value = "0"
+            });
+            return list;
+        }
     }
 }

@@ -21,13 +21,11 @@
         [Display(Name = "Handbook name")]
         public string Name { set; get; }
 
-        //Pendiente para imagenes
-
         [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Handbook content")]
-        public string Content { set; get; }
+        public string ImageURL { set; get; }
 
-        [Display(Name = "Handbooks")]
-        public Administrator Administrator { set; get; }
+        //[Required(ErrorMessage = "{0} is required")]
+        public Owner Owner { set; get; }
     }
 }

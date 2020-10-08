@@ -25,8 +25,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
@@ -35,54 +34,39 @@ namespace DSPA_MeAudVis.Web.Migrations
                     b.ToTable("Administrators");
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Borrowing", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Applicant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BorrowingDetailId");
+                    b.Property<bool>("Debtor");
 
-                    b.Property<int>("PetitionerId");
+                    b.Property<int?>("TypeId");
 
-                    b.Property<int?>("SizerInId");
-
-                    b.Property<int?>("SizerOutId");
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BorrowingDetailId");
+                    b.HasIndex("TypeId");
 
-                    b.HasIndex("PetitionerId");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("SizerInId");
-
-                    b.HasIndex("SizerOutId");
-
-                    b.ToTable("Borrowings");
+                    b.ToTable("Applicants");
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.BorrowingDetail", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.ApplicantType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateTimeIn");
-
-                    b.Property<DateTime>("DateTimeOut");
-
-                    b.Property<int>("MaterialId");
-
-                    b.Property<string>("Observations");
-
-                    b.Property<bool>("Returned");
+                    b.Property<string>("Type")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MaterialId");
-
-                    b.ToTable("BorrowingDetails");
+                    b.ToTable("ApplicantTypes");
                 });
 
             modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Handbook", b =>
@@ -91,20 +75,87 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AdministratorId");
-
-                    b.Property<string>("Content")
+                    b.Property<string>("ImageURL")
                         .IsRequired();
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100);
 
+                    b.Property<int?>("OwnerId");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AdministratorId");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Handbooks");
+                });
+
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Intern", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DepartureTime");
+
+                    b.Property<int>("EntryTime");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Interns");
+                });
+
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Loan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ApplicantId");
+
+                    b.Property<DateTime>("DateTimeIn");
+
+                    b.Property<DateTime>("DateTimeOut");
+
+                    b.Property<int?>("InternOutId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
+
+                    b.HasIndex("InternOutId");
+
+                    b.ToTable("Loans");
+                });
+
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.LoanDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("LoanId");
+
+                    b.Property<int?>("MaterialId");
+
+                    b.Property<string>("Observations");
+
+                    b.Property<int?>("StatusId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LoanId");
+
+                    b.HasIndex("MaterialId");
+
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("LoanDetails");
                 });
 
             modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Material", b =>
@@ -130,43 +181,42 @@ namespace DSPA_MeAudVis.Web.Migrations
                     b.Property<string>("SerialNum")
                         .HasMaxLength(15);
 
+                    b.Property<int?>("StatusId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("StatusId");
 
                     b.ToTable("Materials");
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Petitioner", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Owner", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Debtor");
-
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Petitioners");
+                    b.ToTable("Owners");
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Sizar", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Status", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("StatusName")
                         .IsRequired();
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Sizars");
+                    b.ToTable("Statuses");
                 });
 
             modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.User", b =>
@@ -208,6 +258,9 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .IsRequired();
 
                     b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<int>("RegistrationNumber")
+                        .HasMaxLength(8);
 
                     b.Property<string>("SecurityStamp");
 
@@ -343,60 +396,72 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Borrowing", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Applicant", b =>
                 {
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.BorrowingDetail", "BorrowingDetail")
-                        .WithMany()
-                        .HasForeignKey("BorrowingDetailId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.ApplicantType", "Type")
+                        .WithMany("Applicants")
+                        .HasForeignKey("TypeId");
 
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Petitioner", "Petitioner")
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("PetitionerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Sizar", "SizerIn")
-                        .WithMany()
-                        .HasForeignKey("SizerInId");
-
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Sizar", "SizerOut")
-                        .WithMany()
-                        .HasForeignKey("SizerOutId");
-                });
-
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.BorrowingDetail", b =>
-                {
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Material", "Material")
-                        .WithMany("BorrowingDetails")
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Handbook", b =>
                 {
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Administrator", "Administrator")
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Owner", "Owner")
                         .WithMany("Handbooks")
-                        .HasForeignKey("AdministratorId");
+                        .HasForeignKey("OwnerId");
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Petitioner", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Intern", b =>
                 {
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Sizar", b =>
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Loan", b =>
+                {
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Applicant", "Applicant")
+                        .WithMany("Loans")
+                        .HasForeignKey("ApplicantId");
+
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Intern", "InternOut")
+                        .WithMany("Loans")
+                        .HasForeignKey("InternOutId");
+                });
+
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.LoanDetail", b =>
+                {
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Loan", "Loan")
+                        .WithMany("LoanDetails")
+                        .HasForeignKey("LoanId");
+
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Material", "Material")
+                        .WithMany("LoanDetails")
+                        .HasForeignKey("MaterialId");
+
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Status", "Status")
+                        .WithMany("LoanDetails")
+                        .HasForeignKey("StatusId");
+                });
+
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Material", b =>
+                {
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Status", "Status")
+                        .WithMany("Materials")
+                        .HasForeignKey("StatusId");
+                });
+
+            modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Owner", b =>
                 {
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

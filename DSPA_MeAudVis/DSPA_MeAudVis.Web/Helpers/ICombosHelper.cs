@@ -5,7 +5,8 @@
 
     public interface ICombosHelper
     {
-        //IEnumerable<SelectListItem> GetComboGenders();
-        //IEnumerable<SelectListItem> GetComboStages();
+        IEnumerable<SelectListItem> GetComboStatuses();
+        IEnumerable<SelectListItem> GetComboApplicantTypes();
+        IEnumerable<SelectListItem> GetComboMaterials();
     }
 }

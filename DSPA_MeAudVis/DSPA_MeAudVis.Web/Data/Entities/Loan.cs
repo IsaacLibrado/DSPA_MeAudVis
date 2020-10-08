@@ -13,24 +13,23 @@
     /// Creador David Hernandez
     /// Fecha de Modificacion 14/09/20
     /// Modificador Isaac Librado
-    public class Borrowing : IEntity
+    public class Loan : IEntity
     {
         [Required(ErrorMessage = "{0} is required")]
         public int Id { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
-        [Display(Name = "Borrowing Detail")]
-        public BorrowingDetail BorrowingDetail { set; get; }
-
-        [Display(Name = "Borrower")]
-        public Sizar SizerOut { set; get; }
-
-        [Display(Name = "Receiver")]
-        public Sizar SizerIn { set; get; }
+        public DateTime DateTimeIn { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
-        [Display(Name = "Petitioner")]
-        public Petitioner Petitioner { set; get; }
+        public DateTime DateTimeOut { set; get; }
+
+        [Display(Name = "Loan Detail")]
+        public ICollection<LoanDetail> LoanDetails { set; get; }
+
+        public Intern InternOut { set; get; }
+
+        public Applicant Applicant { set; get; }
        
     }
 }

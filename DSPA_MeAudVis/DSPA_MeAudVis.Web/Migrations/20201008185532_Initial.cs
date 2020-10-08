@@ -4,10 +4,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DSPA_MeAudVis.Web.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ApplicantTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Type = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicantTypes", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -39,6 +52,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
+                    RegistrationNumber = table.Column<int>(maxLength: 8, nullable: false),
                     FirstName = table.Column<string>(maxLength: 15, nullable: false),
                     LastName = table.Column<string>(nullable: false),
                     Email = table.Column<string>(maxLength: 256, nullable: false),
@@ -50,20 +64,16 @@ namespace DSPA_MeAudVis.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Materials",
+                name: "Statuses",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 30, nullable: false),
-                    Label = table.Column<string>(maxLength: 6, nullable: false),
-                    Brand = table.Column<string>(maxLength: 15, nullable: true),
-                    Model = table.Column<string>(maxLength: 15, nullable: true),
-                    SerialNum = table.Column<string>(maxLength: 15, nullable: true)
+                    StatusName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Materials", x => x.Id);
+                    table.PrimaryKey("PK_Statuses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -93,7 +103,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -103,7 +113,34 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Applicants",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Debtor = table.Column<bool>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    TypeId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Applicants", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Applicants_ApplicantTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "ApplicantTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Applicants_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -192,65 +229,95 @@ namespace DSPA_MeAudVis.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Petitioners",
+                name: "Interns",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Debtor = table.Column<bool>(nullable: false),
-                    UserId = table.Column<string>(nullable: false)
+                    EntryTime = table.Column<int>(nullable: false),
+                    DepartureTime = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Petitioners", x => x.Id);
+                    table.PrimaryKey("PK_Interns", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Petitioners_AspNetUsers_UserId",
+                        name: "FK_Interns_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sizars",
+                name: "Owners",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sizars", x => x.Id);
+                    table.PrimaryKey("PK_Owners", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Sizars_AspNetUsers_UserId",
+                        name: "FK_Owners_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "BorrowingDetails",
+                name: "Materials",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Returned = table.Column<bool>(nullable: false),
-                    Observations = table.Column<string>(nullable: true),
-                    DateTimeOut = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(maxLength: 30, nullable: false),
+                    Label = table.Column<string>(maxLength: 6, nullable: false),
+                    Brand = table.Column<string>(maxLength: 15, nullable: true),
+                    Model = table.Column<string>(maxLength: 15, nullable: true),
+                    SerialNum = table.Column<string>(maxLength: 15, nullable: true),
+                    StatusId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Materials", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Materials_Statuses_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "Statuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Loans",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DateTimeIn = table.Column<DateTime>(nullable: false),
-                    MaterialId = table.Column<int>(nullable: false)
+                    DateTimeOut = table.Column<DateTime>(nullable: false),
+                    InternOutId = table.Column<int>(nullable: true),
+                    ApplicantId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BorrowingDetails", x => x.Id);
+                    table.PrimaryKey("PK_Loans", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BorrowingDetails_Materials_MaterialId",
-                        column: x => x.MaterialId,
-                        principalTable: "Materials",
+                        name: "FK_Loans_Applicants_ApplicantId",
+                        column: x => x.ApplicantId,
+                        principalTable: "Applicants",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Loans_Interns_InternOutId",
+                        column: x => x.InternOutId,
+                        principalTable: "Interns",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -260,56 +327,50 @@ namespace DSPA_MeAudVis.Web.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
-                    Content = table.Column<string>(nullable: false),
-                    AdministratorId = table.Column<int>(nullable: true)
+                    ImageURL = table.Column<string>(nullable: false),
+                    OwnerId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Handbooks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Handbooks_Administrators_AdministratorId",
-                        column: x => x.AdministratorId,
-                        principalTable: "Administrators",
+                        name: "FK_Handbooks_Owners_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owners",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Borrowings",
+                name: "LoanDetails",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    BorrowingDetailId = table.Column<int>(nullable: false),
-                    SizerOutId = table.Column<int>(nullable: true),
-                    SizerInId = table.Column<int>(nullable: true),
-                    PetitionerId = table.Column<int>(nullable: false)
+                    Observations = table.Column<string>(nullable: true),
+                    MaterialId = table.Column<int>(nullable: true),
+                    StatusId = table.Column<int>(nullable: true),
+                    LoanId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Borrowings", x => x.Id);
+                    table.PrimaryKey("PK_LoanDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Borrowings_BorrowingDetails_BorrowingDetailId",
-                        column: x => x.BorrowingDetailId,
-                        principalTable: "BorrowingDetails",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Borrowings_Petitioners_PetitionerId",
-                        column: x => x.PetitionerId,
-                        principalTable: "Petitioners",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Borrowings_Sizars_SizerInId",
-                        column: x => x.SizerInId,
-                        principalTable: "Sizars",
+                        name: "FK_LoanDetails_Loans_LoanId",
+                        column: x => x.LoanId,
+                        principalTable: "Loans",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Borrowings_Sizars_SizerOutId",
-                        column: x => x.SizerOutId,
-                        principalTable: "Sizars",
+                        name: "FK_LoanDetails_Materials_MaterialId",
+                        column: x => x.MaterialId,
+                        principalTable: "Materials",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LoanDetails_Statuses_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "Statuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -317,6 +378,16 @@ namespace DSPA_MeAudVis.Web.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Administrators_UserId",
                 table: "Administrators",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Applicants_TypeId",
+                table: "Applicants",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Applicants_UserId",
+                table: "Applicants",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -359,48 +430,56 @@ namespace DSPA_MeAudVis.Web.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BorrowingDetails_MaterialId",
-                table: "BorrowingDetails",
-                column: "MaterialId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Borrowings_BorrowingDetailId",
-                table: "Borrowings",
-                column: "BorrowingDetailId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Borrowings_PetitionerId",
-                table: "Borrowings",
-                column: "PetitionerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Borrowings_SizerInId",
-                table: "Borrowings",
-                column: "SizerInId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Borrowings_SizerOutId",
-                table: "Borrowings",
-                column: "SizerOutId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Handbooks_AdministratorId",
+                name: "IX_Handbooks_OwnerId",
                 table: "Handbooks",
-                column: "AdministratorId");
+                column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Petitioners_UserId",
-                table: "Petitioners",
+                name: "IX_Interns_UserId",
+                table: "Interns",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sizars_UserId",
-                table: "Sizars",
+                name: "IX_LoanDetails_LoanId",
+                table: "LoanDetails",
+                column: "LoanId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LoanDetails_MaterialId",
+                table: "LoanDetails",
+                column: "MaterialId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LoanDetails_StatusId",
+                table: "LoanDetails",
+                column: "StatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Loans_ApplicantId",
+                table: "Loans",
+                column: "ApplicantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Loans_InternOutId",
+                table: "Loans",
+                column: "InternOutId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Materials_StatusId",
+                table: "Materials",
+                column: "StatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Owners_UserId",
+                table: "Owners",
                 column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Administrators");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -417,28 +496,34 @@ namespace DSPA_MeAudVis.Web.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Borrowings");
+                name: "Handbooks");
 
             migrationBuilder.DropTable(
-                name: "Handbooks");
+                name: "LoanDetails");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "BorrowingDetails");
+                name: "Owners");
 
             migrationBuilder.DropTable(
-                name: "Petitioners");
-
-            migrationBuilder.DropTable(
-                name: "Sizars");
-
-            migrationBuilder.DropTable(
-                name: "Administrators");
+                name: "Loans");
 
             migrationBuilder.DropTable(
                 name: "Materials");
+
+            migrationBuilder.DropTable(
+                name: "Applicants");
+
+            migrationBuilder.DropTable(
+                name: "Interns");
+
+            migrationBuilder.DropTable(
+                name: "Statuses");
+
+            migrationBuilder.DropTable(
+                name: "ApplicantTypes");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

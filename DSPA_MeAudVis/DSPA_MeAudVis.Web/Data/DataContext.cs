@@ -16,17 +16,23 @@
         //Las entidades del sistema
         public DbSet<Administrator> Administrators { get; set; }
       
-        public DbSet<Borrowing> Borrowings { get; set; }
+        public DbSet<Loan> Loans { get; set; }
 
-        public DbSet<BorrowingDetail> BorrowingDetails { get; set; }
+        public DbSet<LoanDetail> LoanDetails { get; set; }
 
         public DbSet<Handbook> Handbooks { get; set; }
         
         public DbSet<Material> Materials { set; get; }
         
-        public DbSet<Petitioner> Petitioners { set; get; }
+        public DbSet<Applicant> Applicants { set; get; }
         
-        public DbSet<Sizar> Sizars { set; get; }
+        public DbSet<Intern> Interns { set; get; }
+
+        public DbSet<ApplicantType> ApplicantTypes { set; get; }
+
+        public DbSet<Owner> Owners { set; get; }
+
+        public DbSet<Status> Statuses { set; get; }
         
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)

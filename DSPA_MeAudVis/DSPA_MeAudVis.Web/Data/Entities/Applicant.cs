@@ -5,20 +5,27 @@
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
-    /// Define a los becarios que usan el sistema
+    /// Define a los solicitantes (maestros y alumnos) de material
     /// </summary>
-    /// Version 2.0
+    /// Version 2.1
     /// Fecha de creacion 08/09/20
     /// Creador Arturo Villegas
     /// Fecha de Modificacion 14/09/20
     /// Modificador Isaac Librado
-    public class Sizar : IEntity
+    public class Applicant : IEntity
     {
         [Required(ErrorMessage = "{0} is required")]
         public int Id { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
+        public bool Debtor { set; get; }
+
+        //[Required(ErrorMessage = "{0} is required")]
         public User User { set; get; }
 
+        //[Required(ErrorMessage = "{0} is required")]
+        public ApplicantType Type { set; get; }
+
+        public ICollection<Loan> Loans { set; get; }
     }
 }

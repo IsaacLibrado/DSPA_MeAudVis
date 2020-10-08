@@ -5,7 +5,7 @@
     {
         [Required(ErrorMessage = "{0} is required")]
         [MinLength(4, ErrorMessage = "{0} must have minimun {1} characters")]
-        [EmailAddress]
+        [DataType(DataType.Text)]
         [Display(Name = "UserName")]
         public string UserName { get; set; }
 

@@ -5,18 +5,20 @@
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
-    /// Define a los adminisradores del sistema
+    /// Define a los encargados del sistema
     /// </summary>
     /// Version 2.0
     /// Fecha de creacion 08/09/20
     /// Fecha de Modificacion 14/09/20
     /// Creador Arturo Villegas
-    public class Administrator : IEntity
+    public class Owner : IEntity
     {
         [Required(ErrorMessage = "{0} is required")]
         public int Id { set; get; }
 
         //[Required(ErrorMessage = "{0} is required")]
         public User User { set; get; }
+
+        public ICollection<Handbook> Handbooks { set; get; }
     }
 }
