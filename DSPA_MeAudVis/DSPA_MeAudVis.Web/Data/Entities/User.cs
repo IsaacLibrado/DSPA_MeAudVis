@@ -16,8 +16,6 @@
         //Propiedades
 
         [Required(ErrorMessage = "{0} is required")]
-        [MinLength(4, ErrorMessage = "{0} must have minimun {1} charactes")]
-        [MaxLength(8, ErrorMessage = "{0} must have maximun {1} charactes")]
         [Display(Name = "Registration Number")]
         public int RegistrationNumber { set; get; }
 

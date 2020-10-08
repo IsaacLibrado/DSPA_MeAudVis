@@ -77,7 +77,8 @@
                         LastName = model.LastName,
                         PhoneNumber = model.PhoneNumber,
                         Email = model.Email,
-                        UserName = model.Email
+                        RegistrationNumber = model.RegistrationNumber,
+                        UserName = model.RegistrationNumber.ToString()
                     };
 
                     var result = await userHelper.AddUserAsync(user, model.Password);
@@ -90,11 +91,7 @@
 
                     if (ModelState.IsValid)
                     {
-                        var loginResult = await userHelper.LoginAsync(model.Email, model.Password, true);
-                        if (loginResult.Succeeded)
-                        { 
-                            return RedirectToAction("Index", "Home");
-                        }
+                       return RedirectToAction("Register", "Account");
                     }
                 }
 

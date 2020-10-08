@@ -37,16 +37,19 @@
                     @if (this.User.Identity.IsAuthenticated)
                     {
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@this.User.Identity.Name<b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span> <b class="caret"></b></a>
                             <ul class="dropdown-menu">
+                                <li><a asp-area="" asp-controller="Home" asp-action="Index">@this.User.Identity.Name</a></li>
+
                                 <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
+
                             </ul>
                         </li>
                     }
                     else
                     {
-                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
                         <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
                     }
                 </ul>
 
