@@ -77,7 +77,7 @@
                         LastName = model.LastName,
                         PhoneNumber = model.PhoneNumber,
                         Email = model.Email,
-                        RegistrationNumber = model.RegistrationNumber,
+                        RegistrationNumber=model.RegistrationNumber,
                         UserName = model.RegistrationNumber.ToString()
                     };
 
@@ -91,7 +91,7 @@
 
                     if (ModelState.IsValid)
                     {
-                       return RedirectToAction("Register", "Account");
+                            return RedirectToAction("Register", "Account");
                     }
                 }
 
