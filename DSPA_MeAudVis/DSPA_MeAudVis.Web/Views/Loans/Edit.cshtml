@@ -1,12 +1,11 @@
 ﻿@model DSPA_MeAudVis.Web.Data.Entities.Loan
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Loan";
 }
 
-<h2>Edit</h2>
+<h2>Edit Loan</h2>
 
-<h4>Loan</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,13 +23,10 @@
                 <span asp-validation-for="DateTimeOut" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <a asp-action="Index" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>
+                <button type="submit" value="Save" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 

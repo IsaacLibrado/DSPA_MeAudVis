@@ -1,13 +1,12 @@
 ﻿@model DSPA_MeAudVis.Web.Data.Entities.Status
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "View Status";
 }
 
-<h2>Details</h2>
+<h2>View Status</h2>
 
 <div>
-    <h4>Status</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -19,6 +18,5 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>
 </div>
