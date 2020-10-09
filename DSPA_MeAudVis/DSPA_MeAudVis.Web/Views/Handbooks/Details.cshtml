@@ -1,0 +1,28 @@
+﻿@model DSPA_MeAudVis.Web.Data.Entities.Handbook
+
+@{
+    ViewData["Title"] = "View Handbook";
+}
+
+<h2>View Handbook</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageURL)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ImageURL)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>
+</div>
