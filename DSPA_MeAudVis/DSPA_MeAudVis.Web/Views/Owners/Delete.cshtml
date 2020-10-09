@@ -1,21 +1,29 @@
 ﻿@model DSPA_MeAudVis.Web.Data.Entities.Owner
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Owner";
 }
 
-<h2>Delete</h2>
+<h2>Delete Owner</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to delete this Owner?</h3>
 <div>
-    <h4>Owner</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            User Name
+        </dt>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>
+        <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
     </form>
 </div>

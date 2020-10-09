@@ -1,18 +1,25 @@
 ﻿@model DSPA_MeAudVis.Web.Data.Entities.Administrator
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "View Administrator";
 }
 
-<h2>Details</h2>
+<h2>View Administrator</h2>
 
 <div>
-    <h4>Administrator</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            User Name
+        </dt>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>
 </div>

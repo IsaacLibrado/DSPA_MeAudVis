@@ -1,18 +1,25 @@
 ﻿@model DSPA_MeAudVis.Web.Data.Entities.Intern
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Intern";
 }
 
-<h2>Edit</h2>
-
-<h4>Intern</h4>
+<h2>Edit Intern</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="User.UserName" class="control-label"></label>
+                <input asp-for="User" class="form-control" />
+                <span asp-validation-for="User" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="EntryTime" class="control-label"></label>
                 <input asp-for="EntryTime" class="form-control" />
@@ -24,13 +31,11 @@
                 <span asp-validation-for="DepartureTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <a asp-action="Index" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>
+                <button type="submit" value="Save" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
