@@ -54,7 +54,7 @@ namespace DSPA_MeAudVis.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] Administrator administrator)
+        public async Task<IActionResult> Create(Administrator administrator)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +62,9 @@ namespace DSPA_MeAudVis.Web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ModelState.AddModelError(string.Empty, "User doesn't exists");
+
             return View(administrator);
         }
 

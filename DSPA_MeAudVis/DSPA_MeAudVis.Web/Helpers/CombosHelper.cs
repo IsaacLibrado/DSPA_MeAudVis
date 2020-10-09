@@ -62,5 +62,21 @@
             });
             return list;
         }
+
+        public IEnumerable<SelectListItem> GetComboUsers()
+        {
+            var list = dataContext.Users.Select(
+                c => new SelectListItem
+                {
+                    Text = c.FullName,
+                    Value = $"{c.UserName}"
+                }).ToList();
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[You have to choose a material...]",
+                Value = "0"
+            });
+            return list;
+        }
     }
 }
