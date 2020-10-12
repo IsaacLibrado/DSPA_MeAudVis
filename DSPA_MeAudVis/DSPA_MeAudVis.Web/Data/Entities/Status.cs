@@ -11,6 +11,8 @@
         public int Id { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
+        [MaxLength(20, ErrorMessage = "{0} must have maximun {1} characters")]
+        [Display(Name = "Status name")]
         public string StatusName { set; get; }
 
         public ICollection<LoanDetail> LoanDetails { set; get; }

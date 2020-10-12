@@ -10,22 +10,22 @@ using DSPA_MeAudVis.Web.Data.Entities;
 
 namespace DSPA_MeAudVis.Web.Controllers
 {
-    public class StatusController : Controller
+    public class StatusesController : Controller
     {
         private readonly DataContext _context;
 
-        public StatusController(DataContext context)
+        public StatusesController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: Status
+        // GET: Statuses
         public async Task<IActionResult> Index()
         {
             return View(await _context.Statuses.ToListAsync());
         }
 
-        // GET: Status/Details/5
+        // GET: Statuses/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,13 +43,13 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(status);
         }
 
-        // GET: Status/Create
+        // GET: Statuses/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Status/Create
+        // POST: Statuses/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -65,7 +65,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(status);
         }
 
-        // GET: Status/Edit/5
+        // GET: Statuses/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,7 +81,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(status);
         }
 
-        // POST: Status/Edit/5
+        // POST: Statuses/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -116,7 +116,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(status);
         }
 
-        // GET: Status/Delete/5
+        // GET: Statuses/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +134,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(status);
         }
 
-        // POST: Status/Delete/5
+        // POST: Statuses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

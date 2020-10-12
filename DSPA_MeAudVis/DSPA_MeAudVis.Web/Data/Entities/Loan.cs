@@ -19,14 +19,17 @@
         public int Id { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
+        [Display(Name = "Date and time of loan")]
         public DateTime DateTimeIn { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
+        [Display(Name = "Date and time of return")]
         public DateTime DateTimeOut { set; get; }
 
         [Display(Name = "Loan Detail")]
         public ICollection<LoanDetail> LoanDetails { set; get; }
 
+        [Display(Name = "Intern")]
         public Intern InternOut { set; get; }
 
         public Applicant Applicant { set; get; }

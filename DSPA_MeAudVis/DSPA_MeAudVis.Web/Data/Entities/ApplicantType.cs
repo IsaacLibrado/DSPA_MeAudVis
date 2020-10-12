@@ -10,6 +10,7 @@
         public int Id { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
+        [Display(Name = "Type Name")]
         public string Type { set; get; }
 
         public ICollection<Applicant> Applicants { set; get; }

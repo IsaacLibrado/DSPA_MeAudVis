@@ -1,16 +1,17 @@
 ﻿@model DSPA_MeAudVis.Web.Data.Entities.Status
 
 @{
-    ViewData["Title"] = "Add Status";
+    ViewData["Title"] = "Edit Status";
 }
 
-<h2>Add Status</h2>
+<h2>Edit Status</h2>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="StatusName" class="control-label"></label>
                 <input asp-for="StatusName" class="form-control" />
@@ -18,13 +19,8 @@
             </div>
             <div class="form-group">
                 <a asp-action="Index" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>
-                <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-plus"></span> </button>
+                <button type="submit" value="Save" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>
             </div>
         </form>
     </div>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-

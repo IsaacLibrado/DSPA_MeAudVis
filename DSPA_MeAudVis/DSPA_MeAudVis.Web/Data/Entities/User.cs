@@ -32,6 +32,7 @@
         public override string Email { get; set; }
 
         [Required(ErrorMessage = "{0} is required")]
+        [Display(Name = "Phone Number")]
         public override string PhoneNumber { get; set; }
 
         [Display(Name = "Complete name")]

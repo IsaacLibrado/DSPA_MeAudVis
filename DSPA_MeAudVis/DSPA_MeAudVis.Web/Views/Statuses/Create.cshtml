@@ -1,20 +1,19 @@
-﻿@model DSPA_MeAudVis.Web.Data.Entities.LoanDetail
+﻿@model DSPA_MeAudVis.Web.Data.Entities.Status
 
 @{
-    ViewData["Title"] = "Add Loan Detail";
+    ViewData["Title"] = "Add Status";
 }
 
-<h2>Add Loan Detail</h2>
-
+<h2>Add Status</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Observations" class="control-label"></label>
-                <input asp-for="Observations" class="form-control" />
-                <span asp-validation-for="Observations" class="text-danger"></span>
+                <label asp-for="StatusName" class="control-label"></label>
+                <input asp-for="StatusName" class="form-control" />
+                <span asp-validation-for="StatusName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <a asp-action="Index" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>
@@ -27,4 +26,3 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
