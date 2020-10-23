@@ -102,5 +102,9 @@
         }
 
 
+        public IActionResult NotAuthorized()
+        {
+            return View();
+        }
     }
 }

@@ -29,11 +29,11 @@
         public string LastName { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
-        public override string Email { get; set; }
-
-        [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Phone Number")]
         public override string PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "{0} is required")]
+        public override string Email { get; set; }
 
         [Display(Name = "Complete name")]
         public string FullName { get { return $"{FirstName} {LastName}"; } }

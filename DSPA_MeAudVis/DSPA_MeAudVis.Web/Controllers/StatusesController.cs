@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DSPA_MeAudVis.Web.Data;
 using DSPA_MeAudVis.Web.Data.Entities;
+using DSPA_MeAudVis.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DSPA_MeAudVis.Web.Controllers
 {
@@ -30,19 +32,20 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StatusNotFound");
             }
 
             var status = await _context.Statuses
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (status == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StatusNotFound");
             }
 
             return View(status);
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: Statuses/Create
         public IActionResult Create()
         {
@@ -65,18 +68,19 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(status);
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: Statuses/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StatusNotFound");
             }
 
             var status = await _context.Statuses.FindAsync(id);
             if (status == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StatusNotFound");
             }
             return View(status);
         }
@@ -90,7 +94,7 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             if (id != status.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("StatusNotFound");
             }
 
             if (ModelState.IsValid)
@@ -104,7 +108,7 @@ namespace DSPA_MeAudVis.Web.Controllers
                 {
                     if (!StatusExists(status.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("StatusNotFound");
                     }
                     else
                     {
@@ -128,7 +132,7 @@ namespace DSPA_MeAudVis.Web.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (status == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StatusNotFound");
             }
 
             return View(status);
@@ -148,6 +152,11 @@ namespace DSPA_MeAudVis.Web.Controllers
         private bool StatusExists(int id)
         {
             return _context.Statuses.Any(e => e.Id == id);
+        }
+
+        public IActionResult StatusNotFound()
+        {
+            return View();
         }
     }
 }

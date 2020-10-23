@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DSPA_MeAudVis.Web.Models;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DSPA_MeAudVis.Web.Controllers
 {
@@ -15,6 +17,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -22,6 +25,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator, Intern")]
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
@@ -38,6 +42,12 @@ namespace DSPA_MeAudVis.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [Route("error/404")]
+        public IActionResult Error404()
+        {
+            return View();
         }
     }
 }

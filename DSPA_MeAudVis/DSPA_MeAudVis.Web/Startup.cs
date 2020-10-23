@@ -57,8 +57,13 @@ namespace DSPA_MeAudVis.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddTransient<SeedDb>();
             services.AddScoped<IUserHelper, UserHelper>();
-
+            services.ConfigureApplicationCookie(options=>
+            {
+                options.LoginPath = "/Account/NotAuthorized";
+                options.AccessDeniedPath = "/Account/NotAuthorized";
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -67,6 +72,8 @@ namespace DSPA_MeAudVis.Web
         {
             if (env.IsDevelopment())
             {
+                //verificar si se usa el enlace del browser
+                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -75,6 +82,8 @@ namespace DSPA_MeAudVis.Web
                 app.UseHsts();
             }
 
+
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
