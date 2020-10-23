@@ -33,6 +33,19 @@ namespace DSPA_MeAudVis.Web.Data
                 admin = await CheckUserAsync(20060068, "Pekora", "Usada", "2224567898", "pekopeko@gmail.com", "123456", "Administrator");
                 await CheckAdminAsync(admin);
             }
+
+            if (!dataContext.Interns.Any())
+            {
+                var intern = await CheckUserAsync(20060069, "Korone", "Inugami", "2224567899", "yubiyubi@gmail.com", "123456", "Intern");
+                await CheckInternAsync(intern);
+
+            }
+        }
+
+        private async Task CheckInternAsync(User user)
+        {
+            dataContext.Interns.Add(new Intern { User = user });
+            await dataContext.SaveChangesAsync();
         }
 
         private async Task CheckAdminAsync(User user)
