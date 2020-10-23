@@ -16,7 +16,7 @@
         [Required(ErrorMessage = "{0} is required")]
         public int Id { set; get; }
 
-        //[Required(ErrorMessage = "{0} is required")]
+        [Required(ErrorMessage = "{0} is required")]
         public User User { set; get; }
     }
 }

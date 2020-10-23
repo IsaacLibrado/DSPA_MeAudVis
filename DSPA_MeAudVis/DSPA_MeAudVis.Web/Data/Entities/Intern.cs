@@ -23,9 +23,10 @@
         [Required(ErrorMessage = "{0} is required")]
         public int DepartureTime { get; set; }
 
-        //[Required(ErrorMessage = "{0} is required")]
+        [Required(ErrorMessage = "{0} is required")]
         public User User { set; get; }
 
+        //[Required(ErrorMessage = "{0} is required")]
         public ICollection<Loan> Loans { set; get; }
     }
 }
