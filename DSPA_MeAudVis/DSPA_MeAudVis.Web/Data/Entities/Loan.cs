@@ -15,23 +15,23 @@
     /// Modificador Isaac Librado
     public class Loan : IEntity
     {
-        [Required(ErrorMessage = "{0} is required")]
         public int Id { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Date and time of loan")]
-        public DateTime DateTimeIn { set; get; }
+        public DateTime DateTimeOut { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Date and time of return")]
-        public DateTime DateTimeOut { set; get; }
+        public DateTime DateTimeIn { set; get; }
 
         [Display(Name = "Loan Detail")]
         public ICollection<LoanDetail> LoanDetails { set; get; }
 
         [Display(Name = "Intern")]
-        public Intern InternOut { set; get; }
+        public Intern Intern { set; get; }
 
+        [Required(ErrorMessage = "{0} is required")]
         public Applicant Applicant { set; get; }
        
     }

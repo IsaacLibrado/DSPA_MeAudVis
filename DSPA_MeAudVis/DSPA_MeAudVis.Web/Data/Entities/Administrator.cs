@@ -13,7 +13,6 @@
     /// Creador Arturo Villegas
     public class Administrator : IEntity
     {
-        [Required(ErrorMessage = "{0} is required")]
         public int Id { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]

@@ -35,7 +35,7 @@
         [Required(ErrorMessage = "{0} is required")]
         public override string Email { get; set; }
 
-        [Display(Name = "Complete name")]
+        [Display(Name = "Full name")]
         public string FullName { get { return $"{FirstName} {LastName}"; } }
     }
 }

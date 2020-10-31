@@ -11,6 +11,12 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.ImageURL)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ImageURL)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Id)
         </dt>
         <dd>
@@ -28,6 +34,7 @@
         <dd>
             @Html.DisplayFor(model => model.Debtor)
         </dd>
+
     </dl>
     
     <form asp-action="Delete">

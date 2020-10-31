@@ -7,22 +7,36 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DSPA_MeAudVis.Web.Data;
 using DSPA_MeAudVis.Web.Data.Entities;
+using DSPA_MeAudVis.Web.Helpers;
+using DSPA_MeAudVis.Web.Models;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace DSPA_MeAudVis.Web.Controllers
 {
     public class ApplicantsController : Controller
     {
         private readonly DataContext _context;
+        private readonly ICombosHelper combosHelper;
+        private readonly IImageHelper imageHelper;
+        private readonly IUserHelper userHelper;
 
-        public ApplicantsController(DataContext context)
+        public ApplicantsController(DataContext context, 
+            ICombosHelper combosHelper,
+            IImageHelper imageHelper,
+            IUserHelper userHelper)
         {
             _context = context;
+            this.combosHelper = combosHelper;
+            this.imageHelper = imageHelper;
+            this.userHelper = userHelper;
         }
 
         // GET: Applicants
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Applicants.ToListAsync());
+            return View(_context.Applicants
+                .Include(s => s.User)
+                .Include(s => s.Type));
         }
 
         // GET: Applicants/Details/5
@@ -34,6 +48,8 @@ namespace DSPA_MeAudVis.Web.Controllers
             }
 
             var applicant = await _context.Applicants
+                .Include(s => s.User)
+                .Include(s => s.Type)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (applicant == null)
             {
@@ -73,12 +89,27 @@ namespace DSPA_MeAudVis.Web.Controllers
                 return NotFound();
             }
 
-            var applicant = await _context.Applicants.FindAsync(id);
+            var applicant = await _context.Applicants
+                .Include(s => s.User)
+                .Include(s => s.Type)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (applicant == null)
             {
                 return NotFound();
             }
-            return View(applicant);
+
+            var model = new ApplicantViewModel
+            {
+                Id = applicant.Id,
+                User = applicant.User,
+                ImageURL = applicant.ImageURL,
+                Debtor = applicant.Debtor,
+                TypeId = applicant.Type.Id,
+                Types = combosHelper.GetComboApplicantTypes(),
+                Type = applicant.Type
+            };
+
+            return View(model);
         }
 
         // POST: Applicants/Edit/5
@@ -86,34 +117,50 @@ namespace DSPA_MeAudVis.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Debtor")] Applicant applicant)
+        public async Task<IActionResult> Edit(int id, ApplicantViewModel model)
         {
-            if (id != applicant.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+                var user = await userHelper.GetUserByEmailAsync(model.User.Email);
+
+                if(user==null)
                 {
-                    _context.Update(applicant);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                user.FirstName = model.User.FirstName;
+                user.LastName = model.User.LastName;
+                user.PhoneNumber = model.User.PhoneNumber;
+                user.RegistrationNumber = model.User.RegistrationNumber;
+                user.Email = model.User.Email;
+                user.UserName = model.User.UserName;
+                var applicant = await _context.Applicants.FindAsync(model.Id);
+
+                if(applicant==null)
                 {
-                    if (!ApplicantExists(applicant.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
+
+                if(model.ImageFile!=null)
+                {
+                    applicant.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, model.User.FullName, "FotosEstudiantes");
+                }
+                applicant.Id = model.Id;
+                applicant.Debtor = model.Debtor;
+                applicant.User = user;
+                applicant.Type = await _context.ApplicantTypes.FindAsync(model.TypeId);
+                _context.Update(applicant);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(applicant);
+
+            return View(model);
+
         }
 
         // GET: Applicants/Delete/5

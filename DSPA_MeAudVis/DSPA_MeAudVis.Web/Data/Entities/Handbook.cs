@@ -13,7 +13,6 @@
     /// Creador Isaac Librado
     public class Handbook : IEntity
     {
-        [Required(ErrorMessage = "{0} is required")]
         public int Id { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
@@ -25,7 +24,7 @@
         [Display(Name = "Handbook content")]
         public string ImageURL { set; get; }
 
-        //[Required(ErrorMessage = "{0} is required")]
+        [Required(ErrorMessage = "{0} is required")]
         public Owner Owner { set; get; }
     }
 }

@@ -14,7 +14,6 @@
     /// Modificador Isaac Librado
     public class Intern : IEntity
     {
-        [Required(ErrorMessage = "{0} is required")]
         public int Id { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
@@ -26,7 +25,6 @@
         [Required(ErrorMessage = "{0} is required")]
         public User User { set; get; }
 
-        //[Required(ErrorMessage = "{0} is required")]
         public ICollection<Loan> Loans { set; get; }
     }
 }

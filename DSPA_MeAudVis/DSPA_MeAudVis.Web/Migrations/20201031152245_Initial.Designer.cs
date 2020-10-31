@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSPA_MeAudVis.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201023153226_Initial")]
+    [Migration("20201031152245_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,9 +45,12 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.Property<bool>("Debtor");
 
+                    b.Property<string>("ImageURL");
+
                     b.Property<int?>("TypeId");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -85,7 +88,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<int?>("OwnerId");
+                    b.Property<int>("OwnerId");
 
                     b.HasKey("Id");
 
@@ -120,19 +123,19 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ApplicantId");
+                    b.Property<int>("ApplicantId");
 
                     b.Property<DateTime>("DateTimeIn");
 
                     b.Property<DateTime>("DateTimeOut");
 
-                    b.Property<int?>("InternOutId");
+                    b.Property<int?>("InternId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicantId");
 
-                    b.HasIndex("InternOutId");
+                    b.HasIndex("InternId");
 
                     b.ToTable("Loans");
                 });
@@ -143,9 +146,9 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("LoanId");
+                    b.Property<int>("LoanId");
 
-                    b.Property<int?>("MaterialId");
+                    b.Property<int>("MaterialId");
 
                     b.Property<string>("Observations");
 
@@ -169,6 +172,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Brand")
+                        .IsRequired()
                         .HasMaxLength(15);
 
                     b.Property<string>("Label")
@@ -176,6 +180,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .HasMaxLength(6);
 
                     b.Property<string>("Model")
+                        .IsRequired()
                         .HasMaxLength(15);
 
                     b.Property<string>("Name")
@@ -183,9 +188,10 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .HasMaxLength(30);
 
                     b.Property<string>("SerialNum")
+                        .IsRequired()
                         .HasMaxLength(15);
 
-                    b.Property<int?>("StatusId");
+                    b.Property<int>("StatusId");
 
                     b.HasKey("Id");
 
@@ -200,7 +206,8 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -412,14 +419,16 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Handbook", b =>
                 {
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Owner", "Owner")
                         .WithMany("Handbooks")
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Intern", b =>
@@ -434,22 +443,25 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Applicant", "Applicant")
                         .WithMany("Loans")
-                        .HasForeignKey("ApplicantId");
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Intern", "InternOut")
+                    b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Intern", "Intern")
                         .WithMany("Loans")
-                        .HasForeignKey("InternOutId");
+                        .HasForeignKey("InternId");
                 });
 
             modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.LoanDetail", b =>
                 {
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Loan", "Loan")
                         .WithMany("LoanDetails")
-                        .HasForeignKey("LoanId");
+                        .HasForeignKey("LoanId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Material", "Material")
                         .WithMany("LoanDetails")
-                        .HasForeignKey("MaterialId");
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Status", "Status")
                         .WithMany("LoanDetails")
@@ -460,14 +472,16 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Status", "Status")
                         .WithMany("Materials")
-                        .HasForeignKey("StatusId");
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Owner", b =>
                 {
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

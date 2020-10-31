@@ -122,8 +122,9 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ImageURL = table.Column<string>(nullable: true),
                     Debtor = table.Column<bool>(nullable: false),
-                    UserId = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: false),
                     TypeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -140,7 +141,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -255,7 +256,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -265,7 +266,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,10 +277,10 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 30, nullable: false),
                     Label = table.Column<string>(maxLength: 6, nullable: false),
-                    Brand = table.Column<string>(maxLength: 15, nullable: true),
-                    Model = table.Column<string>(maxLength: 15, nullable: true),
-                    SerialNum = table.Column<string>(maxLength: 15, nullable: true),
-                    StatusId = table.Column<int>(nullable: true)
+                    Brand = table.Column<string>(maxLength: 15, nullable: false),
+                    Model = table.Column<string>(maxLength: 15, nullable: false),
+                    SerialNum = table.Column<string>(maxLength: 15, nullable: false),
+                    StatusId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -289,7 +290,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.StatusId,
                         principalTable: "Statuses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -298,10 +299,10 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DateTimeIn = table.Column<DateTime>(nullable: false),
                     DateTimeOut = table.Column<DateTime>(nullable: false),
-                    InternOutId = table.Column<int>(nullable: true),
-                    ApplicantId = table.Column<int>(nullable: true)
+                    DateTimeIn = table.Column<DateTime>(nullable: false),
+                    InternId = table.Column<int>(nullable: true),
+                    ApplicantId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -311,10 +312,10 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.ApplicantId,
                         principalTable: "Applicants",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Loans_Interns_InternOutId",
-                        column: x => x.InternOutId,
+                        name: "FK_Loans_Interns_InternId",
+                        column: x => x.InternId,
                         principalTable: "Interns",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -328,7 +329,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
                     ImageURL = table.Column<string>(nullable: false),
-                    OwnerId = table.Column<int>(nullable: true)
+                    OwnerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -338,7 +339,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.OwnerId,
                         principalTable: "Owners",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -348,9 +349,9 @@ namespace DSPA_MeAudVis.Web.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Observations = table.Column<string>(nullable: true),
-                    MaterialId = table.Column<int>(nullable: true),
+                    MaterialId = table.Column<int>(nullable: false),
                     StatusId = table.Column<int>(nullable: true),
-                    LoanId = table.Column<int>(nullable: true)
+                    LoanId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -360,13 +361,13 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.LoanId,
                         principalTable: "Loans",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_LoanDetails_Materials_MaterialId",
                         column: x => x.MaterialId,
                         principalTable: "Materials",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_LoanDetails_Statuses_StatusId",
                         column: x => x.StatusId,
@@ -460,9 +461,9 @@ namespace DSPA_MeAudVis.Web.Migrations
                 column: "ApplicantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Loans_InternOutId",
+                name: "IX_Loans_InternId",
                 table: "Loans",
-                column: "InternOutId");
+                column: "InternId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Materials_StatusId",

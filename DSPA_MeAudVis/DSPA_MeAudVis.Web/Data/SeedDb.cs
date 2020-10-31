@@ -25,8 +25,17 @@ namespace DSPA_MeAudVis.Web.Data
 
             await userHelper.CheckRoleAsync("Administrator");
             await userHelper.CheckRoleAsync("Intern");
+            await userHelper.CheckRoleAsync("Applicant");
+            await userHelper.CheckRoleAsync("Owner");
 
-            if(!dataContext.Administrators.Any())
+            if(!dataContext.ApplicantTypes.Any())
+            {
+                dataContext.ApplicantTypes.Add(new ApplicantType { Type = "Teacher" });
+                dataContext.ApplicantTypes.Add(new ApplicantType { Type = "Student" });
+                await dataContext.SaveChangesAsync();
+            }
+
+            if (!dataContext.Administrators.Any())
             {
                 var admin = await CheckUserAsync(20060067,"Brad","Pit", "2224567896", "brad@gmail.com","123456","Administrator");
                 await CheckAdminAsync(admin);
@@ -40,17 +49,31 @@ namespace DSPA_MeAudVis.Web.Data
                 await CheckInternAsync(intern);
 
             }
+
+            if (!dataContext.Applicants.Any())
+            {
+                var applicant = await CheckUserAsync(20060080, "Karla", "Ramos", "2224567810", "karlita@gmail.com", "123456", "Applicant");
+                await CheckApplicantAsync(applicant);
+
+            }
         }
 
         private async Task CheckInternAsync(User user)
         {
-            dataContext.Interns.Add(new Intern { User = user });
+            dataContext.Interns.Add(new Intern { User = user,  });
             await dataContext.SaveChangesAsync();
         }
 
         private async Task CheckAdminAsync(User user)
         {
-            dataContext.Administrators.Add(new Administrator { User = user });
+            dataContext.Administrators.Add(new Administrator { User = user});
+            await dataContext.SaveChangesAsync();
+        }
+
+        private async Task CheckApplicantAsync(User user)
+        {
+            var applicantType = dataContext.ApplicantTypes.FirstOrDefault();
+            dataContext.Applicants.Add(new Applicant { User = user, Type=applicantType, Debtor=false });
             await dataContext.SaveChangesAsync();
         }
 

@@ -14,13 +14,15 @@
     /// Modificador Isaac Librado
     public class Applicant : IEntity
     {
-        [Required(ErrorMessage = "{0} is required")]
         public int Id { set; get; }
+
+        [Display(Name = "Photo")]
+        public string ImageURL { get; set; }
 
         [Required(ErrorMessage = "{0} is required")]
         public bool Debtor { set; get; }
 
-        //[Required(ErrorMessage = "{0} is required")]
+        [Required(ErrorMessage = "{0} is required")]
         public User User { set; get; }
 
         //[Required(ErrorMessage = "{0} is required")]
