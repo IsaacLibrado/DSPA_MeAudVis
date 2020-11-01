@@ -5,6 +5,7 @@
 
     public interface IImageHelper
     {
-        Task<string> UploadImageAsync(IFormFile imageFile, string nameFile, string folder);
+        Task<string> UploadImageAsync(IFormFile imageFile, 
+            string nameFile, string folder);
     }
 }
