@@ -59,8 +59,17 @@
                     </label>
                 </div>
 
+                
+
                 <div class="form-group">
                     <label asp-for="ImageFile" class="control-label"></label>
+                    <div>
+                        @if (!string.IsNullOrEmpty(Model.ImageURL))
+                        {
+                            <img src="@Url.Content(Model.ImageURL)" style="width:100px;height:100px" />
+                        }
+                    </div>
+                    <br/>
                     <input asp-for="ImageFile" class="form-control" type="file" />
                     <span asp-validation-for="ImageFile" class="text-danger"></span>
                 </div>
@@ -69,6 +78,8 @@
                 <a asp-action="Index" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>
                 <button type="submit" value="Save" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>
             </div>
+
+            
         </form>
     </div>
 </div>

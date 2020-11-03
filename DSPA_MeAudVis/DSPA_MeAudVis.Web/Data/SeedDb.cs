@@ -43,6 +43,8 @@ namespace DSPA_MeAudVis.Web.Data
                 await CheckAdminAsync(admin);
             }
 
+            
+
             if (!dataContext.Interns.Any())
             {
                 var intern = await CheckUserAsync(20060069, "Korone", "Inugami", "2224567899", "yubiyubi@gmail.com", "123456", "Intern");
@@ -55,6 +57,14 @@ namespace DSPA_MeAudVis.Web.Data
                 var applicant = await CheckUserAsync(20060080, "Karla", "Ramos", "2224567810", "karlita@gmail.com", "123456", "Applicant");
                 await CheckApplicantAsync(applicant);
 
+            }
+
+            if (!dataContext.Loans.Any())
+            {
+                var applicant = dataContext.Applicants.FirstOrDefault();
+                var intern = dataContext.Interns.FirstOrDefault();
+                dataContext.Loans.Add(new Loan { Applicant = applicant, DateTimeIn = DateTime.Now, DateTimeOut = DateTime.Now, Intern=intern });
+                await dataContext.SaveChangesAsync();
             }
         }
 

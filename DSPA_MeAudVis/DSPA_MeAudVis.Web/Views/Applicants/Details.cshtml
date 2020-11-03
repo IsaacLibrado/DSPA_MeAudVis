@@ -11,6 +11,15 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.ImageURL)
+        </dt>
+        <dd>
+            @if (!string.IsNullOrEmpty(Model.ImageURL))
+            {
+                <img src="@Url.Content(Model.ImageURL)" style="width:100px;height:100px" />
+            }
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.User.RegistrationNumber)
         </dt>
         <dd>
@@ -46,14 +55,57 @@
         <dd>
             @Html.DisplayFor(model => model.Debtor)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ImageURL)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ImageURL)
-        </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Index" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>
+</div>
+
+<div>
+    <hr />
+    <h1>Loans</h1>
+    @if (Model.Loans == null || Model.Loans.Count == 0)
+    {
+        <h4>This applicant doesn't have loans</h4>
+    }
+    else
+    {
+       <table class="table table-hover table-responsive table-striped" id="MiTabla">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Loans.FirstOrDefault().DateTimeIn)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Loans.FirstOrDefault().DateTimeOut)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Loans.FirstOrDefault().Intern.User.FullName)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Loans)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateTimeIn)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateTimeOut)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Intern.User.FullName)
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+    }
 </div>
