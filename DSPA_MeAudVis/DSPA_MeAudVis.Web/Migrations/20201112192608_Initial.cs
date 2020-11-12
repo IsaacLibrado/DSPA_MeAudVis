@@ -328,8 +328,8 @@ namespace DSPA_MeAudVis.Web.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 100, nullable: false),
-                    ImageURL = table.Column<string>(nullable: false),
-                    OwnerId = table.Column<int>(nullable: false)
+                    ImageURL = table.Column<string>(nullable: true),
+                    OwnerId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -339,7 +339,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.OwnerId,
                         principalTable: "Owners",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -349,7 +349,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Observations = table.Column<string>(nullable: true),
-                    MaterialId = table.Column<int>(nullable: false),
+                    MaterialId = table.Column<int>(nullable: true),
                     StatusId = table.Column<int>(nullable: true),
                     LoanId = table.Column<int>(nullable: false)
                 },
@@ -367,7 +367,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.MaterialId,
                         principalTable: "Materials",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_LoanDetails_Statuses_StatusId",
                         column: x => x.StatusId,

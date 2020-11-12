@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DSPA_MeAudVis.Web.Data;
 using DSPA_MeAudVis.Web.Data.Entities;
+using DSPA_MeAudVis.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DSPA_MeAudVis.Web.Controllers
 {
@@ -19,30 +21,33 @@ namespace DSPA_MeAudVis.Web.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Administrator, Owner")]
         // GET: Interns
         public async Task<IActionResult> Index()
         {
             return View(await _context.Interns.ToListAsync());
         }
 
+        [Authorize(Roles = "Administrator, Owner")]
         // GET: Interns/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("InternNotFound");
             }
 
             var intern = await _context.Interns
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (intern == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("InternNotFound");
             }
 
             return View(intern);
         }
 
+        [Authorize(Roles = "Administrator, Owner")]
         // GET: Interns/Create
         public IActionResult Create()
         {
@@ -65,18 +70,19 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(intern);
         }
 
+        [Authorize(Roles = "Administrator, Owner")]
         // GET: Interns/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("InternNotFound");
             }
 
             var intern = await _context.Interns.FindAsync(id);
             if (intern == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("InternNotFound");
             }
             return View(intern);
         }
@@ -90,7 +96,7 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             if (id != intern.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("InternNotFound");
             }
 
             if (ModelState.IsValid)
@@ -104,7 +110,7 @@ namespace DSPA_MeAudVis.Web.Controllers
                 {
                     if (!InternExists(intern.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("InternNotFound");
                     }
                     else
                     {
@@ -116,19 +122,20 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(intern);
         }
 
+        [Authorize(Roles = "Administrator, Owner")]
         // GET: Interns/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("InternNotFound");
             }
 
             var intern = await _context.Interns
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (intern == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("InternNotFound");
             }
 
             return View(intern);

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DSPA_MeAudVis.Web.Data;
 using DSPA_MeAudVis.Web.Data.Entities;
+using DSPA_MeAudVis.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DSPA_MeAudVis.Web.Controllers
 {
@@ -30,19 +32,20 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialNotFound");
             }
 
             var material = await _context.Materials
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (material == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialNotFound");
             }
 
             return View(material);
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: Materials/Create
         public IActionResult Create()
         {
@@ -65,18 +68,19 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(material);
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: Materials/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialNotFound");
             }
 
             var material = await _context.Materials.FindAsync(id);
             if (material == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialNotFound");
             }
             return View(material);
         }
@@ -90,7 +94,7 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             if (id != material.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialNotFound");
             }
 
             if (ModelState.IsValid)
@@ -104,7 +108,7 @@ namespace DSPA_MeAudVis.Web.Controllers
                 {
                     if (!MaterialExists(material.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("MaterialNotFound");
                     }
                     else
                     {
@@ -116,19 +120,20 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(material);
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: Materials/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialNotFound");
             }
 
             var material = await _context.Materials
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (material == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MaterialNotFound");
             }
 
             return View(material);

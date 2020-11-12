@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DSPA_MeAudVis.Web.Data;
 using DSPA_MeAudVis.Web.Data.Entities;
+using DSPA_MeAudVis.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DSPA_MeAudVis.Web.Controllers
 {
@@ -30,19 +32,20 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("LoanNotFound");
             }
 
             var loan = await _context.Loans
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (loan == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("LoanNotFound");
             }
 
             return View(loan);
         }
 
+        [Authorize(Roles = "Intern")]
         // GET: Loans/Create
         public IActionResult Create()
         {
@@ -65,18 +68,19 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(loan);
         }
 
+        [Authorize(Roles = "Intern")]
         // GET: Loans/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("LoanNotFound");
             }
 
             var loan = await _context.Loans.FindAsync(id);
             if (loan == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("LoanNotFound");
             }
             return View(loan);
         }
@@ -90,7 +94,7 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             if (id != loan.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("LoanNotFound");
             }
 
             if (ModelState.IsValid)
@@ -104,7 +108,7 @@ namespace DSPA_MeAudVis.Web.Controllers
                 {
                     if (!LoanExists(loan.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("LoanNotFound");
                     }
                     else
                     {
@@ -116,19 +120,20 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(loan);
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: Loans/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("LoanNotFound");
             }
 
             var loan = await _context.Loans
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (loan == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("LoanNotFound");
             }
 
             return View(loan);

@@ -21,12 +21,14 @@ namespace DSPA_MeAudVis.Web.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: Statuses
         public async Task<IActionResult> Index()
         {
             return View(await _context.Statuses.ToListAsync());
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: Statuses/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -45,7 +47,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(status);
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Owner")]
         // GET: Statuses/Create
         public IActionResult Create()
         {
@@ -68,7 +70,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(status);
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Owner")]
         // GET: Statuses/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -120,12 +122,13 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(status);
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: Statuses/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("StatusNotFound");
             }
 
             var status = await _context.Statuses

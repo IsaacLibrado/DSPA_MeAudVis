@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DSPA_MeAudVis.Web.Data;
 using DSPA_MeAudVis.Web.Data.Entities;
+using DSPA_MeAudVis.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DSPA_MeAudVis.Web.Controllers
 {
@@ -19,36 +21,40 @@ namespace DSPA_MeAudVis.Web.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: Administrators
         public async Task<IActionResult> Index()
         {
             return View(await _context.Administrators.ToListAsync());
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: Administrators/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AdministratorNotFound");
             }
 
             var administrator = await _context.Administrators
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (administrator == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AdministratorNotFound");
             }
 
             return View(administrator);
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: Administrators/Create
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         // POST: Administrators/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -68,22 +74,24 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(administrator);
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: Administrators/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AdministratorNotFound");
             }
 
             var administrator = await _context.Administrators.FindAsync(id);
             if (administrator == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AdministratorNotFound");
             }
             return View(administrator);
         }
 
+        [Authorize(Roles = "Administrator")]
         // POST: Administrators/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -93,7 +101,7 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             if (id != administrator.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("AdministratorNotFound");
             }
 
             if (ModelState.IsValid)
@@ -107,7 +115,7 @@ namespace DSPA_MeAudVis.Web.Controllers
                 {
                     if (!AdministratorExists(administrator.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("AdministratorNotFound");
                     }
                     else
                     {
@@ -119,24 +127,26 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(administrator);
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: Administrators/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AdministratorNotFound");
             }
 
             var administrator = await _context.Administrators
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (administrator == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AdministratorNotFound");
             }
 
             return View(administrator);
         }
 
+        [Authorize(Roles = "Administrator")]
         // POST: Administrators/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

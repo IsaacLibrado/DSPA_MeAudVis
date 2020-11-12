@@ -13,7 +13,6 @@ namespace DSPA_MeAudVis.Web.Helpers
         {
             ViewName = viewName;
             StatusCode = (int)HttpStatusCode.NotFound;
-
         }
     }
 }

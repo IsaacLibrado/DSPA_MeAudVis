@@ -17,7 +17,6 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Administrator")]
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -25,7 +24,6 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Administrator, Intern")]
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";

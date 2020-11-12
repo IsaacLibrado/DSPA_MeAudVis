@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DSPA_MeAudVis.Web.Data;
 using DSPA_MeAudVis.Web.Data.Entities;
+using DSPA_MeAudVis.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DSPA_MeAudVis.Web.Controllers
 {
@@ -19,30 +21,33 @@ namespace DSPA_MeAudVis.Web.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: Owners
         public async Task<IActionResult> Index()
         {
             return View(await _context.Owners.ToListAsync());
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: Owners/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("OwnerNotFound");
             }
 
             var owner = await _context.Owners
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (owner == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("OwnerNotFound");
             }
 
             return View(owner);
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: Owners/Create
         public IActionResult Create()
         {
@@ -65,18 +70,19 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(owner);
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: Owners/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("OwnerNotFound");
             }
 
             var owner = await _context.Owners.FindAsync(id);
             if (owner == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("OwnerNotFound");
             }
             return View(owner);
         }
@@ -90,7 +96,7 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             if (id != owner.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("OwnerNotFound");
             }
 
             if (ModelState.IsValid)
@@ -104,7 +110,7 @@ namespace DSPA_MeAudVis.Web.Controllers
                 {
                     if (!OwnerExists(owner.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("OwnerNotFound");
                     }
                     else
                     {
@@ -116,19 +122,20 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(owner);
         }
 
+        [Authorize(Roles = "Administrator")]
         // GET: Owners/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("OwnerNotFound");
             }
 
             var owner = await _context.Owners
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (owner == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("OwnerNotFound");
             }
 
             return View(owner);

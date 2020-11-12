@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DSPA_MeAudVis.Web.Data;
 using DSPA_MeAudVis.Web.Data.Entities;
+using DSPA_MeAudVis.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DSPA_MeAudVis.Web.Controllers
 {
@@ -19,30 +21,33 @@ namespace DSPA_MeAudVis.Web.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: ApplicantTypes
         public async Task<IActionResult> Index()
         {
             return View(await _context.ApplicantTypes.ToListAsync());
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: ApplicantTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantTypeNotFound");
             }
 
             var applicantType = await _context.ApplicantTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (applicantType == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantTypeNotFound");
             }
 
             return View(applicantType);
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: ApplicantTypes/Create
         public IActionResult Create()
         {
@@ -65,18 +70,19 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(applicantType);
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: ApplicantTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantTypeNotFound");
             }
 
             var applicantType = await _context.ApplicantTypes.FindAsync(id);
             if (applicantType == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantTypeNotFound");
             }
             return View(applicantType);
         }
@@ -90,7 +96,7 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             if (id != applicantType.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantTypeNotFound");
             }
 
             if (ModelState.IsValid)
@@ -104,7 +110,7 @@ namespace DSPA_MeAudVis.Web.Controllers
                 {
                     if (!ApplicantTypeExists(applicantType.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("ApplicantTypeNotFound");
                     }
                     else
                     {
@@ -116,19 +122,20 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(applicantType);
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: ApplicantTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantTypeNotFound");
             }
 
             var applicantType = await _context.ApplicantTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (applicantType == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ApplicantTypeNotFound");
             }
 
             return View(applicantType);

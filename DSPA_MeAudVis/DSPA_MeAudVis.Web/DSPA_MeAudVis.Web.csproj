@@ -41,6 +41,16 @@
     <Compile Remove="Migrations\20201030144014_initial.Designer.cs" />
     <Compile Remove="Migrations\20201030144515_initial.cs" />
     <Compile Remove="Migrations\20201030144515_initial.Designer.cs" />
+    <Compile Remove="Migrations\20201031152245_Initial.cs" />
+    <Compile Remove="Migrations\20201031152245_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20201112185959_Initial.cs" />
+    <Compile Remove="Migrations\20201112185959_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20201112190333_Initial.cs" />
+    <Compile Remove="Migrations\20201112190333_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20201112190649_Initial.cs" />
+    <Compile Remove="Migrations\20201112190649_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20201112191323_Initial.cs" />
+    <Compile Remove="Migrations\20201112191323_Initial.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,7 +71,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\images\FotosEstudiantes\" />
     <Folder Include="wwwroot\images\DocumentosEstudiantes\" />
   </ItemGroup>

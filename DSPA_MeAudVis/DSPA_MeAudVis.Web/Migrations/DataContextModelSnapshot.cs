@@ -79,14 +79,13 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ImageURL")
-                        .IsRequired();
+                    b.Property<string>("ImageURL");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<int>("OwnerId");
+                    b.Property<int?>("OwnerId");
 
                     b.HasKey("Id");
 
@@ -146,7 +145,7 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.Property<int>("LoanId");
 
-                    b.Property<int>("MaterialId");
+                    b.Property<int?>("MaterialId");
 
                     b.Property<string>("Observations");
 
@@ -425,8 +424,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Owner", "Owner")
                         .WithMany("Handbooks")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("OwnerId");
                 });
 
             modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Intern", b =>
@@ -458,8 +456,7 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Material", "Material")
                         .WithMany("LoanDetails")
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("MaterialId");
 
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Status", "Status")
                         .WithMany("LoanDetails")

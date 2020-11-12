@@ -23,54 +23,96 @@ namespace DSPA_MeAudVis.Web.Data
         {
             await dataContext.Database.EnsureCreatedAsync();
 
+            //roles
             await userHelper.CheckRoleAsync("Administrator");
             await userHelper.CheckRoleAsync("Intern");
             await userHelper.CheckRoleAsync("Applicant");
             await userHelper.CheckRoleAsync("Owner");
 
-            if(!dataContext.ApplicantTypes.Any())
+            if (!dataContext.Administrators.Any())
+            {
+                var admin = await CheckUserAsync(20060067, "Samuel", "Librado", "4424331292", "samuelisaaclibradoalmada@gmail.com", "123456", "Administrator");
+                await CheckAdminAsync(admin);
+                admin = await CheckUserAsync(7047541, "David", "Hernandez", "2221975824", "david.hdezalv29@gmail.com", "123456", "Administrator");
+                await CheckAdminAsync(admin);
+                admin = await CheckUserAsync(20058343, "Arturo", "Villegas", "2229074543", "percentnevada3@gmail.com", "123456", "Administrator");
+                await CheckAdminAsync(admin);
+            }
+
+            if (!dataContext.Interns.Any())
+            {
+                var intern = await CheckUserAsync(3060912, "Julio", "Gamesa", "2223436324", "julio@gmail.com", "123456", "Intern");
+                await CheckInternAsync(intern);
+            }
+
+            if (!dataContext.Owners.Any())
+            {
+                var owner = await CheckUserAsync(6666, "Miguel", "Ochoa", "2225675423", "miguelochoa@gmail.com", "123456", "Owner");
+                await CheckOwnerAsync(owner);
+            }
+
+            if (!dataContext.ApplicantTypes.Any())
             {
                 dataContext.ApplicantTypes.Add(new ApplicantType { Type = "Teacher" });
                 dataContext.ApplicantTypes.Add(new ApplicantType { Type = "Student" });
                 await dataContext.SaveChangesAsync();
             }
 
-            if (!dataContext.Administrators.Any())
-            {
-                var admin = await CheckUserAsync(20060067,"Brad","Pit", "2224567896", "brad@gmail.com","123456","Administrator");
-                await CheckAdminAsync(admin);
-                admin = await CheckUserAsync(20060068, "Pekora", "Usada", "2224567898", "pekopeko@gmail.com", "123456", "Administrator");
-                await CheckAdminAsync(admin);
-            }
-
-            
-
-            if (!dataContext.Interns.Any())
-            {
-                var intern = await CheckUserAsync(20060069, "Korone", "Inugami", "2224567899", "yubiyubi@gmail.com", "123456", "Intern");
-                await CheckInternAsync(intern);
-
-            }
-
             if (!dataContext.Applicants.Any())
             {
-                var applicant = await CheckUserAsync(20060080, "Karla", "Ramos", "2224567810", "karlita@gmail.com", "123456", "Applicant");
+                var applicant = await CheckUserAsync(20060069, "Karla", "Librado", "2224567810", "karlita@gmail.com", "123456", "Applicant");
                 await CheckApplicantAsync(applicant);
-
             }
+
+
+            if (!dataContext.Handbooks.Any())
+            {
+                var owner = dataContext.Owners.FirstOrDefault();
+                dataContext.Handbooks.Add(new Handbook { Name = "Manual de Microfono", Owner=owner });
+                await dataContext.SaveChangesAsync();
+            }  
 
             if (!dataContext.Loans.Any())
             {
                 var applicant = dataContext.Applicants.FirstOrDefault();
                 var intern = dataContext.Interns.FirstOrDefault();
-                dataContext.Loans.Add(new Loan { Applicant = applicant, DateTimeIn = DateTime.Now, DateTimeOut = DateTime.Now, Intern=intern });
+                dataContext.Loans.Add(new Loan { Applicant = applicant, DateTimeIn = DateTime.Now.AddDays(3), DateTimeOut = DateTime.Now, Intern=intern });
                 await dataContext.SaveChangesAsync();
             }
+
+            if (!dataContext.Statuses.Any())
+            {
+                dataContext.Statuses.Add(new Status { StatusName = "Available" });
+                await dataContext.SaveChangesAsync();
+            }
+
+            if (!dataContext.Materials.Any())
+            {
+                var status = dataContext.Statuses.FirstOrDefault();
+                dataContext.Materials.Add(new Material { Name = "HDMI", Label = "MAV1", Brand = "Sony", Model = "PS5", SerialNum = "Z10954", Status = status });
+                await dataContext.SaveChangesAsync();
+            }
+
+            if (!dataContext.LoanDetails.Any())
+            {
+                var loan = dataContext.Loans.FirstOrDefault();
+                var status = dataContext.Statuses.FirstOrDefault();
+                var material = dataContext.Materials.FirstOrDefault();
+                dataContext.LoanDetails.Add(new LoanDetail { Loan=loan, Material=material, Status=status, Observations=string.Empty });
+                await dataContext.SaveChangesAsync();
+            }
+
         }
 
         private async Task CheckInternAsync(User user)
         {
-            dataContext.Interns.Add(new Intern { User = user,  });
+            dataContext.Interns.Add(new Intern { User = user, DepartureTime=9, EntryTime=7 });
+            await dataContext.SaveChangesAsync();
+        }
+
+        private async Task CheckOwnerAsync(User user)
+        {
+            dataContext.Owners.Add(new Owner { User = user});
             await dataContext.SaveChangesAsync();
         }
 

@@ -3,6 +3,7 @@
     using DSPA_MeAudVis.Web.Data.Entities;
     using DSPA_MeAudVis.Web.Helpers;
     using DSPA_MeAudVis.Web.Models;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
@@ -55,6 +56,7 @@
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles = "Owner, Administrator")]
         public IActionResult Register()
         {
             var model = new RegisterViewModel();
@@ -62,6 +64,7 @@
             return View(model);
         }
 
+        [Authorize(Roles = "Owner, Administrator")]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {

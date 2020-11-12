@@ -35,11 +35,24 @@
                     @Html.DisplayFor(modelItem => item.DateTimeOut)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    @if (this.User.IsInRole("Intern"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>
+                    }
+                    @if (this.User.IsInRole("Owner"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@if (this.User.IsInRole("Intern"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></a>
+    </p>
+}

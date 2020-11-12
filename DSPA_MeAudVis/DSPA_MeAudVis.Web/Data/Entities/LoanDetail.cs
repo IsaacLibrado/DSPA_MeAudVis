@@ -14,7 +14,6 @@ namespace DSPA_MeAudVis.Web.Data.Entities
         [Display(Name = "Observations")]
         public string Observations { set; get; }
 
-        [Required(ErrorMessage = "{0} is required")]
         public Material Material { set; get; }
 
         public Status Status { set; get; }

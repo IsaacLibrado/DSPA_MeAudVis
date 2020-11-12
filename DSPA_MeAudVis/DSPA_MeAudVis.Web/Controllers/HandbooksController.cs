@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DSPA_MeAudVis.Web.Data;
 using DSPA_MeAudVis.Web.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
+using DSPA_MeAudVis.Web.Helpers;
 
 namespace DSPA_MeAudVis.Web.Controllers
 {
@@ -30,19 +32,20 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("HandbookNotFound");
             }
 
             var handbook = await _context.Handbooks
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (handbook == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("HandbookNotFound");
             }
 
             return View(handbook);
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: Handbooks/Create
         public IActionResult Create()
         {
@@ -65,18 +68,19 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(handbook);
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: Handbooks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("HandbookNotFound");
             }
 
             var handbook = await _context.Handbooks.FindAsync(id);
             if (handbook == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("HandbookNotFound");
             }
             return View(handbook);
         }
@@ -90,7 +94,7 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             if (id != handbook.Id)
             {
-                return NotFound();
+                return new NotFoundViewResult("HandbookNotFound");
             }
 
             if (ModelState.IsValid)
@@ -104,7 +108,7 @@ namespace DSPA_MeAudVis.Web.Controllers
                 {
                     if (!HandbookExists(handbook.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("HandbookNotFound");
                     }
                     else
                     {
@@ -116,19 +120,20 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(handbook);
         }
 
+        [Authorize(Roles = "Owner")]
         // GET: Handbooks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("HandbookNotFound");
             }
 
             var handbook = await _context.Handbooks
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (handbook == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("HandbookNotFound");
             }
 
             return View(handbook);

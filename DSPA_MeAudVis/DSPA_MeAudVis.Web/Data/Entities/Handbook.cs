@@ -20,11 +20,10 @@
         [Display(Name = "Handbook name")]
         public string Name { set; get; }
 
-        [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Handbook content")]
         public string ImageURL { set; get; }
 
-        [Required(ErrorMessage = "{0} is required")]
+
         public Owner Owner { set; get; }
     }
 }
