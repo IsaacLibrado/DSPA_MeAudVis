@@ -52,10 +52,17 @@ namespace DSPA_MeAudVis.Web.Controllers
 
             var applicant = await _context.Applicants
                 .Include(s => s.User)
-                .Include(s => s.Type)
-                .Include(s=>s.Loans)
-                .ThenInclude(a=>a.Intern)
-                .ThenInclude(c=>c.User)
+                .Include(s => s.Loans)
+                .ThenInclude(c => c.LoanDetails)
+                .ThenInclude(v => v.Status)
+                .Include(s => s.Loans)
+                .ThenInclude(c => c.LoanDetails)
+                .ThenInclude(v => v.Material)
+                .Include(s => s.Loans)
+                .ThenInclude(c => c.LoanDetails)
+                .ThenInclude(v => v.Loan)
+                .ThenInclude(x => x.Intern)
+                .ThenInclude(y => y.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (applicant == null)
             {

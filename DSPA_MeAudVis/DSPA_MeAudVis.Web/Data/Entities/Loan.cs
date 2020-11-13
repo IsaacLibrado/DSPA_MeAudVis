@@ -17,14 +17,6 @@
     {
         public int Id { set; get; }
 
-        [Required(ErrorMessage = "{0} is required")]
-        [Display(Name = "Date and time of loan")]
-        public DateTime DateTimeOut { set; get; }
-
-        [Required(ErrorMessage = "{0} is required")]
-        [Display(Name = "Date and time of return")]
-        public DateTime DateTimeIn { set; get; }
-
         [Display(Name = "Loan Detail")]
         public ICollection<LoanDetail> LoanDetails { set; get; }
 

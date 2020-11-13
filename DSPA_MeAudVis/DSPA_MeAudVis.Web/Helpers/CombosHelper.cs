@@ -4,7 +4,6 @@
     using Data;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using System.Collections.Generic;
-    using System.Linq;
 
     public class CombosHelper : ICombosHelper
     {
@@ -21,7 +20,7 @@
                 c => new SelectListItem
                 {
                     Text = c.StatusName,
-                    Value = $"{c.StatusName}"
+                    Value = $"{c.Id}"
                 }).ToList();
             list.Insert(0, new SelectListItem
             {
@@ -52,7 +51,7 @@
             var list = dataContext.Materials.Select(
                 c => new SelectListItem
                 {
-                    Text = c.Name,
+                    Text = string.Format("{0} {1}", c.Name, c.Label),
                     Value = $"{c.Id}"
                 }).ToList();
             list.Insert(0, new SelectListItem
@@ -68,12 +67,12 @@
             var list = dataContext.Users.Select(
                 c => new SelectListItem
                 {
-                    Text = c.UserName,
+                    Text = string.Format("{0} {1}",c.UserName, c.FullName),
                     Value = $"{c.UserName}"
                 }).ToList();
             list.Insert(0, new SelectListItem
             {
-                Text = "[You have to choose a username...]",
+                Text = "[You have to choose an user...]",
                 Value = "0"
             });
             return list;

@@ -51,8 +51,16 @@ namespace DSPA_MeAudVis.Web.Controllers
             var intern = await _context.Interns
                 .Include(s => s.User)
                 .Include(s => s.Loans)
-                .ThenInclude(a => a.Applicant)
-                .ThenInclude(c => c.User)
+                .ThenInclude(c=>c.LoanDetails)
+                .ThenInclude(v=>v.Status)
+                .Include(s => s.Loans)
+                .ThenInclude(c => c.LoanDetails)
+                .ThenInclude(v => v.Material)
+                .Include(s => s.Loans)
+                .ThenInclude(c => c.LoanDetails)
+                .ThenInclude(v => v.Loan)
+                .ThenInclude(x=>x.Applicant)
+                .ThenInclude(y=>y.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (intern == null)
             {

@@ -11,6 +11,7 @@
     <div class="col-md-4">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Status" />
 
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -28,9 +29,9 @@
                 <span asp-validation-for="Brand" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
+                <label asp-for="MaterialModel" class="control-label"></label>
+                <input asp-for="MaterialModel" class="form-control" />
+                <span asp-validation-for="MaterialModel" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SerialNum" class="control-label"></label>
@@ -39,9 +40,9 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="StatusStatusName" class="control-label"></label>
-                <select asp-for="StatusStatusName" asp-items="Model.Statuses" class="form-control"> </select>
-                <span asp-validation-for="StatusStatusName" class="text-danger"></span>
+                <label asp-for="StatusId" class="control-label"></label>
+                <select asp-for="StatusId" asp-items="Model.Statuses" class="form-control"> </select>
+                <span asp-validation-for="StatusId" class="text-danger"></span>
             </div>
 
             <div class="form-group">

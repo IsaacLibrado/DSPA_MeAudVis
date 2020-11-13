@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DSPA_MeAudVis.Web.Models
 {
-    public class MaterialViewModel:Material 
+    public class LoanDetailViewModel:LoanDetail
     {
         [Required(ErrorMessage = "{0} is required")]
         [Range(1, int.MaxValue, ErrorMessage = "You have to select a status")]
@@ -16,5 +16,12 @@ namespace DSPA_MeAudVis.Web.Models
         public int StatusId { get; set; }
 
         public IEnumerable<SelectListItem> Statuses { get; set; }
+
+        [Required(ErrorMessage = "{0} is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "You have to select a material")]
+        [Display(Name = "Material")]
+        public int MaterialId { get; set; }
+
+        public IEnumerable<SelectListItem> Materials { get; set; }
     }
 }

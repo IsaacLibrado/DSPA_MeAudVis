@@ -31,42 +31,21 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Handbooks" asp-action="Index">Handbooks</a></li>
-                    @if (this.User.IsInRole("Administrator") || this.User.IsInRole("Owner"))
+                    @if (this.User.Identity.IsAuthenticated)
                     {
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Roles<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                @if (this.User.IsInRole("Administrator"))
-                                {
-                                    <li><a asp-area="" asp-controller="Administrators" asp-action="Index">Admin</a></li>
-                                    <li><a asp-area="" asp-controller="Owners" asp-action="Index">Owners</a></li>
-                                }
-                                <li><a asp-area="" asp-controller="Applicants" asp-action="Index">Applicants</a></li>
-                                <li><a asp-area="" asp-controller="Interns" asp-action="Index">Interns</a></li>
-                            </ul>
-                        </li>
-                    }
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Loans<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a asp-area="" asp-controller="Loans" asp-action="Index">Loan</a></li>
-                            <li><a asp-area="" asp-controller="LoanDetails" asp-action="Index">LoanDetails</a></li>
                             <li><a asp-area="" asp-controller="Materials" asp-action="Index">Materials</a></li>
                         </ul>
                     </li>
-                    @if (this.User.IsInRole("Owner"))
-                    {
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Combos<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a asp-area="" asp-controller="ApplicantTypes" asp-action="Index">ApplicantTypes</a></li>
-                                <li><a asp-area="" asp-controller="Statuses" asp-action="Index">Statuses</a></li>
-                            </ul>
-                        </li>
                     }
+                    
+                    <!---
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></li>-->
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (this.User.Identity.IsAuthenticated)
@@ -77,11 +56,34 @@
                                 <li><a asp-area="" asp-controller="Home" asp-action="Index">@this.User.Identity.Name</a></li>
                                 @if (this.User.IsInRole("Owner") || this.User.IsInRole("Administrator"))
                                 {
-                                    <li><a asp-area="" asp-controller="Account" asp-action="Register">Add User</a></li>
-                                    <li><a asp-area="" asp-controller="Account" asp-action="Index">User's list</a></li>
+                                    <li class="dropdown-submenu">
+                                        <a href="#" class="dropdown-menu-left" data-toggle="dropdown">User's list<b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a asp-area="" asp-controller="Account" asp-action="Register">Add User</a></li>
+                                            <li><a asp-area="" asp-controller="Account" asp-action="Index">All users</a></li>
+                                            @if (this.User.IsInRole("Administrator"))
+                                            {
+                                                <li><a asp-area="" asp-controller="Administrators" asp-action="Index">Admin</a></li>
+                                                <li><a asp-area="" asp-controller="Owners" asp-action="Index">Owners</a></li>
+                                            }
+                                            <li><a asp-area="" asp-controller="Applicants" asp-action="Index">Applicants</a></li>
+                                            <li><a asp-area="" asp-controller="Interns" asp-action="Index">Interns</a></li>
+                                        </ul>
+                                    </li>
                                 }
-                                <li><a asp-area="" asp-controller="Account" asp-action="Logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
 
+                                @if (this.User.IsInRole("Owner"))
+                                {
+                                    <li class="dropdown-submenu">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Combos<b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a asp-area="" asp-controller="ApplicantTypes" asp-action="Index">ApplicantTypes</a></li>
+                                            <li><a asp-area="" asp-controller="Statuses" asp-action="Index">Statuses</a></li>
+                                        </ul>
+                                    </li>
+                                }
+
+                                <li><a asp-area="" asp-controller="Account" asp-action="Logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
                             </ul>
                         </li>
                     }

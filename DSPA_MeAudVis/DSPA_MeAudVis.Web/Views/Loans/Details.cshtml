@@ -10,25 +10,92 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Id)
+            Loan to
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Id)
+            @Html.DisplayFor(model => model.Applicant.User.FullName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.DateTimeIn)
+            Loan by
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.DateTimeIn)
+            @Html.DisplayFor(model => model.Intern.User.FullName)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DateTimeOut)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DateTimeOut)
-        </dd>
+
     </dl>
 </div>
+
+<div>
+    <hr />
+    <h1>Loan details</h1>
+    @if (Model.LoanDetails == null || Model.LoanDetails.Count == 0)
+    {
+        <h4>This applicant doesn't have loans</h4>
+    }
+    else
+    {
+        <table class="table table-hover table-responsive table-striped" id="MiTabla">
+            <thead>
+                <tr>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.LoanDetails.FirstOrDefault().Material.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LoanDetails.FirstOrDefault().DateTimeIn)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LoanDetails.FirstOrDefault().DateTimeOut)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LoanDetails.FirstOrDefault().Observations)
+                    </th>
+                    <th>
+                        Loaned to
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    @foreach (var itemi in Model.LoanDetails)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => itemi.Material.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => itemi.DateTimeIn)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => itemi.DateTimeOut)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => itemi.Observations)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => itemi.Loan.Applicant.User.FullName)
+                        </td>
+                        <td>
+                            @if (this.User.IsInRole("Intern"))
+                            {
+                                <a asp-controller="LoanDetails" asp-action="Details" asp-route-id="@itemi.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
+                                <a asp-controller="LoanDetails" asp-action="Edit" asp-route-id="@itemi.Id" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>
+                            }
+                            @if (this.User.IsInRole("Owner"))
+                            {
+                                <a asp-controller="LoanDetails" asp-action="Delete" asp-route-id="@itemi.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                            }
+                        </td>
+                    }
+
+                </tr>
+
+            </tbody>
+        </table>
+    }
+</div>
+
 <div>
     <a asp-action="Index" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>
 </div>

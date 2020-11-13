@@ -15,16 +15,29 @@ namespace DSPA_MeAudVis.Web.Controllers
     public class LoansController : Controller
     {
         private readonly DataContext _context;
+        private readonly ICombosHelper combosHelper;
+        private readonly IImageHelper imageHelper;
+        private readonly IUserHelper userHelper;
 
-        public LoansController(DataContext context)
+        public LoansController(DataContext context,
+            ICombosHelper combosHelper,
+            IImageHelper imageHelper,
+            IUserHelper userHelper)
         {
             _context = context;
+            this.combosHelper = combosHelper;
+            this.imageHelper = imageHelper;
+            this.userHelper = userHelper;
         }
 
         // GET: Loans
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Loans.ToListAsync());
+            return View( _context.Loans
+                .Include(s => s.Applicant)
+                .ThenInclude(c=>c.User)
+                .Include(s => s.Intern).ThenInclude(c => c.User)
+                .Include(s=>s.LoanDetails).ThenInclude(c=>c.Material));
         }
 
         // GET: Loans/Details/5
@@ -36,6 +49,17 @@ namespace DSPA_MeAudVis.Web.Controllers
             }
 
             var loan = await _context.Loans
+                .Include(s => s.Applicant)
+                .ThenInclude(c => c.User)
+                .Include(s => s.Intern).ThenInclude(c => c.User)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Status)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Material)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Loan)
+                .ThenInclude(x => x.Applicant)
+                .ThenInclude(y => y.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (loan == null)
             {

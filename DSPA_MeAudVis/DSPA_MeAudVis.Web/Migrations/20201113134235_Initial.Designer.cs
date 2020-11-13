@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSPA_MeAudVis.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201113020533_Initial")]
+    [Migration("20201113134235_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -122,10 +122,6 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.Property<int>("ApplicantId");
 
-                    b.Property<DateTime>("DateTimeIn");
-
-                    b.Property<DateTime>("DateTimeOut");
-
                     b.Property<int?>("InternId");
 
                     b.HasKey("Id");
@@ -142,6 +138,10 @@ namespace DSPA_MeAudVis.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateTimeIn");
+
+                    b.Property<DateTime>("DateTimeOut");
 
                     b.Property<int>("LoanId");
 
@@ -176,7 +176,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .IsRequired()
                         .HasMaxLength(6);
 
-                    b.Property<string>("Model")
+                    b.Property<string>("MaterialModel")
                         .IsRequired()
                         .HasMaxLength(15);
 
@@ -188,7 +188,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .IsRequired()
                         .HasMaxLength(15);
 
-                    b.Property<int>("StatusId");
+                    b.Property<int?>("StatusId");
 
                     b.HasKey("Id");
 
@@ -469,8 +469,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     b.HasOne("DSPA_MeAudVis.Web.Data.Entities.Status", "Status")
                         .WithMany("Materials")
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("StatusId");
                 });
 
             modelBuilder.Entity("DSPA_MeAudVis.Web.Data.Entities.Owner", b =>

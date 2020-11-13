@@ -76,7 +76,7 @@ namespace DSPA_MeAudVis.Web.Data
             {
                 var applicant = dataContext.Applicants.FirstOrDefault();
                 var intern = dataContext.Interns.FirstOrDefault();
-                dataContext.Loans.Add(new Loan { Applicant = applicant, DateTimeIn = DateTime.Now.AddDays(3), DateTimeOut = DateTime.Now, Intern=intern });
+                dataContext.Loans.Add(new Loan { Applicant = applicant, Intern=intern });
                 await dataContext.SaveChangesAsync();
             }
 
@@ -89,7 +89,7 @@ namespace DSPA_MeAudVis.Web.Data
             if (!dataContext.Materials.Any())
             {
                 var status = dataContext.Statuses.FirstOrDefault();
-                dataContext.Materials.Add(new Material { Name = "HDMI", Label = "MAV1", Brand = "Sony", Model = "PS5", SerialNum = "Z10954", Status = status });
+                dataContext.Materials.Add(new Material { Name = "HDMI", Label = "MAV1", Brand = "Sony", MaterialModel = "PS5", SerialNum = "Z10954", Status = status });
                 await dataContext.SaveChangesAsync();
             }
 
@@ -98,7 +98,7 @@ namespace DSPA_MeAudVis.Web.Data
                 var loan = dataContext.Loans.FirstOrDefault();
                 var status = dataContext.Statuses.FirstOrDefault();
                 var material = dataContext.Materials.FirstOrDefault();
-                dataContext.LoanDetails.Add(new LoanDetail { Loan=loan, Material=material, Status=status, Observations=string.Empty });
+                dataContext.LoanDetails.Add(new LoanDetail { Loan=loan, DateTimeIn = DateTime.Now.AddDays(3), DateTimeOut = DateTime.Now, Material =material, Status=status, Observations=string.Empty });
                 await dataContext.SaveChangesAsync();
             }
 

@@ -49,6 +49,7 @@ namespace DSPA_MeAudVis.Web.Controllers
 
             var owner = await _context.Owners
                 .Include(s => s.User)
+                .Include(s=>s.Handbooks)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (owner == null)
             {
@@ -199,7 +200,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             var owner = await _context.Owners
                 .Include(s => s.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            await userHelper.RemoveUserFromRoleAsync(owner.User, "Administrator");
+            await userHelper.RemoveUserFromRoleAsync(owner.User, "Owner");
             _context.Owners.Remove(owner);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

@@ -62,6 +62,8 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             var model = new MaterialViewModel
             {
+                Status = _context.Statuses.FirstOrDefault(),
+                StatusId=1,
                 Statuses = combosHelper.GetComboStatuses()
             };
 
@@ -75,10 +77,11 @@ namespace DSPA_MeAudVis.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MaterialViewModel model)
         {
+            
             if (ModelState.IsValid)
             {
-                var status =await  _context.Statuses.FirstOrDefaultAsync(m => m.Id == model.Status.Id);
-                var Material = new Material { Brand=model.Brand, Id=model.Id, Label=model.Label, LoanDetails=model.LoanDetails, Model=model.Model, Name=model.Name, SerialNum=model.SerialNum, Status=status};
+                var status = await _context.Statuses.FirstOrDefaultAsync(m => m.Id == model.StatusId);
+                var Material = new Material { Brand=model.Brand, Id=model.Id, Label=model.Label, LoanDetails=model.LoanDetails, MaterialModel = model.MaterialModel, Name=model.Name, SerialNum=model.SerialNum, Status=status};
 
                 _context.Add(Material);
                 await _context.SaveChangesAsync();
@@ -110,10 +113,11 @@ namespace DSPA_MeAudVis.Web.Controllers
                 Id=material.Id,
                 Brand=material.Brand,
                 Name=material.Name,
-                Model=material.Model,
+                MaterialModel=material.MaterialModel,
                 Status=material.Status,
                 Label=material.Label,
                 SerialNum=material.SerialNum,
+                StatusId=material.Status.Id,
                 Statuses= combosHelper.GetComboStatuses()
             };
 
@@ -127,10 +131,6 @@ namespace DSPA_MeAudVis.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, MaterialViewModel model)
         {
-            if (id != model.Id)
-            {
-                return new NotFoundViewResult("MaterialNotFound");
-            }
 
             if (ModelState.IsValid)
             {
@@ -144,11 +144,11 @@ namespace DSPA_MeAudVis.Web.Controllers
                 material.Id = model.Id;
                 material.Brand = model.Brand;
                 material.Name = model.Name;
-                material.Model = model.Model;
+                material.MaterialModel = model.MaterialModel;
                 material.Label = model.Label;
                 material.SerialNum = model.SerialNum;
 
-                var status = await _context.Statuses.FirstOrDefaultAsync(m => m.Id == model.Status.Id);
+                var status = await _context.Statuses.FirstOrDefaultAsync(m => m.Id == model.StatusId);
                 material.Status = status; 
 
                 _context.Update(material);

@@ -278,9 +278,9 @@ namespace DSPA_MeAudVis.Web.Migrations
                     Name = table.Column<string>(maxLength: 30, nullable: false),
                     Label = table.Column<string>(maxLength: 6, nullable: false),
                     Brand = table.Column<string>(maxLength: 15, nullable: false),
-                    Model = table.Column<string>(maxLength: 15, nullable: false),
+                    MaterialModel = table.Column<string>(maxLength: 15, nullable: false),
                     SerialNum = table.Column<string>(maxLength: 15, nullable: false),
-                    StatusId = table.Column<int>(nullable: false)
+                    StatusId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -290,7 +290,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.StatusId,
                         principalTable: "Statuses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -299,8 +299,6 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DateTimeOut = table.Column<DateTime>(nullable: false),
-                    DateTimeIn = table.Column<DateTime>(nullable: false),
                     InternId = table.Column<int>(nullable: true),
                     ApplicantId = table.Column<int>(nullable: false)
                 },
@@ -349,6 +347,8 @@ namespace DSPA_MeAudVis.Web.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Observations = table.Column<string>(nullable: true),
+                    DateTimeOut = table.Column<DateTime>(nullable: false),
+                    DateTimeIn = table.Column<DateTime>(nullable: false),
                     MaterialId = table.Column<int>(nullable: true),
                     StatusId = table.Column<int>(nullable: true),
                     LoanId = table.Column<int>(nullable: false)

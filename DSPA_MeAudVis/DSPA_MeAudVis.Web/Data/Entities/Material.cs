@@ -33,14 +33,13 @@
         [MaxLength(15, ErrorMessage = "{0} must have maximun {1} characters")]
         [Display(Name = "Model")]
         [Required(ErrorMessage = "{0} is required")]
-        public string Model { set; get; }
+        public string MaterialModel { set; get; }
 
         [MaxLength(15, ErrorMessage = "{0} must have maximun {1} characters")]
         [Display(Name = "Serial Number")]
         [Required(ErrorMessage = "{0} is required")]
         public string SerialNum { set; get; }
 
-        [Required(ErrorMessage = "{0} is required")]
         public Status Status { set; get; }
 
         public ICollection<LoanDetail> LoanDetails { set; get; }

@@ -9,14 +9,18 @@
 <table class="table">
     <thead>
         <tr>
+
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                Loaned to
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateTimeIn)
+                Loaned by
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateTimeOut)
+                Material
+            </th>
+            <th>
+                Label
             </th>
             <th></th>
         </tr>
@@ -24,28 +28,32 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateTimeIn)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateTimeOut)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
-                    @if (this.User.IsInRole("Intern"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>
-                    }
-                    @if (this.User.IsInRole("Owner"))
-                    {
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
-                    }
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Applicant.User.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Intern.User.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoanDetails.FirstOrDefault().Material.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoanDetails.FirstOrDefault().Material.Label)
+            </td>
+            <td>
+
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
+                @if (this.User.IsInRole("Intern"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>
+                }
+                @if (this.User.IsInRole("Owner"))
+                {
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                }
+            </td>
+        </tr>
         }
     </tbody>
 </table>

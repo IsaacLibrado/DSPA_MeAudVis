@@ -1,0 +1,83 @@
+﻿@model DSPA_MeAudVis.Web.Data.Entities.LoanDetail
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>View Loan Detail</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Material.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Material.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Material.Label)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Material.Label)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Material.MaterialModel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Material.MaterialModel)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Material.SerialNum)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Material.SerialNum)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status.StatusName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status.StatusName)
+        </dd>
+        <dt>
+            Loan to
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Loan.Applicant.User.FullName)
+        </dd>
+        <dt>
+            Loan by
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Loan.Intern.User.FullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTimeOut)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateTimeOut)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTimeIn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateTimeIn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Observations)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Observations)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a onclick="goBack()" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
