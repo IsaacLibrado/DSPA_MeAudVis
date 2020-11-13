@@ -10,5 +10,7 @@
         IEnumerable<SelectListItem> GetComboMaterials();
         IEnumerable<SelectListItem> GetComboUsers();
         IEnumerable<SelectListItem> GetComboRoles();
+        IEnumerable<SelectListItem> GetComboInterns();
+        IEnumerable<SelectListItem> GetComboApplicants();
     }
 }

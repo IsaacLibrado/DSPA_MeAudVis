@@ -23,7 +23,7 @@
         [Display(Name = "Intern")]
         public Intern Intern { set; get; }
 
-        [Required(ErrorMessage = "{0} is required")]
+        [Display(Name = "Applicant")]
         public Applicant Applicant { set; get; }
        
     }

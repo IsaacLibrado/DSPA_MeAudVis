@@ -46,6 +46,38 @@
             return list;
         }
 
+        public IEnumerable<SelectListItem> GetComboInterns()
+        {
+            var list = dataContext.Interns.Select(
+                c => new SelectListItem
+                {
+                    Text = string.Format("{0} {1}",c.User.UserName ,c.User.FullName),
+                    Value = $"{c.Id}"
+                }).ToList();
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[You have to choose an Intern...]",
+                Value = "0"
+            });
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetComboApplicants()
+        {
+            var list = dataContext.Applicants.Select(
+                c => new SelectListItem
+                {
+                    Text = string.Format("{0} {1}", c.User.UserName, c.User.FullName),
+                    Value = $"{c.Id}"
+                }).ToList();
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[You have to choose an Applicant...]",
+                Value = "0"
+            });
+            return list;
+        }
+
         public IEnumerable<SelectListItem> GetComboMaterials()
         {
             var list = dataContext.Materials.Select(

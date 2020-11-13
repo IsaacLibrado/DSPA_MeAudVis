@@ -1,4 +1,4 @@
-﻿@model DSPA_MeAudVis.Web.Data.Entities.Loan
+﻿@model DSPA_MeAudVis.Web.Models.LoanViewModel
 
 @{
     ViewData["Title"] = "Add Loan";
@@ -11,6 +11,20 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Intern" />
+            <input type="hidden" asp-for="Applicant" />
+            <input type="hidden" asp-for="LoanDetails" />
+            <div class="form-group">
+                <label asp-for="InternId" class="control-label"></label>
+                <select asp-for="InternId" asp-items="Model.Interns" class="form-control"> </select>
+                <span asp-validation-for="InternId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicantId" class="control-label"></label>
+                <select asp-for="ApplicantId" asp-items="Model.Applicants" class="form-control"> </select>
+                <span asp-validation-for="ApplicantId" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <a asp-action="Index" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>
                 <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-plus"></span> </button>

@@ -9,6 +9,7 @@ using DSPA_MeAudVis.Web.Data;
 using DSPA_MeAudVis.Web.Data.Entities;
 using DSPA_MeAudVis.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using DSPA_MeAudVis.Web.Models;
 
 namespace DSPA_MeAudVis.Web.Controllers
 {
@@ -73,7 +74,15 @@ namespace DSPA_MeAudVis.Web.Controllers
         // GET: Loans/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new LoanViewModel
+            {
+                InternId = 1,
+                ApplicantId = 1,
+                Applicants = combosHelper.GetComboApplicants(),
+                Interns = combosHelper.GetComboInterns()
+            };
+
+            return View(model);
         }
 
         // POST: Loans/Create
@@ -81,15 +90,21 @@ namespace DSPA_MeAudVis.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DateTimeIn,DateTimeOut")] Loan loan)
+        public async Task<IActionResult> Create(LoanViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var applicant = await _context.Applicants.FirstOrDefaultAsync(m => m.Id == model.ApplicantId);
+                var intern = await _context.Interns.FirstOrDefaultAsync(m => m.Id == model.InternId);
+                var loan = new Loan {Applicant=applicant, Intern=intern};
+
+
                 _context.Add(loan);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(loan);
+
+            return View(model);
         }
 
         [Authorize(Roles = "Intern")]
@@ -101,12 +116,30 @@ namespace DSPA_MeAudVis.Web.Controllers
                 return new NotFoundViewResult("LoanNotFound");
             }
 
-            var loan = await _context.Loans.FindAsync(id);
+            var loan = await _context.Loans
+                .Include(s => s.Intern)
+                .Include(s=>s.Applicant)
+                .Include(s=>s.LoanDetails)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (loan == null)
             {
                 return new NotFoundViewResult("LoanNotFound");
             }
-            return View(loan);
+
+
+            var model = new LoanViewModel
+            {
+                Id = loan.Id,
+                Intern = loan.Intern,
+                Applicant = loan.Applicant,
+                LoanDetails = loan.LoanDetails,
+                InternId = loan.Intern.Id,
+                ApplicantId = loan.Applicant.Id,
+                Applicants = combosHelper.GetComboApplicants(),
+                Interns=combosHelper.GetComboInterns()
+            };
+
+            return View(model);
         }
 
         // POST: Loans/Edit/5
@@ -114,34 +147,29 @@ namespace DSPA_MeAudVis.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DateTimeIn,DateTimeOut")] Loan loan)
+        public async Task<IActionResult> Edit(int id, LoanViewModel model)
         {
-            if (id != loan.Id)
-            {
-                return new NotFoundViewResult("LoanNotFound");
-            }
-
             if (ModelState.IsValid)
             {
-                try
+                var loan = await _context.Loans.FirstOrDefaultAsync(m => m.Id == model.Id);
+
+                if (loan== null)
                 {
-                    _context.Update(loan);
-                    await _context.SaveChangesAsync();
+                    return new NotFoundViewResult("LoanNotFound");
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LoanExists(loan.Id))
-                    {
-                        return new NotFoundViewResult("LoanNotFound");
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
+                var applicant = await _context.Applicants.FirstOrDefaultAsync(m => m.Id == model.ApplicantId);
+                loan.Applicant = applicant;
+
+                var intern = await _context.Interns.FirstOrDefaultAsync(m => m.Id == model.InternId);
+                loan.Intern = intern;
+
+                _context.Update(loan);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(loan);
+
+            return View(model);
         }
 
         [Authorize(Roles = "Owner")]
