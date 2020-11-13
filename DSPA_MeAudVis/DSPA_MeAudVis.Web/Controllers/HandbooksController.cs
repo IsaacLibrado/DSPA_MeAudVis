@@ -9,6 +9,7 @@ using DSPA_MeAudVis.Web.Data;
 using DSPA_MeAudVis.Web.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using DSPA_MeAudVis.Web.Helpers;
+using DSPA_MeAudVis.Web.Models;
 
 namespace DSPA_MeAudVis.Web.Controllers
 {
@@ -44,6 +45,7 @@ namespace DSPA_MeAudVis.Web.Controllers
                 return new NotFoundViewResult("HandbookNotFound");
             }
 
+
             return View(handbook);
         }
 
@@ -51,7 +53,9 @@ namespace DSPA_MeAudVis.Web.Controllers
         // GET: Handbooks/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new HandbookViewModel();
+
+            return View(model);
         }
 
         // POST: Handbooks/Create
@@ -59,15 +63,24 @@ namespace DSPA_MeAudVis.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Handbook handbook)
+        public async Task<IActionResult> Create(HandbookViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(handbook);
+                var owner = _context.Owners.FirstOrDefault();
+                var hb = new Handbook { Name = model.Name, Id = model.Id, Owner=owner };
+                
+
+                if (model.ImageFile != null)
+                {
+                    hb.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, hb.Name, "Manuales");
+                }
+
+                _context.Add(hb);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(handbook);
+            return View(model);
         }
 
         [Authorize(Roles = "Owner")]
@@ -84,7 +97,10 @@ namespace DSPA_MeAudVis.Web.Controllers
             {
                 return new NotFoundViewResult("HandbookNotFound");
             }
-            return View(handbook);
+
+            var hb = new HandbookViewModel { Id = handbook.Id, ImageURL = handbook.ImageURL, Name = handbook.Name, Owner = handbook.Owner };
+
+            return View(hb);
         }
 
         // POST: Handbooks/Edit/5
@@ -92,34 +108,36 @@ namespace DSPA_MeAudVis.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ImageURL")] Handbook handbook)
+        public async Task<IActionResult> Edit(int id, HandbookViewModel model)
         {
-            if (id != handbook.Id)
+            if (id != model.Id)
             {
                 return new NotFoundViewResult("HandbookNotFound");
             }
 
             if (ModelState.IsValid)
             {
-                try
+                var handbook = await _context.Handbooks.FirstOrDefaultAsync(m => m.Id == model.Id);
+
+                if (handbook == null)
                 {
-                    _context.Update(handbook);
-                    await _context.SaveChangesAsync();
+                    return new NotFoundViewResult("HandbookNotFound");
                 }
-                catch (DbUpdateConcurrencyException)
+
+                handbook.Id = model.Id;
+                if (model.ImageFile != null)
                 {
-                    if (!HandbookExists(handbook.Id))
-                    {
-                        return new NotFoundViewResult("HandbookNotFound");
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    handbook.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, handbook.Name, "Manuales");
                 }
+                handbook.Name = model.Name;
+                handbook.Owner = model.Owner;
+
+                _context.Update(handbook);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(handbook);
+
+            return View(model);
         }
 
         [Authorize(Roles = "Owner")]

@@ -20,7 +20,10 @@
             @Html.DisplayNameFor(model => model.ImageURL)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ImageURL)
+            @if (!string.IsNullOrEmpty(Model.ImageURL))
+            {
+                <img src="@Url.Content(Model.ImageURL)" style="width:600px;height:600px" />
+            }
         </dd>
     </dl>
     

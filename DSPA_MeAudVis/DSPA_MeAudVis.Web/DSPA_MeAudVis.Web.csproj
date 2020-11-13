@@ -80,6 +80,7 @@
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\images\FotosEstudiantes\" />
     <Folder Include="wwwroot\images\DocumentosEstudiantes\" />
+    <Folder Include="wwwroot\images\Manuales\" />
   </ItemGroup>
 
 </Project>
