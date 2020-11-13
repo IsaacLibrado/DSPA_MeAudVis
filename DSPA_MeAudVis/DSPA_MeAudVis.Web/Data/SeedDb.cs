@@ -53,8 +53,8 @@ namespace DSPA_MeAudVis.Web.Data
 
             if (!dataContext.ApplicantTypes.Any())
             {
-                dataContext.ApplicantTypes.Add(new ApplicantType { Type = "Teacher" });
                 dataContext.ApplicantTypes.Add(new ApplicantType { Type = "Student" });
+                dataContext.ApplicantTypes.Add(new ApplicantType { Type = "Teacher" });
                 await dataContext.SaveChangesAsync();
             }
 

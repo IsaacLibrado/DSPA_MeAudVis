@@ -1,4 +1,4 @@
-﻿@model DSPA_MeAudVis.Web.Data.Entities.Administrator
+﻿@model DSPA_MeAudVis.Web.Models.AdministratorViewModel
 
 @{
     ViewData["Title"] = "Edit Administrator";
@@ -9,17 +9,57 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            >
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" readonly/>
-            </div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ImageURL" />
+            <input type="hidden" asp-for="User.UserName" />
+            <input type="hidden" asp-for="UserUserName" />
             <div class="form-group">
-                <label asp-for="User.UserName" class="control-label"></label>
-                <input asp-for="User" class="form-control" />
-                <span asp-validation-for="User" class="text-danger"></span>
+
+                <div class="form-group">
+                    <label asp-for="User.FirstName" class="control-label"></label>
+                    <input asp-for="User.FirstName" class="form-control" />
+                    <span asp-validation-for="User.FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="User.LastName" class="control-label"></label>
+                    <input asp-for="User.LastName" class="form-control" />
+                    <span asp-validation-for="User.LastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="User.PhoneNumber" class="control-label"></label>
+                    <input asp-for="User.PhoneNumber" class="form-control" />
+                    <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="User.Email" class="control-label"></label>
+                    <input asp-for="User.Email" class="form-control" />
+                    <span asp-validation-for="User.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="User.RegistrationNumber" class="control-label"></label>
+                    <input asp-for="User.RegistrationNumber" class="form-control" />
+                    <span asp-validation-for="User.RegistrationNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ImageFile" class="control-label"></label>
+                    <div>
+                        @if (!string.IsNullOrEmpty(Model.ImageURL))
+                        {
+                            <img src="@Url.Content(Model.ImageURL)" style="width:100px;height:100px" />
+                        }
+                    </div>
+                    <br />
+                    <input asp-for="ImageFile" class="form-control" type="file" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
                 <a asp-action="Index" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>

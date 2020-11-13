@@ -78,6 +78,7 @@
                                 @if (this.User.IsInRole("Owner") || this.User.IsInRole("Administrator"))
                                 {
                                     <li><a asp-area="" asp-controller="Account" asp-action="Register">Add User</a></li>
+                                    <li><a asp-area="" asp-controller="Account" asp-action="Index">User's list</a></li>
                                 }
                                 <li><a asp-area="" asp-controller="Account" asp-action="Logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
 

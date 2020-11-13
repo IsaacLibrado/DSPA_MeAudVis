@@ -1,22 +1,38 @@
 ﻿namespace DSPA_MeAudVis.Web.Controllers
 {
+    using DSPA_MeAudVis.Web.Data;
     using DSPA_MeAudVis.Web.Data.Entities;
     using DSPA_MeAudVis.Web.Helpers;
     using DSPA_MeAudVis.Web.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
     using System.Linq;
     using System.Threading.Tasks;
 
     //controlador para el inicio de sesion
     public class AccountController : Controller
     {
+        private readonly DataContext _context;
         private readonly IUserHelper userHelper;
+        private readonly ICombosHelper combosHelper;
+        private readonly IImageHelper imageHelper;
 
-        public AccountController(IUserHelper userHelper)
+        public AccountController(DataContext context,IUserHelper userHelper, ICombosHelper combosHelper,
+            IImageHelper imageHelper)
         {
+            _context = context;
             this.userHelper = userHelper;
+            this.combosHelper = combosHelper;
+            this.imageHelper = imageHelper;
+        }
+
+        [Authorize(Roles = "Owner, Administrator")]
+        // GET: Statuses
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Users.ToListAsync());
         }
 
         public IActionResult Login()
@@ -59,7 +75,7 @@
         [Authorize(Roles = "Owner, Administrator")]
         public IActionResult Register()
         {
-            var model = new RegisterViewModel();
+            var model = new RegisterViewModel{ Roles=combosHelper.GetComboRoles()};
 
             return View(model);
         }
@@ -82,6 +98,7 @@
                         Email = model.Email,
                         RegistrationNumber=model.RegistrationNumber,
                         UserName = model.RegistrationNumber.ToString()
+                       
                     };
 
                     var result = await userHelper.AddUserAsync(user, model.Password);
@@ -94,7 +111,37 @@
 
                     if (ModelState.IsValid)
                     {
-                            return RedirectToAction("Register", "Account");
+                        await userHelper.AddUserToRoleAsync(user, model.RoleName);
+                        if (model.ImageFile != null)
+                        {
+                            user.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, user.FullName, "FotosEstudiantes");
+                        }
+
+                        switch (model.RoleName)
+                        {
+                            case "Administrator":
+                                _context.Administrators.Add(new Administrator { User = user });
+                                break;
+                            case "Intern":
+                                _context.Interns.Add(new Intern { User = user, DepartureTime = 0, EntryTime = 0 });
+                                break;
+                            case "Owner":
+                                _context.Owners.Add(new Owner { User = user });
+                                break;
+                            case "Applicant":
+                                var applicantType = _context.ApplicantTypes.FirstOrDefault();
+                                _context.Applicants.Add(new Applicant { User = user, Type = applicantType, Debtor = false });
+                                break;
+                            default:
+                                applicantType = _context.ApplicantTypes.FirstOrDefault();
+                                _context.Applicants.Add(new Applicant { User = user, Type = applicantType, Debtor = false });
+                                break;
+                                
+                        }
+
+                        await _context.SaveChangesAsync();
+
+                        return RedirectToAction("Register", "Account");
                     }
                 }
 

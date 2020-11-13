@@ -14,6 +14,8 @@
     public class User : IdentityUser
     {
         //Propiedades
+        [Display(Name = "Photo")]
+        public string ImageURL { get; set; }
 
         [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Registration Number")]

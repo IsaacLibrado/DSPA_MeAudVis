@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSPA_MeAudVis.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201112192608_Initial")]
-    partial class Initial
+    [Migration("20201113005811_Initia")]
+    partial class Initia
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,6 +26,8 @@ namespace DSPA_MeAudVis.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ImageURL");
 
                     b.Property<string>("UserId")
                         .IsRequired();
@@ -249,6 +251,8 @@ namespace DSPA_MeAudVis.Web.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(15);
+
+                    b.Property<string>("ImageURL");
 
                     b.Property<string>("LastName")
                         .IsRequired();

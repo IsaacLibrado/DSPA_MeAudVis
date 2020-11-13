@@ -8,5 +8,7 @@
         IEnumerable<SelectListItem> GetComboStatuses();
         IEnumerable<SelectListItem> GetComboApplicantTypes();
         IEnumerable<SelectListItem> GetComboMaterials();
+        IEnumerable<SelectListItem> GetComboUsers();
+        IEnumerable<SelectListItem> GetComboRoles();
     }
 }

@@ -68,12 +68,28 @@
             var list = dataContext.Users.Select(
                 c => new SelectListItem
                 {
-                    Text = c.FullName,
+                    Text = c.UserName,
                     Value = $"{c.UserName}"
                 }).ToList();
             list.Insert(0, new SelectListItem
             {
-                Text = "[You have to choose a material...]",
+                Text = "[You have to choose a username...]",
+                Value = "0"
+            });
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetComboRoles()
+        {
+            var list = dataContext.Roles.Select(
+                c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = $"{c.Name}"
+                }).ToList();
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[You have to choose a username...]",
                 Value = "0"
             });
             return list;

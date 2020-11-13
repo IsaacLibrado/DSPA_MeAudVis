@@ -25,6 +25,8 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ImageURL");
+
                     b.Property<string>("UserId")
                         .IsRequired();
 
@@ -247,6 +249,8 @@ namespace DSPA_MeAudVis.Web.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(15);
+
+                    b.Property<string>("ImageURL");
 
                     b.Property<string>("LastName")
                         .IsRequired();
