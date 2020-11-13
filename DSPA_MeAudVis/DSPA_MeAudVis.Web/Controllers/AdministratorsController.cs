@@ -91,10 +91,6 @@ namespace DSPA_MeAudVis.Web.Controllers
 
                 var administrator = new Administrator { User = user };
 
-                if (model.ImageFile != null)
-                {
-                    administrator.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, model.User.FullName, "FotosEstudiantes");
-                }
 
                 await userHelper.AddUserToRoleAsync(user, "Administrator");
 
@@ -171,10 +167,6 @@ namespace DSPA_MeAudVis.Web.Controllers
                     return new NotFoundViewResult("AdministratorNotFound");
                 }
 
-                if (model.ImageFile != null)
-                {
-                    administrator.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, model.User.FullName, "FotosEstudiantes");
-                }
                 administrator.Id = model.Id;
                 administrator.User = user;
                 _context.Update(administrator);

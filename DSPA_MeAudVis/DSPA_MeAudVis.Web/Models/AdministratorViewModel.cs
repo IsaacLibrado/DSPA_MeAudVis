@@ -11,8 +11,6 @@
 
     public class AdministratorViewModel:Administrator
     {
-        [Display(Name = "Photo")]
-        public IFormFile ImageFile { get; set; }
 
         [Required(ErrorMessage = "{0} is required")]
         [Range(1, int.MaxValue, ErrorMessage = "You have to select a User")]

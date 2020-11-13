@@ -69,7 +69,13 @@ namespace DSPA_MeAudVis.Web.Controllers
         // GET: Applicants/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new ApplicantViewModel
+            {
+                Users = combosHelper.GetComboUsers(),
+                Types = combosHelper.GetComboApplicantTypes()
+            };
+
+            return View(model);
         }
 
         // POST: Applicants/Create
@@ -154,10 +160,6 @@ namespace DSPA_MeAudVis.Web.Controllers
                     return new NotFoundViewResult("ApplicantNotFound");
                 }
 
-                if(model.ImageFile!=null)
-                {
-                    applicant.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, model.User.FullName, "FotosEstudiantes");
-                }
                 applicant.Id = model.Id;
                 applicant.Debtor = model.Debtor;
                 applicant.User = user;

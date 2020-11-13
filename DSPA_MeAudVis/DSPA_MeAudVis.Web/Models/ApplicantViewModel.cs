@@ -13,14 +13,18 @@ namespace DSPA_MeAudVis.Web.Models
 
     public class ApplicantViewModel:Applicant
     {
-        [Display(Name = "Photo")]
-        public IFormFile ImageFile { get; set; }
-
         [Required(ErrorMessage = "{0} is required")]
         [Range(1, int.MaxValue, ErrorMessage = "You have to select a type")]
         [Display(Name = "Type")]
         public int TypeId { get; set; }
 
         public IEnumerable<SelectListItem> Types { get; set; }
+
+        [Required(ErrorMessage = "{0} is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "You have to select a User")]
+        [Display(Name = "User")]
+        public string UserUserName { get; set; }
+
+        public IEnumerable<SelectListItem> Users { get; set; }
     }
 }
