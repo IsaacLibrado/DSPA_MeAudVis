@@ -19,7 +19,7 @@
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.ImageURL)
+                                @Html.DisplayNameFor(model => model.User.ImageURL)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.User.RegistrationNumber)
@@ -41,9 +41,9 @@
                         {
                             <tr>
                                 <td>
-                                    @if (!string.IsNullOrEmpty(item.ImageURL))
+                                    @if (!string.IsNullOrEmpty(item.User.ImageURL))
                                     {
-                                        <img src="@Url.Content(item.ImageURL)" style="width:100px;height:100px" />
+                                        <img src="@Url.Content(item.User.ImageURL)" style="width:100px;height:100px" />
                                     }
                                 </td>
                                 <td>
@@ -60,7 +60,6 @@
                                 </td>
                                 <td>
                                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>
                                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
                                 </td>
                             </tr>

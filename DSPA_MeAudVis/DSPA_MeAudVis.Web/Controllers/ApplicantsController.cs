@@ -83,15 +83,29 @@ namespace DSPA_MeAudVis.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Debtor")] Applicant applicant)
+        public async Task<IActionResult> Create(ApplicantViewModel model)
         {
-            if (ModelState.IsValid)
+            if (model.UserUserName != "[You have to choose a username...]" && model.TypeId!= 0)
             {
+                var user = await userHelper.GetUserByNameAsync(model.UserUserName);
+
+                if (user == null)
+                {
+                    return new NotFoundViewResult("ApplicantNotFound");
+                }
+
+                var type = await _context.ApplicantTypes.FirstOrDefaultAsync(m => m.Id == model.TypeId);
+                var applicant = new Applicant { User = user, Type=type, Debtor=model.Debtor};
+
+
+                await userHelper.AddUserToRoleAsync(user, "Applicant");
+
                 _context.Add(applicant);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(applicant);
+
+            return View(model);
         }
 
         [Authorize(Roles = "Administrator, Owner")]
@@ -116,7 +130,6 @@ namespace DSPA_MeAudVis.Web.Controllers
             {
                 Id = applicant.Id,
                 User = applicant.User,
-                ImageURL = applicant.ImageURL,
                 Debtor = applicant.Debtor,
                 TypeId = applicant.Type.Id,
                 Types = combosHelper.GetComboApplicantTypes(),
@@ -183,6 +196,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             }
 
             var applicant = await _context.Applicants
+                .Include(s => s.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (applicant == null)
             {
@@ -197,7 +211,9 @@ namespace DSPA_MeAudVis.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var applicant = await _context.Applicants.FindAsync(id);
+            var applicant = await _context.Applicants.Include(s => s.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            await userHelper.RemoveUserFromRoleAsync(applicant.User, "Applicant");
             _context.Applicants.Remove(applicant);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

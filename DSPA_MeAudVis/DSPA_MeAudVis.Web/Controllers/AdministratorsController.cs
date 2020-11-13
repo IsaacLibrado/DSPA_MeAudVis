@@ -124,7 +124,6 @@ namespace DSPA_MeAudVis.Web.Controllers
             {
                 Id = administrator.Id,
                 User = administrator.User,
-                ImageURL = administrator.ImageURL,
                 UserUserName = administrator.User.UserName,
                 Users = combosHelper.GetComboUsers()
             };

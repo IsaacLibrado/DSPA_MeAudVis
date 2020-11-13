@@ -25,8 +25,6 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ImageURL");
-
                     b.Property<string>("UserId")
                         .IsRequired();
 
@@ -44,8 +42,6 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Debtor");
-
-                    b.Property<string>("ImageURL");
 
                     b.Property<int?>("TypeId");
 

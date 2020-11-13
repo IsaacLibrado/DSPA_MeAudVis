@@ -89,7 +89,7 @@
                 }).ToList();
             list.Insert(0, new SelectListItem
             {
-                Text = "[You have to choose a username...]",
+                Text = "[You have to choose a role...]",
                 Value = "0"
             });
             return list;

@@ -15,10 +15,12 @@ namespace DSPA_MeAudVis.Web.Controllers
     public class HandbooksController : Controller
     {
         private readonly DataContext _context;
+        private readonly IImageHelper imageHelper;
 
-        public HandbooksController(DataContext context)
+        public HandbooksController(DataContext context, IImageHelper imageHelper)
         {
             _context = context;
+            this.imageHelper = imageHelper;
         }
 
         // GET: Handbooks

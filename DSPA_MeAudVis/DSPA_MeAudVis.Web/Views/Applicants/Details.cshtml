@@ -11,12 +11,12 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.ImageURL)
+            @Html.DisplayNameFor(model => model.User.ImageURL)
         </dt>
         <dd>
-            @if (!string.IsNullOrEmpty(Model.ImageURL))
+            @if (!string.IsNullOrEmpty(Model.User.ImageURL))
             {
-                <img src="@Url.Content(Model.ImageURL)" style="width:100px;height:100px" />
+                <img src="@Url.Content(Model.User.ImageURL)" style="width:100px;height:100px" />
             }
         </dd>
         <dt>
@@ -99,9 +99,9 @@
                                 @Html.DisplayFor(modelItem => item.Intern.User.FullName)
                             </td>
                             <td>
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                                <a asp-controller="Loans" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
+                                <a asp-controller="Loans" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a asp-controller="Loans" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
                             </td>
                         </tr>
                         }

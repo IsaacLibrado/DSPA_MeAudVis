@@ -55,6 +55,8 @@
     <Compile Remove="Migrations\20201112192608_Initial.Designer.cs" />
     <Compile Remove="Migrations\20201112224148_Initial.cs" />
     <Compile Remove="Migrations\20201112224148_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20201113005811_Initia.cs" />
+    <Compile Remove="Migrations\20201113005811_Initia.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -75,6 +77,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\images\FotosEstudiantes\" />
     <Folder Include="wwwroot\images\DocumentosEstudiantes\" />
   </ItemGroup>

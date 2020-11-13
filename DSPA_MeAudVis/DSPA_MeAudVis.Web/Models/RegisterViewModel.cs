@@ -27,6 +27,7 @@
         public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "{0} is required")]
+        [Range(1, 5, ErrorMessage = "You have to select an Role")]
         [Display(Name = "Role")]
         public string RoleName { get; set; }
 

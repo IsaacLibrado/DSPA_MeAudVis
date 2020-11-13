@@ -1,21 +1,20 @@
-﻿namespace DSPA_MeAudVis.Web.Models
+﻿
+namespace DSPA_MeAudVis.Web.Models
 {
+    using DSPA_MeAudVis.Web.Data.Entities;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Threading.Tasks;
-    using DSPA_MeAudVis.Web.Data.Entities;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using System.ComponentModel.DataAnnotations;
 
-    public class AdministratorViewModel:Administrator
+    public class OwnerViewModel:Owner
     {
-
         [Required(ErrorMessage = "{0} is required")]
         [Range(1, int.MaxValue, ErrorMessage = "You have to select an User")]
         [Display(Name = "User")]
-        public string UserUserName  { get; set; }
+        public string UserUserName { get; set; }
 
         public IEnumerable<SelectListItem> Users { get; set; }
     }

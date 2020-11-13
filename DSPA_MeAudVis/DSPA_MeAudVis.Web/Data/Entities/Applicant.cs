@@ -16,9 +16,6 @@
     {
         public int Id { set; get; }
 
-        [Display(Name = "Photo")]
-        public string ImageURL { get; set; }
-
         [Required(ErrorMessage = "{0} is required")]
         public bool Debtor { set; get; }
 

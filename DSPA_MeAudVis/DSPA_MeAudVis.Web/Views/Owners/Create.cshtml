@@ -1,4 +1,4 @@
-﻿@model DSPA_MeAudVis.Web.Data.Entities.Owner
+﻿@model DSPA_MeAudVis.Web.Models.OwnerViewModel
 
 @{
     ViewData["Title"] = "Create Owner";
@@ -10,10 +10,16 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="User.UserName" class="control-label"></label>
-                <input asp-for="User" class="form-control" />
-                <span asp-validation-for="User" class="text-danger"></span>
+                <div class="form-group">
+
+                    <div class="form-group">
+                        <label asp-for="UserUserName" class="control-label"></label>
+                        <select asp-for="UserUserName" asp-items="Model.Users" class="form-control"> </select>
+                        <span asp-validation-for="UserUserName" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <a asp-action="Index" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>

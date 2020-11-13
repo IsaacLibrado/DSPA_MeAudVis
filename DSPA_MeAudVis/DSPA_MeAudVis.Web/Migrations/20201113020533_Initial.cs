@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DSPA_MeAudVis.Web.Migrations
 {
-    public partial class Initia : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -104,7 +104,6 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ImageURL = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -124,7 +123,6 @@ namespace DSPA_MeAudVis.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ImageURL = table.Column<string>(nullable: true),
                     Debtor = table.Column<bool>(nullable: false),
                     UserId = table.Column<string>(nullable: false),
                     TypeId = table.Column<int>(nullable: true)
