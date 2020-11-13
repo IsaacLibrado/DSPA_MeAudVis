@@ -21,7 +21,7 @@
                 c => new SelectListItem
                 {
                     Text = c.StatusName,
-                    Value = $"{c.Id}"
+                    Value = $"{c.StatusName}"
                 }).ToList();
             list.Insert(0, new SelectListItem
             {
