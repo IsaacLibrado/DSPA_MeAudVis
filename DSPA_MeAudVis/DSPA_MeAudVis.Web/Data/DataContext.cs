@@ -3,6 +3,7 @@
     using DSPA_MeAudVis.Web.Data.Entities;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Clase Data Context para la migracion en la base de datos
@@ -33,7 +34,6 @@
         public DbSet<Owner> Owners { set; get; }
 
         public DbSet<Status> Statuses { set; get; }
-        
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {

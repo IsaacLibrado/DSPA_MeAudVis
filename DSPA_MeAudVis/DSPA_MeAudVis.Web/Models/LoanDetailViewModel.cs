@@ -23,5 +23,10 @@ namespace DSPA_MeAudVis.Web.Models
         public int MaterialId { get; set; }
 
         public IEnumerable<SelectListItem> Materials { get; set; }
+
+        [Required(ErrorMessage = "{0} is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "You have to select a Loan")]
+        [Display(Name = "Loan")]
+        public int LoanID { get; set; }
     }
 }

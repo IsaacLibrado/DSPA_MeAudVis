@@ -64,7 +64,8 @@
 
         public IEnumerable<SelectListItem> GetComboApplicants()
         {
-            var list = dataContext.Applicants.Select(
+            var list = dataContext.Applicants.Where(item => item.Debtor!=true)
+                .Select(
                 c => new SelectListItem
                 {
                     Text = string.Format("{0} {1}", c.User.UserName, c.User.FullName),
@@ -80,12 +81,14 @@
 
         public IEnumerable<SelectListItem> GetComboMaterials()
         {
-            var list = dataContext.Materials.Select(
-                c => new SelectListItem
+            var list = dataContext.Materials.Where(item => item.Status.Id!=2).Where(item => item.Status.Id != 4)
+                .Select(
+                c =>   new SelectListItem
                 {
                     Text = string.Format("{0} {1}", c.Name, c.Label),
                     Value = $"{c.Id}"
                 }).ToList();
+
             list.Insert(0, new SelectListItem
             {
                 Text = "[You have to choose a material...]",
@@ -96,7 +99,8 @@
 
         public IEnumerable<SelectListItem> GetComboUsers()
         {
-            var list = dataContext.Users.Select(
+            var list = dataContext.Users
+                .Select(
                 c => new SelectListItem
                 {
                     Text = string.Format("{0} {1}",c.UserName, c.FullName),

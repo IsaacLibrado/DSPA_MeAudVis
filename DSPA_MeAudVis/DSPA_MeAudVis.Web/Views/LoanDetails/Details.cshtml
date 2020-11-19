@@ -34,7 +34,7 @@
             @Html.DisplayFor(model => model.Material.SerialNum)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Status.StatusName)
+            Status
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Status.StatusName)
@@ -61,7 +61,10 @@
             @Html.DisplayNameFor(model => model.DateTimeIn)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.DateTimeIn)
+            @if (Model.DateTimeIn.Year != 0001)
+            {
+                @Html.DisplayFor(modelItem => Model.DateTimeIn);
+            }
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Observations)

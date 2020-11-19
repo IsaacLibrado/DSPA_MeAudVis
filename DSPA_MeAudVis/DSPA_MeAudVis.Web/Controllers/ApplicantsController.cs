@@ -63,6 +63,7 @@ namespace DSPA_MeAudVis.Web.Controllers
                 .ThenInclude(v => v.Loan)
                 .ThenInclude(x => x.Intern)
                 .ThenInclude(y => y.User)
+                .Include(s=>s.Type)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (applicant == null)
             {

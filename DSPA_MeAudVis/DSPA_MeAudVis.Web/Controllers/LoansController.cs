@@ -31,16 +31,38 @@ namespace DSPA_MeAudVis.Web.Controllers
             this.userHelper = userHelper;
         }
 
+        [Authorize(Roles = "Intern, Applicant, Owner, Administrator")]
         // GET: Loans
-        public IActionResult Index()
+        public  IActionResult Index()
         {
-            return View( _context.Loans
-                .Include(s => s.Applicant)
-                .ThenInclude(c=>c.User)
-                .Include(s => s.Intern).ThenInclude(c => c.User)
-                .Include(s=>s.LoanDetails).ThenInclude(c=>c.Material));
+            var applicant= _context.Applicants.FirstOrDefault();
+
+            applicant = null;
+
+            foreach (Applicant applicantObj in _context.Applicants.Include(s => s.User).Include(c=>c.Loans))
+            {
+                if (applicantObj.User.UserName == this.User.Identity.Name)
+                {
+                    applicant = applicantObj;
+                }
+            }
+
+            if (applicant!=null)
+            {
+                if(applicant.Loans==null || applicant.Loans.Count==0)
+                    return new NotFoundViewResult("LoanNotFound");
+
+                
+            }
+
+            return View(_context.Loans
+                 .Include(s => s.Applicant)
+                 .ThenInclude(c => c.User)
+                 .Include(s => s.Intern).ThenInclude(c => c.User)
+                 .Include(s => s.LoanDetails).ThenInclude(c => c.Material));
         }
 
+        [Authorize(Roles = "Intern, Applicant, Owner, Administrator")]
         // GET: Loans/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -67,6 +89,9 @@ namespace DSPA_MeAudVis.Web.Controllers
                 return new NotFoundViewResult("LoanNotFound");
             }
 
+            if (this.User.Identity.Name != loan.Intern.User.UserName && !this.User.IsInRole("Owner") && !this.User.IsInRole("Administrator"))
+                return new NotFoundViewResult("LoanNotFound");
+
             return View(loan);
         }
 
@@ -76,10 +101,10 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             var model = new LoanViewModel
             {
-                InternId = 1,
                 ApplicantId = 1,
                 Applicants = combosHelper.GetComboApplicants(),
-                Interns = combosHelper.GetComboInterns()
+                Materials = combosHelper.GetComboMaterials(),
+                MaterialId=1
             };
 
             return View(model);
@@ -95,76 +120,26 @@ namespace DSPA_MeAudVis.Web.Controllers
             if (ModelState.IsValid)
             {
                 var applicant = await _context.Applicants.FirstOrDefaultAsync(m => m.Id == model.ApplicantId);
-                var intern = await _context.Interns.FirstOrDefaultAsync(m => m.Id == model.InternId);
+                var intern = await _context.Interns.FirstOrDefaultAsync();
+                foreach (Intern internObj in _context.Interns.Include(s => s.User))
+                {
+                    if (internObj.User.UserName == this.User.Identity.Name)
+                    {
+                        intern = internObj;
+                    }
+                }
                 var loan = new Loan {Applicant=applicant, Intern=intern};
 
+                var status = _context.Statuses.FirstOrDefault(m => m.Id == 2);
+                var material = await _context.Materials.FirstOrDefaultAsync(m => m.Id == model.MaterialId);
+                _context.LoanDetails.Add(new LoanDetail { Loan = loan, DateTimeOut = DateTime.Now, DateTimeIn=DateTime.MinValue, Material = material, Status = status, Observations = string.Empty });
 
+                material.Status = status;
+                applicant.Debtor = true;
+
+                _context.Materials.Update(material);
+                _context.Applicants.Update(applicant);
                 _context.Add(loan);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(model);
-        }
-
-        [Authorize(Roles = "Intern")]
-        // GET: Loans/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new NotFoundViewResult("LoanNotFound");
-            }
-
-            var loan = await _context.Loans
-                .Include(s => s.Intern)
-                .Include(s=>s.Applicant)
-                .Include(s=>s.LoanDetails)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (loan == null)
-            {
-                return new NotFoundViewResult("LoanNotFound");
-            }
-
-
-            var model = new LoanViewModel
-            {
-                Id = loan.Id,
-                Intern = loan.Intern,
-                Applicant = loan.Applicant,
-                LoanDetails = loan.LoanDetails,
-                InternId = loan.Intern.Id,
-                ApplicantId = loan.Applicant.Id,
-                Applicants = combosHelper.GetComboApplicants(),
-                Interns=combosHelper.GetComboInterns()
-            };
-
-            return View(model);
-        }
-
-        // POST: Loans/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, LoanViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var loan = await _context.Loans.FirstOrDefaultAsync(m => m.Id == model.Id);
-
-                if (loan== null)
-                {
-                    return new NotFoundViewResult("LoanNotFound");
-                }
-
-                var applicant = await _context.Applicants.FirstOrDefaultAsync(m => m.Id == model.ApplicantId);
-                loan.Applicant = applicant;
-
-                var intern = await _context.Interns.FirstOrDefaultAsync(m => m.Id == model.InternId);
-                loan.Intern = intern;
-
-                _context.Update(loan);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

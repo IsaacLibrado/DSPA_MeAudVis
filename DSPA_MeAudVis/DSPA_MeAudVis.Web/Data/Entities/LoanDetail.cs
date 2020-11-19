@@ -14,11 +14,9 @@ namespace DSPA_MeAudVis.Web.Data.Entities
         [Display(Name = "Observations")]
         public string Observations { set; get; }
 
-        [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Date and time of loan")]
         public DateTime DateTimeOut { set; get; }
 
-        [Required(ErrorMessage = "{0} is required")]
         [Display(Name = "Date and time of return")]
         public DateTime DateTimeIn { set; get; }
 

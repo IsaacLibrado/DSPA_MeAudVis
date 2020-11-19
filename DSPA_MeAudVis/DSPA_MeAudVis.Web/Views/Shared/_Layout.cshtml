@@ -56,20 +56,15 @@
                                 <li><a asp-area="" asp-controller="Home" asp-action="Index">@this.User.Identity.Name</a></li>
                                 @if (this.User.IsInRole("Owner") || this.User.IsInRole("Administrator"))
                                 {
-                                    <li class="dropdown-submenu">
-                                        <a href="#" class="dropdown-menu-left" data-toggle="dropdown">User's list<b class="caret"></b></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a asp-area="" asp-controller="Account" asp-action="Register">Add User</a></li>
-                                            <li><a asp-area="" asp-controller="Account" asp-action="Index">All users</a></li>
-                                            @if (this.User.IsInRole("Administrator"))
-                                            {
-                                                <li><a asp-area="" asp-controller="Administrators" asp-action="Index">Admin</a></li>
-                                                <li><a asp-area="" asp-controller="Owners" asp-action="Index">Owners</a></li>
-                                            }
-                                            <li><a asp-area="" asp-controller="Applicants" asp-action="Index">Applicants</a></li>
-                                            <li><a asp-area="" asp-controller="Interns" asp-action="Index">Interns</a></li>
-                                        </ul>
-                                    </li>
+                                    <li><a asp-area="" asp-controller="Account" asp-action="Register">Add User</a></li>
+                                    <li><a asp-area="" asp-controller="Account" asp-action="Index">All users</a></li>
+                                    @if (this.User.IsInRole("Administrator"))
+                                    {
+                                        <li><a asp-area="" asp-controller="Administrators" asp-action="Index">Admin</a></li>
+                                        <li><a asp-area="" asp-controller="Owners" asp-action="Index">Owners</a></li>
+                                    }
+                                    <li><a asp-area="" asp-controller="Applicants" asp-action="Index">Applicants</a></li>
+                                    <li><a asp-area="" asp-controller="Interns" asp-action="Index">Interns</a></li>
                                 }
 
                                 @if (this.User.IsInRole("Owner"))

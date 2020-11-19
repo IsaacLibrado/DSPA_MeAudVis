@@ -1,0 +1,49 @@
+﻿@model DSPA_MeAudVis.Web.Models.LoanDetailViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Add Loan</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Observations" />
+            <input type="hidden" asp-for="DateTimeIn" />
+            <input type="hidden" asp-for="DateTimeOut" />
+            <input type="hidden" asp-for="Material" />
+            <input type="hidden" asp-for="Status" />
+            <input type="hidden" asp-for="Loan" />
+            <div class="form-group">
+                <label asp-for="MaterialId" class="control-label"></label>
+                <select asp-for="MaterialId" asp-items="Model.Materials" class="form-control"> </select>
+                <span asp-validation-for="MaterialId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoanID" class="control-label"></label>
+                <input readonly="readonly" asp-for="LoanID" class="form-control" />
+                <span asp-validation-for="LoanID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a onclick="goBack()" class="btn btn-primary"> <span class="glyphicon glyphicon-arrow-left"></span></a>
+                <button type="submit" class="btn btn-success"> <span class="glyphicon glyphicon-plus"></span> </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

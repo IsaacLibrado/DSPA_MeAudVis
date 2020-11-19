@@ -1,8 +1,10 @@
 ﻿namespace DSPA_MeAudVis.Web.Data.Entities
 {
     using DSPA_MeAudVis.Web.Controllers.Data.Entities;
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Define a los solicitantes (maestros y alumnos) de material
@@ -26,5 +28,10 @@
         public ApplicantType Type { set; get; }
 
         public ICollection<Loan> Loans { set; get; }
+
+        public static implicit operator Task<object>(Applicant v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -83,6 +83,9 @@ namespace DSPA_MeAudVis.Web.Data
             if (!dataContext.Statuses.Any())
             {
                 dataContext.Statuses.Add(new Status { StatusName = "Available" });
+                dataContext.Statuses.Add(new Status { StatusName = "Loaned" });
+                dataContext.Statuses.Add(new Status { StatusName = "Returned" });
+                dataContext.Statuses.Add(new Status { StatusName = "Broken" });
                 await dataContext.SaveChangesAsync();
             }
 

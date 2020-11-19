@@ -31,12 +31,14 @@ namespace DSPA_MeAudVis.Web.Controllers
             this.userHelper = userHelper;
         }
 
+        [Authorize(Roles = "Intern, Applicant, Owner, Administrator")]
         // GET: Materials
         public IActionResult Index()
         {
             return View( _context.Materials.Include(s => s.Status));
         }
 
+        [Authorize(Roles = "Owner, Administrator, Intern")]
         // GET: Materials/Details/5
         public async Task<IActionResult> Details(int? id)
         {

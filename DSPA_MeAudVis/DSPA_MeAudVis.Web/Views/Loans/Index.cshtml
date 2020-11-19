@@ -6,6 +6,7 @@
 
 <h2>Loan's List</h2>
 
+
 <table class="table">
     <thead>
         <tr>
@@ -17,10 +18,10 @@
                 Loaned by
             </th>
             <th>
-                Material
+                Total Loans
             </th>
             <th>
-                Label
+                Date
             </th>
             <th></th>
         </tr>
@@ -28,6 +29,8 @@
     <tbody>
         @foreach (var item in Model)
         {
+            if (item.Applicant.User.UserName==this.User.Identity.Name || item.Intern.User.UserName == this.User.Identity.Name || this.User.IsInRole("Owner") || this.User.IsInRole("Administrator"))
+            {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Applicant.User.FullName)
@@ -36,24 +39,21 @@
                 @Html.DisplayFor(modelItem => item.Intern.User.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LoanDetails.FirstOrDefault().Material.Name)
+                @Html.DisplayFor(modelItem => item.LoanDetails.Count)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LoanDetails.FirstOrDefault().Material.Label)
+                @Html.DisplayFor(modelItem => item.LoanDetails.First().DateTimeOut)
             </td>
             <td>
 
                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
-                @if (this.User.IsInRole("Intern"))
-                {
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>
-                }
                 @if (this.User.IsInRole("Owner"))
                 {
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
                 }
             </td>
         </tr>
+            }
         }
     </tbody>
 </table>

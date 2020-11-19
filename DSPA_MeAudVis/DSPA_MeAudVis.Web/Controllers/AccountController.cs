@@ -141,7 +141,7 @@
 
                         await _context.SaveChangesAsync();
 
-                        return RedirectToAction("Register", "Account");
+                        return RedirectToAction("Index", "Account");
                     }
                 }
 
