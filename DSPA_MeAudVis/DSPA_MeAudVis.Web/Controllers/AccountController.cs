@@ -115,6 +115,7 @@
                         {
                             await userHelper.AddUserToRoleAsync(user, model.RoleName);
                         }
+
                         if (model.ImageFile != null)
                         {
                             user.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, user.FullName, "FotosEstudiantes");
