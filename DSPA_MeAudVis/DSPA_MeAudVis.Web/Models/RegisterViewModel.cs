@@ -31,5 +31,12 @@
         public string RoleName { get; set; }
 
         public IEnumerable<SelectListItem> Roles { get; set; }
+
+        [Required(ErrorMessage = "{0} is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "You have to select a type")]
+        [Display(Name = "Type")]
+        public int TypeId { get; set; }
+
+        public IEnumerable<SelectListItem> Types { get; set; }
     }
 }

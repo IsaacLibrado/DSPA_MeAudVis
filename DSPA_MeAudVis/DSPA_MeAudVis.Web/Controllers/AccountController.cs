@@ -75,7 +75,7 @@
         [Authorize(Roles = "Owner, Administrator")]
         public IActionResult Register()
         {
-            var model = new RegisterViewModel{ Roles=combosHelper.GetComboRoles()};
+            var model = new RegisterViewModel{ Roles=combosHelper.GetComboRoles(), Types=combosHelper.GetComboApplicantTypes()};
 
             return View(model);
         }
@@ -86,7 +86,7 @@
         {
             if (ModelState.IsValid)
             {
-                var user = await userHelper.GetUserByEmailAsync(model.Email);
+                var user = await userHelper.GetUserByNameAsync(model.RegistrationNumber.ToString());
                 
                 if(user==null)
                 {
@@ -111,7 +111,10 @@
 
                     if (ModelState.IsValid)
                     {
-                        await userHelper.AddUserToRoleAsync(user, model.RoleName);
+                        if (model.RoleName != "0")
+                        {
+                            await userHelper.AddUserToRoleAsync(user, model.RoleName);
+                        }
                         if (model.ImageFile != null)
                         {
                             user.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, user.FullName, "FotosEstudiantes");
@@ -129,14 +132,14 @@
                                 _context.Owners.Add(new Owner { User = user });
                                 break;
                             case "Applicant":
-                                var applicantType = _context.ApplicantTypes.FirstOrDefault();
+                                var applicantType = _context.ApplicantTypes.FirstOrDefault(m => m.Id == model.TypeId);
                                 _context.Applicants.Add(new Applicant { User = user, Type = applicantType, Debtor = false });
                                 break;
                             default:
-                                applicantType = _context.ApplicantTypes.FirstOrDefault();
+                                applicantType = _context.ApplicantTypes.FirstOrDefault(m => m.Id == model.TypeId);
                                 _context.Applicants.Add(new Applicant { User = user, Type = applicantType, Debtor = false });
-                                break;
-                                
+                                await userHelper.AddUserToRoleAsync(user, "Applicant");
+                                break;       
                         }
 
                         await _context.SaveChangesAsync();
