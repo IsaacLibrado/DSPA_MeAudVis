@@ -56,7 +56,6 @@
                                 <li><a asp-area="" asp-controller="Home" asp-action="Index">@this.User.Identity.Name</a></li>
                                 @if (this.User.IsInRole("Owner") || this.User.IsInRole("Administrator"))
                                 {
-                                    <li><a asp-area="" asp-controller="Account" asp-action="Register">Add User</a></li>
                                     <li><a asp-area="" asp-controller="Account" asp-action="Index">All users</a></li>
                                     @if (this.User.IsInRole("Administrator"))
                                     {
@@ -67,15 +66,12 @@
                                     <li><a asp-area="" asp-controller="Interns" asp-action="Index">Interns</a></li>
                                 }
 
-                                @if (this.User.IsInRole("Owner"))
+                                @if (this.User.IsInRole("Administrator"))
                                 {
-                                    <li class="dropdown-submenu">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Combos<b class="caret"></b></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a asp-area="" asp-controller="ApplicantTypes" asp-action="Index">ApplicantTypes</a></li>
-                                            <li><a asp-area="" asp-controller="Statuses" asp-action="Index">Statuses</a></li>
-                                        </ul>
-                                    </li>
+
+                                    <li><a asp-area="" asp-controller="ApplicantTypes" asp-action="Index">ApplicantTypes</a></li>
+                                    <li><a asp-area="" asp-controller="Statuses" asp-action="Index">Statuses</a></li>
+
                                 }
 
                                 <li><a asp-area="" asp-controller="Account" asp-action="Logout"><span class="glyphicon glyphicon-log-out"></span></a></li>

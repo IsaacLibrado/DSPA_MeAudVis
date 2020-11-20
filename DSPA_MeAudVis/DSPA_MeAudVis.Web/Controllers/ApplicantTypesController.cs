@@ -21,14 +21,14 @@ namespace DSPA_MeAudVis.Web.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Owner")]
+        [Authorize(Roles = "Administrator")]
         // GET: ApplicantTypes
         public async Task<IActionResult> Index()
         {
             return View(await _context.ApplicantTypes.ToListAsync());
         }
 
-        [Authorize(Roles = "Owner")]
+        [Authorize(Roles = "Administrator")]
         // GET: ApplicantTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -47,7 +47,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(applicantType);
         }
 
-        [Authorize(Roles = "Owner")]
+        [Authorize(Roles = "Administrator")]
         // GET: ApplicantTypes/Create
         public IActionResult Create()
         {
@@ -70,7 +70,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(applicantType);
         }
 
-        [Authorize(Roles = "Owner")]
+        [Authorize(Roles = "Administrator")]
         // GET: ApplicantTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -122,7 +122,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(applicantType);
         }
 
-        [Authorize(Roles = "Owner")]
+        [Authorize(Roles = "Administrator")]
         // GET: ApplicantTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
