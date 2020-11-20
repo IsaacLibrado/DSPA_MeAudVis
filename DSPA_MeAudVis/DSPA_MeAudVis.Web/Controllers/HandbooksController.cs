@@ -25,9 +25,9 @@ namespace DSPA_MeAudVis.Web.Controllers
         }
 
         // GET: Handbooks
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Handbooks.ToListAsync());
+            return View(_context.Handbooks.Include(s => s.Owner).ThenInclude(c=>c.User));
         }
 
         // GET: Handbooks/Details/5
@@ -38,13 +38,15 @@ namespace DSPA_MeAudVis.Web.Controllers
                 return new NotFoundViewResult("HandbookNotFound");
             }
 
-            var handbook = await _context.Handbooks
+            var handbook = await _context.Handbooks.Include(s => s.Owner).ThenInclude(c => c.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (handbook == null)
             {
                 return new NotFoundViewResult("HandbookNotFound");
             }
 
+
+            
 
             return View(handbook);
         }
@@ -92,11 +94,14 @@ namespace DSPA_MeAudVis.Web.Controllers
                 return new NotFoundViewResult("HandbookNotFound");
             }
 
-            var handbook = await _context.Handbooks.FindAsync(id);
+            var handbook = await _context.Handbooks.Include(s => s.Owner).ThenInclude(c => c.User).FirstOrDefaultAsync(m => m.Id == id);
             if (handbook == null)
             {
                 return new NotFoundViewResult("HandbookNotFound");
             }
+
+            if (this.User.Identity.Name != handbook.Owner.User.UserName)
+                return new NotFoundViewResult("HandbookNotFound");
 
             var hb = new HandbookViewModel { Id = handbook.Id, ImageURL = handbook.ImageURL, Name = handbook.Name, Owner = handbook.Owner };
 
@@ -149,12 +154,15 @@ namespace DSPA_MeAudVis.Web.Controllers
                 return new NotFoundViewResult("HandbookNotFound");
             }
 
-            var handbook = await _context.Handbooks
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var handbook = await _context.Handbooks.Include(s => s.Owner).ThenInclude(c => c.User).FirstOrDefaultAsync(m => m.Id == id);
+
             if (handbook == null)
             {
                 return new NotFoundViewResult("HandbookNotFound");
             }
+
+            if (this.User.Identity.Name != handbook.Owner.User.UserName)
+                return new NotFoundViewResult("HandbookNotFound");
 
             return View(handbook);
         }

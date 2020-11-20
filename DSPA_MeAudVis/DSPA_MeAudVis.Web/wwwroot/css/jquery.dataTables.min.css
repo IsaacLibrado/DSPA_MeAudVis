@@ -6,6 +6,10 @@
     border-spacing: 0
 }
 
+thead input {
+    width: 100%;
+}
+
     table.dataTable thead th, table.dataTable tfoot th {
         font-weight: bold
     }

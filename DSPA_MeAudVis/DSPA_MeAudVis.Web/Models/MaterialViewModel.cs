@@ -16,5 +16,10 @@ namespace DSPA_MeAudVis.Web.Models
         public int StatusId { get; set; }
 
         public IEnumerable<SelectListItem> Statuses { get; set; }
+
+        [Display(Name = "Applicant")]
+        public int ApplicantId { get; set; }
+
+        public IEnumerable<SelectListItem> Applicants { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DSPA_MeAudVis.Web.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -280,6 +280,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                     Brand = table.Column<string>(maxLength: 15, nullable: false),
                     MaterialModel = table.Column<string>(maxLength: 15, nullable: false),
                     SerialNum = table.Column<string>(maxLength: 15, nullable: false),
+                    reserverApplicantId = table.Column<int>(nullable: true),
                     StatusId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -291,6 +292,12 @@ namespace DSPA_MeAudVis.Web.Migrations
                         principalTable: "Statuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Materials_Applicants_reserverApplicantId",
+                        column: x => x.reserverApplicantId,
+                        principalTable: "Applicants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -300,7 +307,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     InternId = table.Column<int>(nullable: true),
-                    ApplicantId = table.Column<int>(nullable: false)
+                    ApplicantId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -310,7 +317,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.ApplicantId,
                         principalTable: "Applicants",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Loans_Interns_InternId",
                         column: x => x.InternId,
@@ -351,7 +358,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                     DateTimeIn = table.Column<DateTime>(nullable: false),
                     MaterialId = table.Column<int>(nullable: true),
                     StatusId = table.Column<int>(nullable: true),
-                    LoanId = table.Column<int>(nullable: false)
+                    LoanId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -361,7 +368,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         column: x => x.LoanId,
                         principalTable: "Loans",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_LoanDetails_Materials_MaterialId",
                         column: x => x.MaterialId,
@@ -471,6 +478,11 @@ namespace DSPA_MeAudVis.Web.Migrations
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Materials_reserverApplicantId",
+                table: "Materials",
+                column: "reserverApplicantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Owners_UserId",
                 table: "Owners",
                 column: "UserId");
@@ -515,13 +527,13 @@ namespace DSPA_MeAudVis.Web.Migrations
                 name: "Materials");
 
             migrationBuilder.DropTable(
-                name: "Applicants");
-
-            migrationBuilder.DropTable(
                 name: "Interns");
 
             migrationBuilder.DropTable(
                 name: "Statuses");
+
+            migrationBuilder.DropTable(
+                name: "Applicants");
 
             migrationBuilder.DropTable(
                 name: "ApplicantTypes");

@@ -4,63 +4,118 @@
     ViewData["Title"] = "Loan's List";
 }
 
-<h2>Loan's List</h2>
+<link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
 
 
-<table class="table">
-    <thead>
-        <tr>
-
-            <th>
-                Loaned to
-            </th>
-            <th>
-                Loaned by
-            </th>
-            <th>
-                Total Loans
-            </th>
-            <th>
-                Date
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            if (item.Applicant.User.UserName==this.User.Identity.Name || item.Intern.User.UserName == this.User.Identity.Name || this.User.IsInRole("Owner") || this.User.IsInRole("Administrator"))
-            {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Applicant.User.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Intern.User.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LoanDetails.Count)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LoanDetails.First().DateTimeOut)
-            </td>
-            <td>
-
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
-                @if (this.User.IsInRole("Owner"))
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2>Loans' List</h2>
+            </div>
+            <div class="panel-body">
+                @if (this.User.IsInRole("Intern"))
                 {
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                    <p>
+                        <a asp-action="Create" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></a>
+                    </p>
                 }
-            </td>
-        </tr>
-            }
-        }
-    </tbody>
-</table>
+                <table class="table table-hover table-responsive table-striped" id="MiTabla">
+                    <thead>
+                        <tr>
 
-@if (this.User.IsInRole("Intern"))
-{
-    <p>
-        <a asp-action="Create" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></a>
-    </p>
+                            <th>
+                                Loaned to
+                            </th>
+                            <th>
+                                Loaned by
+                            </th>
+                            <th>
+                                Total Loans
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            if (item.Applicant.User.UserName == this.User.Identity.Name || item.Intern.User.UserName == this.User.Identity.Name || this.User.IsInRole("Owner") || this.User.IsInRole("Administrator"))
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Applicant.User.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Intern.User.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LoanDetails.Count)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LoanDetails.First().DateTimeOut)
+                                    </td>
+
+                                    @{
+                                        var returned = true;
+                                        foreach (DSPA_MeAudVis.Web.Data.Entities.LoanDetail ld in item.LoanDetails)
+                                        {
+                                            if (ld.Status.Id == 2)
+                                            {
+                                                returned = false;
+                                            }
+                                        }
+                                        if (returned == false)
+                                        {
+                                            <td>Loaned</td>
+                                        }
+                                        else
+                                        {
+                                            <td>Returned</td>
+                                        }
+                                    }
+
+
+                                    <td>
+
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
+                                        @if (this.User.IsInRole("Owner"))
+                                        {
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MiTabla').DataTable();
+            // Delete item
+            var item_to_delete;
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+            $("#btnYesDelete").click(function () {
+                window.location.href = '/Careers/Delete/' + item_to_delete;
+            });
+        });
+    </script>
 }

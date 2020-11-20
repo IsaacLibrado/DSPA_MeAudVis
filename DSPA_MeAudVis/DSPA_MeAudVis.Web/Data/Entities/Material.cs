@@ -40,6 +40,8 @@
         [Required(ErrorMessage = "{0} is required")]
         public string SerialNum { set; get; }
 
+        public Applicant reserverApplicant { set; get; }
+
         public Status Status { set; get; }
 
         public ICollection<LoanDetail> LoanDetails { set; get; }

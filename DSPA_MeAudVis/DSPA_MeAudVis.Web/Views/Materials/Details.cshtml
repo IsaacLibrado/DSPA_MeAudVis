@@ -45,6 +45,15 @@
         <dd>
             @Html.DisplayFor(model => model.Status.StatusName)
         </dd>
+        @if (Model.Status.Id==5)
+        {
+        <dt>
+            Reserved to
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.reserverApplicant.User.FullName)
+        </dd>
+        }
     </dl>
 </div>
 <div>

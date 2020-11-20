@@ -48,7 +48,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             }
 
             var material = await _context.Materials
-                .Include(s => s.Status)
+                .Include(s => s.Status).Include(s => s.reserverApplicant).ThenInclude(c => c.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (material == null)
             {
@@ -103,7 +103,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             }
 
             var material = await _context.Materials
-                .Include(s => s.Status)
+                .Include(s => s.Status).Include(s=>s.reserverApplicant).ThenInclude(c=>c.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (material == null)
             {
@@ -120,7 +120,9 @@ namespace DSPA_MeAudVis.Web.Controllers
                 Label=material.Label,
                 SerialNum=material.SerialNum,
                 StatusId=material.Status.Id,
-                Statuses= combosHelper.GetComboStatuses()
+                Statuses= combosHelper.GetComboStatuses(),
+                Applicants=combosHelper.GetComboApplicants(),
+                reserverApplicant=material.reserverApplicant
             };
 
             return View(model);
@@ -152,6 +154,19 @@ namespace DSPA_MeAudVis.Web.Controllers
 
                 var status = await _context.Statuses.FirstOrDefaultAsync(m => m.Id == model.StatusId);
                 material.Status = status; 
+
+                
+
+                if(model.ApplicantId!=0 && status.Id==5)
+                {
+                    var applicant = await _context.Applicants.FirstOrDefaultAsync(m => m.Id == model.ApplicantId);
+                    material.reserverApplicant = applicant;
+                }
+                else if(status.Id == 5)
+                {
+                    status = _context.Statuses.FirstOrDefault(m => m.Id == 1);
+                    material.Status = status;
+                }
 
                 _context.Update(material);
                 await _context.SaveChangesAsync();

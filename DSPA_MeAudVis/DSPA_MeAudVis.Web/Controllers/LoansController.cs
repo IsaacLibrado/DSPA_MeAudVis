@@ -59,7 +59,8 @@ namespace DSPA_MeAudVis.Web.Controllers
                  .Include(s => s.Applicant)
                  .ThenInclude(c => c.User)
                  .Include(s => s.Intern).ThenInclude(c => c.User)
-                 .Include(s => s.LoanDetails).ThenInclude(c => c.Material));
+                 .Include(s => s.LoanDetails).ThenInclude(c => c.Material)
+                 .Include(s => s.LoanDetails).ThenInclude(c => c.Status));
         }
 
         [Authorize(Roles = "Intern, Applicant, Owner, Administrator")]
@@ -157,6 +158,17 @@ namespace DSPA_MeAudVis.Web.Controllers
             }
 
             var loan = await _context.Loans
+                .Include(s => s.Applicant)
+                .ThenInclude(c => c.User)
+                .Include(s => s.Intern).ThenInclude(c => c.User)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Status)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Material)
+                .Include(c => c.LoanDetails)
+                .ThenInclude(v => v.Loan)
+                .ThenInclude(x => x.Applicant)
+                .ThenInclude(y => y.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (loan == null)
             {

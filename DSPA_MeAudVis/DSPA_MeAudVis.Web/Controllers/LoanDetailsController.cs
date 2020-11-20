@@ -147,10 +147,10 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var loanDetail = await _context.LoanDetails.FindAsync(id);
+            var loanDetail = await _context.LoanDetails.Include(s => s.Loan).FirstOrDefaultAsync(m => m.Id == id);
             _context.LoanDetails.Remove(loanDetail);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(String.Format("Details/{0}", loanDetail.Loan.Id), "Loans");
         }
 
         private bool MaterialExists(int id)
