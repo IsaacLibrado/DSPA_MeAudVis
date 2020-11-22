@@ -195,10 +195,17 @@ namespace DSPA_MeAudVis.Web.Controllers
 
             var intern = await _context.Interns
                 .Include(s => s.User)
+                .Include(c=>c.Loans)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (intern == null)
             {
                 return new NotFoundViewResult("InternNotFound");
+            }
+
+            if(intern.Loans.Count!=0)
+            {
+                ModelState.AddModelError(string.Empty, "This user has loans, delete them first before deleting this user");
+                return RedirectToAction("Index" ,"Interns");
             }
 
             return View(intern);
@@ -211,6 +218,7 @@ namespace DSPA_MeAudVis.Web.Controllers
         {
             var intern = await _context.Interns.Include(s => s.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             await userHelper.RemoveUserFromRoleAsync(intern.User, "Intern");
             _context.Interns.Remove(intern);
             await _context.SaveChangesAsync();

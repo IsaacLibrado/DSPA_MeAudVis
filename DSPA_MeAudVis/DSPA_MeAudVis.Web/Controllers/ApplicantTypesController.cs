@@ -113,10 +113,17 @@ namespace DSPA_MeAudVis.Web.Controllers
             }
 
             var applicantType = await _context.ApplicantTypes
+                .Include(s=>s.Applicants)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (applicantType == null)
             {
                 return new NotFoundViewResult("ApplicantTypeNotFound");
+            }
+
+            if (applicantType.Applicants.Count != 0)
+            {
+                ModelState.AddModelError(string.Empty, "This type is used in one or more applicant, delete them first before deleting this.");
+                return RedirectToAction("Index", "ApplicantTypes");
             }
 
             return View(applicantType);

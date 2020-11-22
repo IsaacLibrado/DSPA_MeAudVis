@@ -25,7 +25,7 @@
         [Display(Name = "Label")]
         public string Label { set; get; }
 
-        [MaxLength(15, ErrorMessage = "{0} must have maximun {1} characters")]
+        [MaxLength(50, ErrorMessage = "{0} must have maximun {1} characters")]
         [Display(Name = "Brand")]
         [Required(ErrorMessage = "{0} is required")]
         public string Brand { set; get; }

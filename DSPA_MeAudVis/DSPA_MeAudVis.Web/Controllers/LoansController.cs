@@ -173,6 +173,12 @@ namespace DSPA_MeAudVis.Web.Controllers
                 return new NotFoundViewResult("LoanNotFound");
             }
 
+            if (loan.LoanDetails.Count != 0)
+            {
+                ModelState.AddModelError(string.Empty, "This loan has details, delete them first before deleting this.");
+                return RedirectToAction("Index", "Loans");
+            }
+
             return View(loan);
         }
 

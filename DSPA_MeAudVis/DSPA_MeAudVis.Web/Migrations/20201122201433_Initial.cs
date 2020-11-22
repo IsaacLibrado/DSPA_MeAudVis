@@ -277,7 +277,7 @@ namespace DSPA_MeAudVis.Web.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 30, nullable: false),
                     Label = table.Column<string>(maxLength: 6, nullable: false),
-                    Brand = table.Column<string>(maxLength: 15, nullable: false),
+                    Brand = table.Column<string>(maxLength: 50, nullable: false),
                     MaterialModel = table.Column<string>(maxLength: 15, nullable: false),
                     SerialNum = table.Column<string>(maxLength: 15, nullable: false),
                     reserverApplicantId = table.Column<int>(nullable: true),

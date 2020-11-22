@@ -25,9 +25,19 @@
         <dt>
             Date
         </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LoanDetails.First().DateTimeOut);
-        </dd>
+        @if (Model.LoanDetails.Count == 0 || Model.LoanDetails == null)
+        {
+            <dd>
+                --------
+            </dd>
+        }
+        else
+        {
+            <dd>
+                @Html.DisplayFor(modelItem => Model.LoanDetails.First().DateTimeOut)
+
+            </dd>
+        }
     </dl>
     
     <form asp-action="Delete">

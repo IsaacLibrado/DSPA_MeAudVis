@@ -114,10 +114,18 @@ namespace DSPA_MeAudVis.Web.Controllers
             }
 
             var status = await _context.Statuses
+                .Include(s => s.LoanDetails)
+                .Include(c => c.Materials)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (status == null)
             {
                 return new NotFoundViewResult("StatusNotFound");
+            }
+
+            if (status.LoanDetails.Count != 0 || status.Materials.Count != 0)
+            {
+                ModelState.AddModelError(string.Empty, "This status is applied to materials and loandetails, delete them first before deleting this.");
+                return RedirectToAction("Index", "Statuses");
             }
 
             return View(status);

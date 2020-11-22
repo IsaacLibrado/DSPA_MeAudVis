@@ -47,49 +47,58 @@
                         {
                             if (item.Applicant.User.UserName == this.User.Identity.Name || item.Intern.User.UserName == this.User.Identity.Name || this.User.IsInRole("Owner") || this.User.IsInRole("Administrator"))
                             {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Applicant.User.FullName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Intern.User.FullName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.LoanDetails.Count)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.LoanDetails.First().DateTimeOut)
-                                    </td>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Applicant.User.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Intern.User.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LoanDetails.Count)
+                            </td>
+                            @if (item.LoanDetails.Count == 0 || item.LoanDetails == null)
+                            {
+                                <td>
+                                    --------
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LoanDetails.First().DateTimeOut)
 
-                                    @{
-                                        var returned = true;
-                                        foreach (DSPA_MeAudVis.Web.Data.Entities.LoanDetail ld in item.LoanDetails)
-                                        {
-                                            if (ld.Status.Id == 2)
-                                            {
-                                                returned = false;
-                                            }
-                                        }
-                                        if (returned == false)
-                                        {
-                                            <td>Loaned</td>
-                                        }
-                                        else
-                                        {
-                                            <td>Returned</td>
-                                        }
+                                </td>
+                            }
+                            @{
+                                var returned = true;
+                                foreach (DSPA_MeAudVis.Web.Data.Entities.LoanDetail ld in item.LoanDetails)
+                                {
+                                    if (ld.Status.Id == 2)
+                                    {
+                                        returned = false;
                                     }
+                                }
+                                if (returned == false)
+                                {
+                                    <td>Loaned</td>
+                                }
+                                else
+                                {
+                                    <td>Returned</td>
+                                }
+                            }
 
 
-                                    <td>
+                            <td>
 
-                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
-                                        @if (this.User.IsInRole("Owner"))
-                                        {
-                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
-                                        }
-                                    </td>
-                                </tr>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
+                                @if (this.User.IsInRole("Owner"))
+                                {
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                                }
+                            </td>
+                        </tr>
                             }
                         }
                     </tbody>

@@ -203,10 +203,17 @@ namespace DSPA_MeAudVis.Web.Controllers
 
             var applicant = await _context.Applicants
                 .Include(s => s.User)
+                .Include(s=>s.Loans)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (applicant == null)
             {
                 return new NotFoundViewResult("ApplicantNotFound");
+            }
+
+            if (applicant.Loans.Count != 0)
+            {
+                ModelState.AddModelError(string.Empty, "This user has loans, delete them first before deleting this user");
+                return RedirectToAction("Index", "Applicants");
             }
 
             return View(applicant);

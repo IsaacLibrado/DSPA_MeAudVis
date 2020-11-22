@@ -187,10 +187,17 @@ namespace DSPA_MeAudVis.Web.Controllers
 
             var material = await _context.Materials
                 .Include(s => s.Status)
+                .Include(s=>s.LoanDetails)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (material == null)
             {
                 return new NotFoundViewResult("MaterialNotFound");
+            }
+
+            if (material.LoanDetails.Count != 0)
+            {
+                ModelState.AddModelError(string.Empty, "This material is in a loan, delete them first before deleting this user");
+                return RedirectToAction("Index", "Materials");
             }
 
             return View(material);

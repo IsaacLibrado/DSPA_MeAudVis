@@ -122,10 +122,17 @@ namespace DSPA_MeAudVis.Web.Controllers
 
             var owner = await _context.Owners
                 .Include(s => s.User)
+                .Include(c=>c.Handbooks)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (owner == null)
             {
                 return new NotFoundViewResult("OwnerNotFound");
+            }
+
+            if (owner.Handbooks.Count != 0)
+            {
+                ModelState.AddModelError(string.Empty, "This owner has handbooks, delete them first before deleting this.");
+                return RedirectToAction("Index", "Owners");
             }
 
             return View(owner);

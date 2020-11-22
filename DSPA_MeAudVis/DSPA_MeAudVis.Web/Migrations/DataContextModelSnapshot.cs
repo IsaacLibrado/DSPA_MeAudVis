@@ -168,7 +168,7 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.Property<string>("Brand")
                         .IsRequired()
-                        .HasMaxLength(15);
+                        .HasMaxLength(50);
 
                     b.Property<string>("Label")
                         .IsRequired()

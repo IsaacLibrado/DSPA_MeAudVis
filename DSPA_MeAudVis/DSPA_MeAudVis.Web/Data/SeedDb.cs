@@ -33,7 +33,7 @@ namespace DSPA_MeAudVis.Web.Data
             {
                 var admin = await CheckUserAsync(20060067, "Samuel", "Librado", "4424331292", "samuelisaaclibradoalmada@gmail.com", "samLIB67-", "Administrator");
                 await CheckAdminAsync(admin);
-                admin = await CheckUserAsync(7047541, "David", "Hernandez", "2221975824", "david.hdezalv29@gmail.com", "davHER24-", "Administrator");
+                admin = await CheckUserAsync(7047541, "David", "Hernandez", "2221975824", "david.hdezalv29@gmail.com", "davHER41-", "Administrator");
                 await CheckAdminAsync(admin);
                 admin = await CheckUserAsync(20058343, "Arturo", "Villegas", "2229074543", "percentnevada3@gmail.com", "artVIL43-", "Administrator");
                 await CheckAdminAsync(admin);
@@ -41,7 +41,7 @@ namespace DSPA_MeAudVis.Web.Data
 
             if (!dataContext.Interns.Any())
             {
-                var intern = await CheckUserAsync(3060912, "Julio", "Gamesa", "2223436324", "julio@gmail.com", "julGAM24-", "Intern");
+                var intern = await CheckUserAsync(3060912, "Julio", "Gamesa", "2223436324", "julio@gmail.com", "julGAM12-", "Intern");
                 await CheckInternAsync(intern);
             }
 
@@ -60,7 +60,7 @@ namespace DSPA_MeAudVis.Web.Data
 
             if (!dataContext.Applicants.Any())
             {
-                var applicant = await CheckUserAsync(20060069, "Lalo", "Momento", "2224567810", "lalomomento@gmail.com", "lalMOM10-", "Applicant");
+                var applicant = await CheckUserAsync(20060069, "Lalo", "Momento", "2224567810", "lalomomento@gmail.com", "lalMOM69-", "Applicant");
                 await CheckApplicantAsync(applicant);
             }
 

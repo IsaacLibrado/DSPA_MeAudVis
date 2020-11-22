@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DSPA_MeAudVis.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201122053509_Initial")]
+    [Migration("20201122201433_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -170,7 +170,7 @@ namespace DSPA_MeAudVis.Web.Migrations
 
                     b.Property<string>("Brand")
                         .IsRequired()
-                        .HasMaxLength(15);
+                        .HasMaxLength(50);
 
                     b.Property<string>("Label")
                         .IsRequired()
