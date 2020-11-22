@@ -89,6 +89,12 @@ namespace DSPA_MeAudVis.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(InternViewModel model)
         {
+            if (model.DepartureTime<model.EntryTime)
+            {
+                ModelState.AddModelError(string.Empty, "Departure time can't be greater than the entry time");
+                return View(model);
+            }
+
             if (model.UserUserName != "[You have to choose a username...]")
             {
                 var user = await userHelper.GetUserByNameAsync(model.UserUserName);
@@ -96,6 +102,15 @@ namespace DSPA_MeAudVis.Web.Controllers
                 if (user == null)
                 {
                     return new NotFoundViewResult("InternNotFound");
+                }
+
+                foreach (Intern internTemp in _context.Interns.Include(c => c.User))
+                {
+                    if (internTemp.User == user)
+                    {
+                        ModelState.AddModelError(string.Empty, "Intern already exists");
+                        return View(model);
+                    }
                 }
 
                 var intern = new Intern { User = user, DepartureTime=model.DepartureTime, EntryTime=model.EntryTime };
@@ -127,15 +142,8 @@ namespace DSPA_MeAudVis.Web.Controllers
             {
                 return new NotFoundViewResult("InternNotFound");
             }
-            var model = new InternViewModel
-            {
-                Id = intern.Id,
-                User = intern.User,
-                UserUserName = intern.User.UserName,
-                Users = combosHelper.GetComboUsers()
-            };
 
-            return View(model);
+            return View(intern);
         }
 
         // POST: Interns/Edit/5
@@ -150,27 +158,30 @@ namespace DSPA_MeAudVis.Web.Controllers
                 return new NotFoundViewResult("InternNotFound");
             }
 
-            if (ModelState.IsValid)
+            if (intern.DepartureTime < intern.EntryTime)
             {
-                try
-                {
-                    _context.Update(intern);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!InternExists(intern.Id))
-                    {
-                        return new NotFoundViewResult("InternNotFound");
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "Departure time can't be greater than the entry time");
+                return View(intern);
             }
-            return View(intern);
+
+            try
+            {
+                _context.Update(intern);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!InternExists(intern.Id))
+                {
+                    return new NotFoundViewResult("InternNotFound");
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
         }
 
         [Authorize(Roles = "Administrator, Owner")]

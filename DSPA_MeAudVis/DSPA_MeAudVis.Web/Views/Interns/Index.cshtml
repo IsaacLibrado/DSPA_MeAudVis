@@ -4,59 +4,138 @@
     ViewData["Title"] = "Interns' List";
 }
 
-<h2>Interns' List</h2>
+<link href="~/css/jquery.dataTables.min.css" rel="stylesheet" />
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.User.ImageURL)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User.RegistrationNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EntryTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DepartureTime)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @if (!string.IsNullOrEmpty(item.User.ImageURL))
-                {
-                    <img src="@Url.Content(item.User.ImageURL)" style="width:100px;height:100px" />
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.RegistrationNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EntryTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DepartureTime)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
-            </td>
-        </tr>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2>Interns' List</h2>
+                <p>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-info">
+                            <input type="radio" onchange="Users()" name="options" id="option1" autocomplete="off">All users
+                        </label>
+                        @if (this.User.IsInRole("Administrator"))
+                        {
+                            <label class="btn btn-info">
+                                <input type="radio" onchange="Admins()" name="options" id="option1" autocomplete="off">Administrators
+                            </label>
+                            <label class="btn btn-info">
+                                <input type="radio" onchange="Owners()" name="options" id="option3" autocomplete="off">Owners
+                            </label>
+                        }
+                        <label class="btn btn-info  active">
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Interns
+                        </label>
+                        <label class="btn btn-info">
+                            <input type="radio" onchange="Applicants()" name="options" id="option2" autocomplete="off">Applicants
+                        </label>
+
+                    </div>
+                </p>
+            </div>
+            <div class="panel-body">
+                <p>
+                    <a asp-action="Create" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></a>
+                </p>
+                <table class="table table-hover table-responsive table-striped" id="MiTabla">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.User.ImageURL)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.User.RegistrationNumber)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.User.FullName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EntryTime)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DepartureTime)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.User.ImageURL))
+                                    {
+                                        <img src="@Url.Content(item.User.ImageURL)" style="width:100px;height:100px" />
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.User.RegistrationNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.User.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EntryTime):00
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DepartureTime):00
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MiTabla').DataTable();
+            // Delete item
+            var item_to_delete;
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+            $("#btnYesDelete").click(function () {
+                window.location.href = '/Careers/Delete/' + item_to_delete;
+            });
+        });
+    </script>
+
+    <script>
+        function Users() {
+            window.location.href = '/Account';
         }
-    </tbody>
-</table>
-<p>
-    <a asp-action="Create" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></a>
-</p>
+    </script>
+    <script>
+        function Admins() {
+            window.location.href = '/Administrators';
+        }
+    </script>
+    <script>
+        function Interns() {
+            window.location.href = '/Interns';
+        }
+    </script>
+    <script>
+        function Applicants() {
+            window.location.href = '/Applicants';
+        }
+    </script>
+    <script>
+        function Owners() {
+            window.location.href = '/Owners';
+        }
+    </script>
+} 

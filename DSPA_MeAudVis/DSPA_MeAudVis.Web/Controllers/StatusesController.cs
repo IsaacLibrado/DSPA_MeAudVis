@@ -28,24 +28,6 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(await _context.Statuses.ToListAsync());
         }
 
-        [Authorize(Roles = "Administrator")]
-        // GET: Statuses/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new NotFoundViewResult("StatusNotFound");
-            }
-
-            var status = await _context.Statuses
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (status == null)
-            {
-                return new NotFoundViewResult("StatusNotFound");
-            }
-
-            return View(status);
-        }
 
         [Authorize(Roles = "Administrator")]
         // GET: Statuses/Create

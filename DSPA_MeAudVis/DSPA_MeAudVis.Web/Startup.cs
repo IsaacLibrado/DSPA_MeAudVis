@@ -35,11 +35,11 @@ namespace DSPA_MeAudVis.Web
                 cfg =>
                 {
                     cfg.User.RequireUniqueEmail = true;
-                    cfg.Password.RequireDigit = false;
+                    cfg.Password.RequireDigit = true;
                     cfg.Password.RequiredUniqueChars = 0;
-                    cfg.Password.RequireLowercase = false;
-                    cfg.Password.RequireNonAlphanumeric = false;
-                    cfg.Password.RequireUppercase = false;
+                    cfg.Password.RequireLowercase = true;
+                    cfg.Password.RequireNonAlphanumeric = true;
+                    cfg.Password.RequireUppercase = true;
                 }
                 ).AddEntityFrameworkStores<DataContext>();
 

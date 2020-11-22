@@ -24,7 +24,6 @@
         [Required(ErrorMessage = "{0} is required")]
         public User User { set; get; }
 
-        //[Required(ErrorMessage = "{0} is required")]
         public ApplicantType Type { set; get; }
 
         public ICollection<Loan> Loans { set; get; }

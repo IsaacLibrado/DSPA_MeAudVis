@@ -31,13 +31,6 @@
             this.userHelper = userHelper;
         }
 
-        [Authorize(Roles = "Owner, Administrator")]
-        public IActionResult Index()
-        {
-            return View(_context.LoanDetails
-                .Include(s => s.Status)
-                .Include(s => s.Material));
-        }
 
         ///
         [Authorize(Roles = "Intern")]

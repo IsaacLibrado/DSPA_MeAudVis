@@ -47,12 +47,10 @@ namespace DSPA_MeAudVis.Web.Controllers
                 }
             }
 
-            if (applicant!=null)
+            if (applicant!=null && this.User.IsInRole("Applicant"))
             {
                 if(applicant.Loans==null || applicant.Loans.Count==0)
                     return new NotFoundViewResult("LoanNotFound");
-
-                
             }
 
             return View(_context.Loans

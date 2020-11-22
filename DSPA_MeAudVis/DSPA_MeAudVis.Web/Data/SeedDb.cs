@@ -31,23 +31,23 @@ namespace DSPA_MeAudVis.Web.Data
 
             if (!dataContext.Administrators.Any())
             {
-                var admin = await CheckUserAsync(20060067, "Samuel", "Librado", "4424331292", "samuelisaaclibradoalmada@gmail.com", "123456", "Administrator");
+                var admin = await CheckUserAsync(20060067, "Samuel", "Librado", "4424331292", "samuelisaaclibradoalmada@gmail.com", "samLIB67-", "Administrator");
                 await CheckAdminAsync(admin);
-                admin = await CheckUserAsync(7047541, "David", "Hernandez", "2221975824", "david.hdezalv29@gmail.com", "123456", "Administrator");
+                admin = await CheckUserAsync(7047541, "David", "Hernandez", "2221975824", "david.hdezalv29@gmail.com", "davHER24-", "Administrator");
                 await CheckAdminAsync(admin);
-                admin = await CheckUserAsync(20058343, "Arturo", "Villegas", "2229074543", "percentnevada3@gmail.com", "123456", "Administrator");
+                admin = await CheckUserAsync(20058343, "Arturo", "Villegas", "2229074543", "percentnevada3@gmail.com", "artVIL43-", "Administrator");
                 await CheckAdminAsync(admin);
             }
 
             if (!dataContext.Interns.Any())
             {
-                var intern = await CheckUserAsync(3060912, "Julio", "Gamesa", "2223436324", "julio@gmail.com", "123456", "Intern");
+                var intern = await CheckUserAsync(3060912, "Julio", "Gamesa", "2223436324", "julio@gmail.com", "julGAM24-", "Intern");
                 await CheckInternAsync(intern);
             }
 
             if (!dataContext.Owners.Any())
             {
-                var owner = await CheckUserAsync(6666, "Miguel", "Ochoa", "2225675423", "miguelochoa@gmail.com", "123456", "Owner");
+                var owner = await CheckUserAsync(6666, "Miguel", "Ochoa", "2225675423", "miguelochoa@gmail.com", "migOCH66-", "Owner");
                 await CheckOwnerAsync(owner);
             }
 
@@ -60,7 +60,7 @@ namespace DSPA_MeAudVis.Web.Data
 
             if (!dataContext.Applicants.Any())
             {
-                var applicant = await CheckUserAsync(20060069, "Karla", "Librado", "2224567810", "karlita@gmail.com", "123456", "Applicant");
+                var applicant = await CheckUserAsync(20060069, "Lalo", "Momento", "2224567810", "lalomomento@gmail.com", "lalMOM10-", "Applicant");
                 await CheckApplicantAsync(applicant);
             }
 
@@ -68,7 +68,7 @@ namespace DSPA_MeAudVis.Web.Data
             if (!dataContext.Handbooks.Any())
             {
                 var owner = dataContext.Owners.FirstOrDefault();
-                dataContext.Handbooks.Add(new Handbook { Name = "Manual de Microfono", Owner=owner });
+                dataContext.Handbooks.Add(new Handbook { Name = "Microphone handbook", Owner=owner });
                 await dataContext.SaveChangesAsync();
             }  
 
@@ -92,7 +92,7 @@ namespace DSPA_MeAudVis.Web.Data
 
             if (!dataContext.Materials.Any())
             {
-                var status = dataContext.Statuses.FirstOrDefault();
+                var status = dataContext.Statuses.FirstOrDefault(m=>m.Id==1);
                 dataContext.Materials.Add(new Material { Name = "HDMI", Label = "MAV1", Brand = "Sony", MaterialModel = "PS5", SerialNum = "Z10954", Status = status });
                 await dataContext.SaveChangesAsync();
             }
@@ -100,7 +100,7 @@ namespace DSPA_MeAudVis.Web.Data
             if (!dataContext.LoanDetails.Any())
             {
                 var loan = dataContext.Loans.FirstOrDefault();
-                var status = dataContext.Statuses.FirstOrDefault();
+                var status = dataContext.Statuses.FirstOrDefault(m => m.Id == 3);
                 var material = dataContext.Materials.FirstOrDefault();
                 dataContext.LoanDetails.Add(new LoanDetail { Loan=loan, DateTimeIn = DateTime.Now.AddDays(3), DateTimeOut = DateTime.Now, Material =material, Status=status, Observations=string.Empty });
                 await dataContext.SaveChangesAsync();

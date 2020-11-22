@@ -33,15 +33,15 @@
                     <li><a asp-area="" asp-controller="Handbooks" asp-action="Index">Handbooks</a></li>
                     @if (this.User.Identity.IsAuthenticated)
                     {
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Loans<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a asp-area="" asp-controller="Loans" asp-action="Index">Loan</a></li>
-                            <li><a asp-area="" asp-controller="Materials" asp-action="Index">Materials</a></li>
-                        </ul>
-                    </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Loans<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-area="" asp-controller="Loans" asp-action="Index">Loan</a></li>
+                                <li><a asp-area="" asp-controller="Materials" asp-action="Index">Materials</a></li>
+                            </ul>
+                        </li>
                     }
-                    
+
                     <!---
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
@@ -53,25 +53,16 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span> <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a asp-area="" asp-controller="Home" asp-action="Index">@this.User.Identity.Name</a></li>
+                                <li> <a asp-controller="Account" asp-action="DetailsActual" asp-route-id="@Convert.ToInt32(this.User.Identity.Name)">@this.User.Identity.Name</a></li>
                                 @if (this.User.IsInRole("Owner") || this.User.IsInRole("Administrator"))
                                 {
-                                    <li><a asp-area="" asp-controller="Account" asp-action="Index">All users</a></li>
-                                    @if (this.User.IsInRole("Administrator"))
-                                    {
-                                        <li><a asp-area="" asp-controller="Administrators" asp-action="Index">Admin</a></li>
-                                        <li><a asp-area="" asp-controller="Owners" asp-action="Index">Owners</a></li>
-                                    }
-                                    <li><a asp-area="" asp-controller="Applicants" asp-action="Index">Applicants</a></li>
-                                    <li><a asp-area="" asp-controller="Interns" asp-action="Index">Interns</a></li>
+                                    <li><a asp-area="" asp-controller="Account" asp-action="Index">Users List</a></li>
                                 }
 
                                 @if (this.User.IsInRole("Administrator"))
                                 {
 
-                                    <li><a asp-area="" asp-controller="ApplicantTypes" asp-action="Index">ApplicantTypes</a></li>
-                                    <li><a asp-area="" asp-controller="Statuses" asp-action="Index">Statuses</a></li>
-
+                                    <li><a asp-area="" asp-controller="ApplicantTypes" asp-action="Index">Catalogues</a></li>
                                 }
 
                                 <li><a asp-area="" asp-controller="Account" asp-action="Logout"><span class="glyphicon glyphicon-log-out"></span></a></li>
@@ -87,6 +78,8 @@
             </div>
         </div>
     </nav>
+
+
 
     <partial name="_CookieConsentPartial" />
 

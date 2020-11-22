@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -159,6 +160,261 @@
         public IActionResult NotAuthorized()
         {
             return View();
+        }
+
+        // GET: Administrators/Details/5
+        public async Task<IActionResult> Details(string Id)
+        {
+            if (Id == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == Id);
+
+            if (user == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            if (!this.User.IsInRole("Owner") && !this.User.IsInRole("Administrator") && user.UserName != this.User.Identity.Name)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            return View(user);
+        }
+
+        [HttpGet]
+        // GET: Administrators/Details/5
+        public async Task<IActionResult> DetailsActual(int? id)
+        {
+            var userName = id.ToString();
+            var user = await userHelper.GetUserByNameAsync(userName);
+
+            if (user == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            if (!this.User.IsInRole("Owner") && !this.User.IsInRole("Administrator") && userName != this.User.Identity.Name)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            return RedirectToAction(String.Format("Details/{0}", user.Id), "Account");
+        }
+
+        [Authorize(Roles = "Administrator")]
+        // GET: Administrators/Delete/5
+        public async Task<IActionResult> Delete(string Id)
+        {
+            if (Id == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == Id);
+
+            
+
+            if (user == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            return View(user);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        // POST: Administrators/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string Id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == Id);
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        // GET: Administrators/Edit/5
+        public async Task<IActionResult> Edit(string Id)
+        {
+
+            if (Id == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == Id);
+
+            if (user == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            var model = new UserViewModel
+            {
+                Id = user.Id,
+                ImageURL=user.ImageURL,
+                RegistrationNumber=user.RegistrationNumber,
+                UserName=user.UserName,
+                FirstName=user.FirstName,
+                LastName=user.LastName,
+                PhoneNumber=user.PhoneNumber,
+                Email=user.Email
+                
+            };
+
+            if (!this.User.IsInRole("Owner") && !this.User.IsInRole("Administrator") && user.UserName != this.User.Identity.Name)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            return View(model);
+        }
+
+
+        // POST: Administrators/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, UserViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            if (ModelState.IsValid)
+            {
+
+                var user = await userHelper.GetUserByNameAsync(model.UserName);
+
+                if (user == null)
+                {
+                    return new NotFoundViewResult("UserNotFound");
+                }
+
+                var user2 = await userHelper.GetUserByNameAsync(model.RegistrationNumber.ToString());
+
+                if (user2 != null && user2!=user)
+                {
+                    ModelState.AddModelError(string.Empty, "Registration number already asigned");
+                    return View(model);
+                }
+
+                user2 = await userHelper.GetUserByEmailAsync(model.Email);
+
+                if (user2 != null && user2!=user)
+                {
+                    ModelState.AddModelError(string.Empty, "Email already asigned");
+                    return View(model);
+                }
+
+
+
+                user.PhoneNumber = model.PhoneNumber;
+                user.Email = model.Email;
+                user.RegistrationNumber = model.RegistrationNumber;
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+
+                if (model.ImageFile != null)
+                {
+                    user.ImageURL = await imageHelper.UploadImageAsync(model.ImageFile, user.FullName, "FotosEstudiantes");
+                }
+
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(String.Format("Details/{0}", user.Id), "Account");
+
+            }
+
+            return View(model);
+        }
+
+        // GET: Administrators/Edit/5
+        public async Task<IActionResult> ChangePassword(string Id)
+        {
+
+            if (Id == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == Id);
+
+            if (user == null)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            var model = new ChangePasswordViewModel
+            {
+                Id = user.Id,
+                ImageURL = user.ImageURL,
+                RegistrationNumber = user.RegistrationNumber,
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email
+
+            };
+
+            if (!this.User.IsInRole("Owner") && !this.User.IsInRole("Administrator") && user.UserName != this.User.Identity.Name)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            return View(model);
+        }
+
+
+        // POST: Administrators/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(string id, ChangePasswordViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return new NotFoundViewResult("UserNotFound");
+            }
+
+            if (model.Password!=null && model.Password!=string.Empty && model.OldPassword != null && model.OldPassword != string.Empty)
+            {
+
+                var user = await userHelper.GetUserByNameAsync(model.UserName);
+
+                if (user == null)
+                {
+                    return new NotFoundViewResult("UserNotFound");
+                }
+
+                var result = await userHelper.ChangePasswordAsync(user, model.OldPassword, model.Password);
+
+                if (result != IdentityResult.Success)
+                {
+                    ModelState.AddModelError(string.Empty, "Password could have not be changed");
+                    return View(model);
+                }
+
+
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(String.Format("Details/{0}", user.Id), "Account");
+
+            }
+
+            return View(model);
         }
     }
 }

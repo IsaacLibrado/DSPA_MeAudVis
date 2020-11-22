@@ -10,6 +10,29 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h2>Administrators' List</h2>
+                <p>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-info">
+                            <input type="radio" onchange="Users()" name="options" id="option1" autocomplete="off">All users
+                        </label>
+                        @if (this.User.IsInRole("Administrator"))
+                        {
+                        <label class="btn btn-info active">
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked>Administrators
+                        </label>
+                        <label class="btn btn-info">
+                            <input type="radio" onchange="Owners()" name="options" id="option3" autocomplete="off">Owners
+                        </label>
+                        }
+                        <label class="btn btn-info">
+                            <input type="radio" onchange="Interns()" name="options" id="option1" autocomplete="off">Interns
+                        </label>
+                        <label class="btn btn-info">
+                            <input type="radio" onchange="Applicants()" name="options" id="option2" autocomplete="off">Applicants
+                        </label>
+
+                    </div>
+                </p>
             </div>
             <div class="panel-body">
                 <p>
@@ -76,5 +99,30 @@
                 window.location.href = '/Careers/Delete/' + item_to_delete;
             });
         });
+    </script>
+    <script>
+        function Users() {
+            window.location.href = '/Account';
+        }
+    </script>
+    <script>
+        function Admins() {
+            window.location.href = '/Administrators';
+        }
+    </script>
+    <script>
+        function Interns() {
+            window.location.href = '/Interns';
+        }
+    </script>
+    <script>
+        function Applicants() {
+            window.location.href = '/Applicants';
+        }
+    </script>
+    <script>
+        function Owners() {
+            window.location.href = '/Owners';
+        }
     </script>
 } 

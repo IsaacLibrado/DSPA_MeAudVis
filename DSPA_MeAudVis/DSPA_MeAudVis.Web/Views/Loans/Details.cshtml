@@ -17,12 +17,29 @@
             @Html.DisplayFor(model => model.Applicant.User.FullName)
         </dd>
         <dt>
+            
+        </dt>
+        <dd>
+            @if (!string.IsNullOrEmpty(Model.Applicant.User.ImageURL))
+            {
+                <img src="@Url.Content(Model.Applicant.User.ImageURL)" style="width:100px;height:100px" />
+            }
+        </dd>
+        <dt>
             Loan by
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Intern.User.FullName)
         </dd>
-
+        <dt>
+            
+        </dt>
+        <dd>
+            @if (!string.IsNullOrEmpty(Model.Intern.User.ImageURL))
+            {
+                <img src="@Url.Content(Model.Intern.User.ImageURL)" style="width:100px;height:100px" />
+            }
+        </dd>
     </dl>
 </div>
 
@@ -83,7 +100,7 @@
                                         @Html.DisplayNameFor(model => model.LoanDetails.FirstOrDefault().Observations)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.LoanDetails.FirstOrDefault().Status.StatusName)
+                                        Status
                                     </th>
                                     <th></th>
                                 </tr>

@@ -87,8 +87,18 @@ namespace DSPA_MeAudVis.Web.Controllers
                     return new NotFoundViewResult("OwnerNotFound");
                 }
 
+                foreach(Owner ownerTemp in _context.Owners.Include(c=>c.User))
+                {
+                    if(ownerTemp.User==user)
+                    {
+                        ModelState.AddModelError(string.Empty, "Owner already exists");
+                        return View(model);
+                    }
+                }
+
                 var owner = new Owner { User = user };
 
+                
 
                 await userHelper.AddUserToRoleAsync(user, "Owner");
 
@@ -100,77 +110,6 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Administrator")]
-        // GET: Owners/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new NotFoundViewResult("OwnerNotFound");
-            }
-
-            var owner = await _context.Owners.
-                Include(s => s.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (owner == null)
-            {
-                return new NotFoundViewResult("OwnerNotFound");
-            }
-
-            var model = new OwnerViewModel
-            {
-                Id = owner.Id,
-                User = owner.User,
-                UserUserName = owner.User.UserName,
-                Users = combosHelper.GetComboUsers()
-            };
-
-            return View(model);
-        }
-
-        // POST: Owners/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, OwnerViewModel model)
-        {
-            if (id != model.Id)
-            {
-                return new NotFoundViewResult("OwnerNotFound");
-            }
-
-            if (ModelState.IsValid)
-            {
-                var user = await userHelper.GetUserByEmailAsync(model.User.Email);
-
-                if (user == null)
-                {
-                    return new NotFoundViewResult("OwnerNotFound");
-                }
-
-                user.FirstName = model.User.FirstName;
-                user.LastName = model.User.LastName;
-                user.PhoneNumber = model.User.PhoneNumber;
-                user.RegistrationNumber = model.User.RegistrationNumber;
-                user.Email = model.User.Email;
-                user.UserName = model.User.UserName;
-                var owner = await _context.Owners.FindAsync(model.Id);
-
-                if (owner == null)
-                {
-                    return new NotFoundViewResult("OwnerNotFound");
-                }
-
-                owner.Id = model.Id;
-                owner.User = user;
-                _context.Update(owner);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(model);
-        }
 
         [Authorize(Roles = "Administrator")]
         // GET: Owners/Delete/5

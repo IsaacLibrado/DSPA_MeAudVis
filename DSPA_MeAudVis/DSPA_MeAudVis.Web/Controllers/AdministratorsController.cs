@@ -60,6 +60,8 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(administrator);
         }
 
+
+
         [Authorize(Roles = "Administrator")]
         // GET: Administrators/Create
         public IActionResult Create()
@@ -89,6 +91,15 @@ namespace DSPA_MeAudVis.Web.Controllers
                     return new NotFoundViewResult("AdministratorNotFound");
                 }
 
+                foreach (Administrator adminTemp in _context.Administrators.Include(c => c.User))
+                {
+                    if (adminTemp.User == user)
+                    {
+                        ModelState.AddModelError(string.Empty, "Administrator already exists");
+                        return View(model);
+                    }
+                }
+
                 var administrator = new Administrator { User = user };
 
 
@@ -102,79 +113,7 @@ namespace DSPA_MeAudVis.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Administrator")]
-        // GET: Administrators/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new NotFoundViewResult("AdministratorNotFound");
-            }
-
-            var administrator = await _context.Administrators
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (administrator == null)
-            {
-                return new NotFoundViewResult("AdministratorNotFound");
-            }
-
-
-            var model = new AdministratorViewModel
-            {
-                Id = administrator.Id,
-                User = administrator.User,
-                UserUserName = administrator.User.UserName,
-                Users = combosHelper.GetComboUsers()
-            };
-
-            return View(model);
-        }
-
-        [Authorize(Roles = "Administrator")]
-        // POST: Administrators/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, AdministratorViewModel model)
-        {
-            if (id != model.Id)
-            {
-                return new NotFoundViewResult("AdministratorNotFound");
-            }
-
-            if (ModelState.IsValid)
-            {
-                var user = await userHelper.GetUserByEmailAsync(model.User.Email);
-
-                if (user == null)
-                {
-                    return new NotFoundViewResult("AdministratorNotFound");
-                }
-
-                user.FirstName = model.User.FirstName;
-                user.LastName = model.User.LastName;
-                user.PhoneNumber = model.User.PhoneNumber;
-                user.RegistrationNumber = model.User.RegistrationNumber;
-                user.Email = model.User.Email;
-                user.UserName = model.User.UserName;
-                var administrator = await _context.Administrators.FindAsync(model.Id);
-
-                if (administrator == null)
-                {
-                    return new NotFoundViewResult("AdministratorNotFound");
-                }
-
-                administrator.Id = model.Id;
-                administrator.User = user;
-                _context.Update(administrator);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(model);
-        }
+        
 
         [Authorize(Roles = "Administrator")]
         // GET: Administrators/Delete/5

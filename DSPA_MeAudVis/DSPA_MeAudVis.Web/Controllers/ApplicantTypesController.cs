@@ -29,25 +29,6 @@ namespace DSPA_MeAudVis.Web.Controllers
         }
 
         [Authorize(Roles = "Administrator")]
-        // GET: ApplicantTypes/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new NotFoundViewResult("ApplicantTypeNotFound");
-            }
-
-            var applicantType = await _context.ApplicantTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (applicantType == null)
-            {
-                return new NotFoundViewResult("ApplicantTypeNotFound");
-            }
-
-            return View(applicantType);
-        }
-
-        [Authorize(Roles = "Administrator")]
         // GET: ApplicantTypes/Create
         public IActionResult Create()
         {

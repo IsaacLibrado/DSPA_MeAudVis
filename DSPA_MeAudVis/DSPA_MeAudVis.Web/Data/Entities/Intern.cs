@@ -17,9 +17,11 @@
         public int Id { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
+        [Range(7, 21, ErrorMessage = "Time must been between 7 and 21")]
         public int EntryTime { set; get; }
 
         [Required(ErrorMessage = "{0} is required")]
+        [Range(7,21,ErrorMessage ="Time must been between 7 and 21")]
         public int DepartureTime { get; set; }
 
         [Required(ErrorMessage = "{0} is required")]

@@ -102,6 +102,15 @@ namespace DSPA_MeAudVis.Web.Controllers
                     return new NotFoundViewResult("ApplicantNotFound");
                 }
 
+                foreach (Applicant appTemp in _context.Applicants.Include(c => c.User))
+                {
+                    if (appTemp.User == user)
+                    {
+                        ModelState.AddModelError(string.Empty, "Applicant already exists");
+                        return View(model);
+                    }
+                }
+
                 var type = await _context.ApplicantTypes.FirstOrDefaultAsync(m => m.Id == model.TypeId);
                 var applicant = new Applicant { User = user, Type=type, Debtor=model.Debtor};
 
@@ -141,7 +150,9 @@ namespace DSPA_MeAudVis.Web.Controllers
                 Debtor = applicant.Debtor,
                 TypeId = applicant.Type.Id,
                 Types = combosHelper.GetComboApplicantTypes(),
-                Type = applicant.Type
+                Type = applicant.Type,
+                UserUserName=applicant.User.UserName,
+                Users=combosHelper.GetComboUsers()
             };
 
             return View(model);
@@ -159,21 +170,9 @@ namespace DSPA_MeAudVis.Web.Controllers
                 return new NotFoundViewResult("ApplicantNotFound");
             }
 
-            if (ModelState.IsValid)
+            if (model.TypeId>0)
             {
-                var user = await userHelper.GetUserByEmailAsync(model.User.Email);
 
-                if(user==null)
-                {
-                    return new NotFoundViewResult("ApplicantNotFound");
-                }
-
-                user.FirstName = model.User.FirstName;
-                user.LastName = model.User.LastName;
-                user.PhoneNumber = model.User.PhoneNumber;
-                user.RegistrationNumber = model.User.RegistrationNumber;
-                user.Email = model.User.Email;
-                user.UserName = model.User.UserName;
                 var applicant = await _context.Applicants.FindAsync(model.Id);
 
                 if(applicant==null)
@@ -183,7 +182,6 @@ namespace DSPA_MeAudVis.Web.Controllers
 
                 applicant.Id = model.Id;
                 applicant.Debtor = model.Debtor;
-                applicant.User = user;
                 applicant.Type = await _context.ApplicantTypes.FindAsync(model.TypeId);
                 _context.Update(applicant);
                 await _context.SaveChangesAsync();
